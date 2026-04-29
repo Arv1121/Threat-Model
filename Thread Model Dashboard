@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threat Model Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    .threat-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .severity {
+      font-weight: bold;
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Threat Model Dashboard</h1>
+    <p>Identify, classify, and mitigate risks</p>
+  </header>
+
+  <div class="container">
+    <h2>Threats</h2>
+
+    <div class="threat-card">
+      <h3>SQL Injection</h3>
+      <p><span class="severity">Severity:</span> High</p>
+      <p><strong>Description:</strong> Attackers can manipulate queries to access or modify data.</p>
+      <p><strong>Mitigation:</strong> Use parameterized queries and ORM frameworks.</p>
+    </div>
+
+    <div class="threat-card">
+      <h3>Cross-Site Scripting (XSS)</h3>
+      <p><span class="severity">Severity:</span> Medium</p>
+      <p><strong>Description:</strong> Injection of malicious scripts into web pages viewed by users.</p>
+      <p><strong>Mitigation:</strong> Escape user input, use CSP headers.</p>
+    </div>
+
+    <div class="threat-card">
+      <h3>Weak Authentication</h3>
+      <p><span class="severity">Severity:</span> High</p>
+      <p><strong>Description:</strong> Poor password policies or lack of MFA.</p>
+      <p><strong>Mitigation:</strong> Enforce strong password rules, enable multi-factor authentication.</p>
+    </div>
+  </div>
+</body>
+</html>
