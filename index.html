@@ -1,880 +1,832 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ThreatScope — URL Vulnerability Scanner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#05080f;--bg2:#090d16;--surface:#0d1420;--surface2:#111827;
-      --border:#1a2540;--border-bright:#1e3a5f;
-      --cyan:#00e5ff;--cyan-dim:rgba(0,229,255,0.12);--cyan-glow:rgba(0,229,255,0.25);
-      --red:#ff3b3b;--red-dim:rgba(255,59,59,0.12);
-      --orange:#ff8c00;--orange-dim:rgba(255,140,0,0.12);
-      --green:#00e676;--green-dim:rgba(0,230,118,0.12);
-      --yellow:#ffd600;--purple:#cc44ff;
-      --text:#c8d6e8;--text-dim:#4a6080;--text-bright:#e8f4ff;
-      --mono:'Share Tech Mono',monospace;--display:'Bebas Neue',cursive;--body:'DM Sans',sans-serif;
-    }
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
-    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:48px 48px;animation:gridPan 40s linear infinite;pointer-events:none;z-index:0}
-    @keyframes gridPan{0%{background-position:0 0}100%{background-position:48px 48px}}
-    body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);pointer-events:none;z-index:999}
-    .ambient{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(0,229,255,0.05) 0%,transparent 70%);pointer-events:none;z-index:0}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://www.virustotal.com https://urlscan.io; img-src 'self' data:; object-src 'none';"/>
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+<title>ThreatScope — Cyber Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0A==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" integrity="sha512-6HrPCBEHBKkMQ9gnKOj5GONV6k+DPpVRBBWsJHbhc5VJkN1rz2xkSXOHNFQpJ3y7rBpZO14BcZCQtA1nJQFg==" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#05080f;--bg2:#090d16;--surface:#0d1420;--border:#1a2540;--border-b:#1e3a5f;
+--cyan:#00e5ff;--cd:rgba(0,229,255,0.12);--cg:rgba(0,229,255,0.25);
+--red:#ff3b3b;--rd:rgba(255,59,59,0.12);
+--orange:#ff8c00;--od:rgba(255,140,0,0.12);
+--green:#00e676;--gd:rgba(0,230,118,0.12);
+--yellow:#ffd600;--purple:#cc44ff;--pd:rgba(204,68,255,0.12);
+--text:#c8d6e8;--td:#4a6080;--tb:#e8f4ff;
+--mono:'Share Tech Mono',monospace;--disp:'Bebas Neue',cursive;--body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:48px 48px;animation:gp 40s linear infinite;pointer-events:none;z-index:0}
+@keyframes gp{0%{background-position:0 0}100%{background-position:48px 48px}}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);pointer-events:none;z-index:999}
 
-    /* ── NAV ── */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;gap:0;padding:0 32px;background:rgba(5,8,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:60px}
-    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-bright);font-family:var(--display);font-size:1.2rem;letter-spacing:2px;margin-right:32px;flex-shrink:0}
-    .nav-tabs{display:flex;flex:1;height:100%}
-    .nav-tab{display:flex;align-items:center;padding:0 20px;font-family:var(--mono);font-size:0.65rem;letter-spacing:2px;color:var(--text-dim);cursor:pointer;border:none;background:transparent;text-transform:uppercase;transition:color 0.2s;position:relative;border-bottom:2px solid transparent;gap:8px}
-    .nav-tab:hover{color:var(--text)}
-    .nav-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
-    .nav-tab .tab-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s ease infinite;display:none}
-    .nav-tab.active .tab-dot{display:block}
-    .nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
-    .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease infinite}
-    .live-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--text-dim)}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;padding:0 24px;background:rgba(5,8,15,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:58px;gap:0}
+.logo-btn{display:flex;align-items:center;gap:10px;color:var(--tb);font-family:var(--disp);font-size:1.1rem;letter-spacing:2px;margin-right:24px;flex-shrink:0;cursor:pointer;border:none;background:none;padding:0}
+.nav-tabs{display:flex;flex:1;height:100%;overflow-x:auto}
+.nav-tabs::-webkit-scrollbar{height:0}
+.tab{display:flex;align-items:center;gap:6px;padding:0 16px;font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--td);cursor:pointer;border:none;background:transparent;text-transform:uppercase;transition:color 0.2s;border-bottom:2px solid transparent;white-space:nowrap;height:100%}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.tdot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s ease infinite;display:none}
+.tab.active .tdot{display:block}
+.nav-r{display:flex;align-items:center;gap:8px;margin-left:12px;flex-shrink:0}
+.pd{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease infinite}
+.pl{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--td)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
 
-    /* ── PAGES ── */
-    .page{display:none;position:relative;z-index:1;padding-top:60px;min-height:100vh}
-    .page.active{display:block}
+/* PAGES */
+.page{display:none;position:relative;z-index:1;padding-top:58px;min-height:100vh}
+.page.active{display:block}
 
-    /* ── SHARED ── */
-    .wrap{max-width:1200px;margin:0 auto;padding:48px 24px 80px}
-    .wrap-wide{max-width:1400px;margin:0 auto;padding:0 24px 80px}
-    .page-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:12px}
-    .page-title{font-family:var(--display);font-size:clamp(2.8rem,7vw,5rem);letter-spacing:3px;color:var(--text-bright);line-height:1;margin-bottom:16px}
-    .page-title span{color:var(--cyan);text-shadow:0 0 40px var(--cyan-glow)}
-    .page-sub{font-size:0.95rem;color:var(--text-dim);line-height:1.7;font-weight:300;max-width:580px}
-    .section-label{font-family:var(--mono);font-size:0.62rem;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:16px}
-    .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-    .panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
-    .panel-header{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2)}
-    .panel-title{font-family:var(--mono);font-size:0.65rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;flex:1}
-    .panel-body{padding:20px}
-    .badge{font-family:var(--mono);font-size:0.58rem;padding:2px 8px;border-radius:2px;letter-spacing:1px}
-    .badge-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
-    .badge-orange{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
-    .badge-cyan{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,255,0.3)}
-    .badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
-    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
-    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px}
-    .full{margin-bottom:24px}
-    @media(max-width:900px){.two-col,.three-col{grid-template-columns:1fr}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+/* SHARED */
+.wrap{max-width:1200px;margin:0 auto;padding:44px 22px 80px}
+.pl2{font-family:var(--mono);font-size:0.63rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+.pt{font-family:var(--disp);font-size:clamp(2.6rem,6vw,4.8rem);letter-spacing:3px;color:var(--tb);line-height:1;margin-bottom:14px}
+.pt span{color:var(--cyan);text-shadow:0 0 40px var(--cg)}
+.ps{font-size:0.93rem;color:var(--td);line-height:1.7;font-weight:300;max-width:560px}
+.sl{font-family:var(--mono);font-size:0.6rem;letter-spacing:4px;color:var(--td);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.sl::after{content:'';flex:1;height:1px;background:var(--border)}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.pt2{font-family:var(--mono);font-size:0.63rem;letter-spacing:3px;color:var(--td);text-transform:uppercase;flex:1}
+.pb{padding:18px}
+.badge{font-family:var(--mono);font-size:0.56rem;padding:2px 7px;border-radius:2px;letter-spacing:1px}
+.br{background:var(--rd);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
+.bo{background:var(--od);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
+.bc{background:var(--cd);color:var(--cyan);border:1px solid rgba(0,229,255,0.3)}
+.bg2{background:var(--gd);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
+.bp{background:var(--pd);color:var(--purple);border:1px solid rgba(204,68,255,0.3)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.full{margin-bottom:20px}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border-b);border-radius:2px}
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar{width:4px}
-    ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:2px}
+/* ===== SCANNER ===== */
+.hero{text-align:center;padding:44px 0 36px;animation:fu 0.6s ease both}
+.sb{max-width:780px;margin:0 auto 36px;animation:fu 0.6s ease 0.1s both}
+.sbox{display:flex;background:var(--surface);border:1px solid var(--border-b);border-radius:4px;overflow:hidden;transition:border-color 0.3s,box-shadow 0.3s}
+.sbox:focus-within{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 36px var(--cd)}
+.spfx{font-family:var(--mono);font-size:0.8rem;color:var(--cyan);padding:0 14px;display:flex;align-items:center;border-right:1px solid var(--border);background:var(--cd);white-space:nowrap}
+#urlInput{flex:1;background:transparent;border:none;outline:none;padding:17px 18px;font-family:var(--mono);font-size:0.92rem;color:var(--tb)}
+#urlInput::placeholder{color:var(--td)}
+#scanBtn{background:var(--cyan);color:var(--bg);border:none;padding:17px 28px;font-family:var(--disp);font-size:1.05rem;letter-spacing:3px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+#scanBtn:hover{background:#33eeff;box-shadow:0 0 24px var(--cg)}
+#scanBtn:disabled{opacity:0.5;cursor:not-allowed}
+.ak{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(max-width:560px){.ak{grid-template-columns:1fr}}
+.af label{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--td);display:block;margin-bottom:4px}
+.af input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:9px 12px;font-family:var(--mono);font-size:0.76rem;color:var(--text);outline:none;transition:border-color 0.2s}
+.af input:focus{border-color:var(--cyan)}
+.af input::placeholder{color:var(--td)}
+.sn{background:rgba(255,140,0,0.07);border:1px solid rgba(255,140,0,0.22);border-radius:3px;padding:9px 13px;font-family:var(--mono);font-size:0.6rem;color:var(--orange);letter-spacing:1px;margin-top:10px;line-height:1.6}
+.sh2{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--td);text-align:center;margin-top:8px}
+#ls{display:none;text-align:center;padding:56px 0}
+.radar{width:96px;height:96px;margin:0 auto 22px;position:relative}
+.rr{position:absolute;inset:0;border:1px solid var(--cyan);border-radius:50%;opacity:0.3}
+.rr:nth-child(2){inset:16px;animation:rp 2s ease infinite 0.3s}
+.rr:nth-child(3){inset:32px;animation:rp 2s ease infinite 0.6s}
+@keyframes rp{0%{opacity:0.3;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
+.rsw{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 270deg,rgba(0,229,255,0.35) 360deg);animation:sw 2s linear infinite}
+@keyframes sw{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.rc{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan)}
+#ls p{font-family:var(--mono);font-size:0.72rem;letter-spacing:3px;color:var(--cyan);animation:bl 1.2s ease infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0.3}}
+#ll{font-family:var(--mono);font-size:0.66rem;color:var(--td);margin-top:10px;letter-spacing:1px}
+#rs{display:none;animation:fu 0.5s ease both}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+#ru{font-family:var(--mono);font-size:0.7rem;color:var(--cyan);margin-bottom:4px;word-break:break-all}
+#nsb{background:transparent;border:1px solid var(--border-b);color:var(--td);padding:7px 18px;font-family:var(--mono);font-size:0.63rem;letter-spacing:2px;cursor:pointer;border-radius:2px;transition:all 0.2s;flex-shrink:0}
+#nsb:hover{border-color:var(--cyan);color:var(--cyan)}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:24px}
+.sc2{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px;text-align:center;position:relative;overflow:hidden;animation:fu 0.5s ease both}
+.sc2::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.sc2.danger{border-color:rgba(255,59,59,0.4)}.sc2.danger::before{background:var(--red);box-shadow:0 0 10px var(--red)}
+.sc2.warning{border-color:rgba(255,140,0,0.4)}.sc2.warning::before{background:var(--orange);box-shadow:0 0 10px var(--orange)}
+.sc2.safe{border-color:rgba(0,230,118,0.4)}.sc2.safe::before{background:var(--green);box-shadow:0 0 10px var(--green)}
+.sc2.info{border-color:rgba(0,229,255,0.4)}.sc2.info::before{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.sv{font-family:var(--disp);font-size:2.1rem;letter-spacing:2px;line-height:1;margin-bottom:5px}
+.sc2.danger .sv{color:var(--red)}.sc2.warning .sv{color:var(--orange)}.sc2.safe .sv{color:var(--green)}.sc2.info .sv{color:var(--cyan)}
+.slb{font-family:var(--mono);font-size:0.56rem;letter-spacing:2px;color:var(--td);text-transform:uppercase}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.78rem}
+.ir:last-child{border-bottom:none}
+.ik{color:var(--td);font-family:var(--mono);font-size:0.66rem;letter-spacing:1px}
+.iv{color:var(--tb);font-weight:500;text-align:right;max-width:58%;word-break:break-all}
+.iv.good{color:var(--green)}.iv.bad{color:var(--red)}
+.eg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:5px}
+.ei{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:6px 9px;font-family:var(--mono);font-size:0.6rem;display:flex;align-items:center;gap:6px}
+.edot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.edot.clean{background:var(--green)}.edot.malicious{background:var(--red);box-shadow:0 0 5px var(--red)}.edot.suspicious{background:var(--orange)}.edot.undetected{background:var(--td)}
+.en{color:var(--td);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ei.mi{border-color:rgba(255,59,59,0.3);background:var(--rd)}.ei.mi .en{color:var(--red)}
+.vtl{font-family:var(--mono);font-size:0.6rem;color:var(--cyan);text-decoration:none}.vtl:hover{text-decoration:underline}
+.es{text-align:center;padding:32px;font-family:var(--mono);font-size:0.7rem;color:var(--td);letter-spacing:1px;line-height:2}
+.sev{font-family:var(--mono);font-size:0.54rem;letter-spacing:1px;padding:2px 6px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+.sev-critical{background:rgba(255,0,60,0.15);color:#ff1744;border:1px solid rgba(255,0,60,0.3)}
+.sev-high{background:var(--rd);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
+.sev-medium{background:var(--od);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
+.sev-low{background:var(--gd);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:8px}
+.rc2{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:16px;transition:border-color 0.2s,transform 0.2s}
+.rc2:hover{border-color:var(--border-b);transform:translateY(-2px)}
+.rc2.ai{border-color:rgba(204,68,255,0.2)}.rc2.ai:hover{border-color:rgba(204,68,255,0.5)}
+.rch{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:8px}
+.rn{font-weight:500;font-size:0.83rem;color:var(--tb)}
+.rd2{font-size:0.74rem;color:var(--td);line-height:1.6;margin-bottom:9px}
+.rm{font-family:var(--mono);font-size:0.63rem;color:var(--cyan);padding:6px 10px;background:var(--cd);border-radius:2px;border-left:2px solid var(--cyan)}
+.rm.ai{color:var(--purple);background:var(--pd);border-left-color:var(--purple)}
 
-    /* ═══════════════════════════════════
-       PAGE 1: SCANNER
-    ═══════════════════════════════════ */
-    .hero{text-align:center;padding:56px 0 48px;animation:fadeDown 0.6s ease both}
-    .search-section{max-width:800px;margin:0 auto 48px;animation:fadeUp 0.6s ease 0.1s both}
-    .search-box{display:flex;background:var(--surface);border:1px solid var(--border-bright);border-radius:4px;overflow:hidden;transition:border-color 0.3s,box-shadow 0.3s}
-    .search-box:focus-within{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 40px var(--cyan-dim)}
-    .search-prefix{font-family:var(--mono);font-size:0.82rem;color:var(--cyan);padding:0 16px;display:flex;align-items:center;border-right:1px solid var(--border);background:var(--cyan-dim);white-space:nowrap}
-    #urlInput{flex:1;background:transparent;border:none;outline:none;padding:18px 20px;font-family:var(--mono);font-size:0.95rem;color:var(--text-bright)}
-    #urlInput::placeholder{color:var(--text-dim)}
-    #scanBtn{background:var(--cyan);color:var(--bg);border:none;padding:18px 32px;font-family:var(--display);font-size:1.1rem;letter-spacing:3px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
-    #scanBtn:hover{background:#33eeff;box-shadow:0 0 24px var(--cyan-glow)}
-    #scanBtn:disabled{opacity:0.5;cursor:not-allowed}
-    .api-keys{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-    @media(max-width:600px){.api-keys{grid-template-columns:1fr}}
-    .api-field label{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--text-dim);display:block;margin-bottom:5px}
-    .api-field input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 14px;font-family:var(--mono);font-size:0.78rem;color:var(--text);outline:none;transition:border-color 0.2s}
-    .api-field input:focus{border-color:var(--cyan)}
-    .api-field input::placeholder{color:var(--text-dim)}
-    .search-hint{font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--text-dim);text-align:center;margin-top:10px}
+/* ===== GLOBE ===== */
+#page-globe{overflow:hidden}
+#gw{position:relative;width:100%;height:calc(100vh - 58px)}
+#gc{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+#gc:active{cursor:grabbing}
+.gp{position:absolute;top:14px;width:248px;max-height:calc(100% - 70px);overflow-y:auto;display:flex;flex-direction:column;gap:9px}
+.gpl{left:14px}.gpr{right:14px}
+.gcard{background:rgba(9,13,22,0.9);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:4px;padding:13px}
+.gct{font-family:var(--mono);font-size:0.56rem;letter-spacing:3px;color:var(--td);text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.gct::after{content:'';flex:1;height:1px;background:var(--border)}
+.gs{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:0.68rem}
+.gs:last-child{border-bottom:none}
+.gsk{color:var(--td);font-size:0.6rem}
+.gsv{font-family:var(--mono);font-weight:bold}
+.gsv.red{color:var(--red)}.gsv.cyan{color:var(--cyan)}.gsv.orange{color:var(--orange)}.gsv.green{color:var(--green)}
+.feed{max-height:270px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.fi{background:rgba(5,8,15,0.7);border:1px solid var(--border);border-radius:2px;padding:6px 8px;font-size:0.6rem;animation:si 0.3s ease both}
+.fi.h{border-left:2px solid var(--red)}.fi.m{border-left:2px solid var(--orange)}.fi.l{border-left:2px solid var(--cyan)}
+@keyframes si{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.ff{color:var(--red);margin-bottom:1px}.ft{color:var(--cyan);margin-bottom:1px}.ftp{color:var(--td)}.ftm{color:var(--td);font-size:0.54rem;float:right}
+.li{display:flex;align-items:center;gap:7px;font-size:0.6rem;color:var(--td);margin-bottom:5px}
+.ld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cb{background:transparent;border:1px solid var(--border);color:var(--td);padding:4px 8px;font-family:var(--mono);font-size:0.56rem;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all 0.2s;margin:2px}
+.cb:hover,.cb.active{border-color:var(--cyan);color:var(--cyan)}
+.gt{position:absolute;bottom:0;left:0;right:0;background:rgba(5,8,15,0.93);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:6px 22px;display:flex;align-items:center;gap:14px;overflow:hidden;z-index:10}
+.tl{font-family:var(--mono);font-size:0.56rem;letter-spacing:2px;color:var(--cyan);white-space:nowrap;border-right:1px solid var(--border);padding-right:13px}
+.tt{display:flex;gap:44px;animation:tk 35s linear infinite;white-space:nowrap}
+.ti{font-family:var(--mono);font-size:0.6rem;color:var(--td)}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* Loading */
-    #loadingState{display:none;text-align:center;padding:60px 0}
-    .radar{width:100px;height:100px;margin:0 auto 24px;position:relative}
-    .radar-ring{position:absolute;inset:0;border:1px solid var(--cyan);border-radius:50%;opacity:0.3}
-    .radar-ring:nth-child(2){inset:18px;animation:radarPing 2s ease infinite 0.3s}
-    .radar-ring:nth-child(3){inset:36px;animation:radarPing 2s ease infinite 0.6s}
-    @keyframes radarPing{0%{opacity:0.3;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
-    .radar-sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 270deg,rgba(0,229,255,0.35) 360deg);animation:sweep 2s linear infinite}
-    @keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-    .radar-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan)}
-    #loadingState p{font-family:var(--mono);font-size:0.75rem;letter-spacing:3px;color:var(--cyan);animation:blink 1.2s ease infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    #loadingLog{font-family:var(--mono);font-size:0.68rem;color:var(--text-dim);margin-top:12px;letter-spacing:1px}
+/* ===== THREAT FEED ===== */
+.stg{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px}
+.stc{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.stc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stc.red::before{background:var(--red)}.stc.orange::before{background:var(--orange)}.stc.cyan::before{background:var(--cyan)}.stc.green::before{background:var(--green)}.stc.yellow::before{background:var(--yellow)}
+.stn{font-family:var(--disp);font-size:1.8rem;letter-spacing:2px;line-height:1;margin-bottom:4px}
+.stc.red .stn{color:var(--red)}.stc.orange .stn{color:var(--orange)}.stc.cyan .stn{color:var(--cyan)}.stc.green .stn{color:var(--green)}.stc.yellow .stn{color:var(--yellow)}
+.stl{font-family:var(--mono);font-size:0.56rem;letter-spacing:2px;color:var(--td);text-transform:uppercase}
+.cw{position:relative;height:205px;padding:4px 0}
+.cl{display:flex;flex-direction:column;gap:9px}
+.cc{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:13px;transition:border-color 0.2s}
+.cc:hover{border-color:var(--border-b)}
+.cc.critical{border-left:3px solid #ff1744}.cc.high{border-left:3px solid var(--red)}.cc.medium{border-left:3px solid var(--orange)}
+.cch{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px}
+.cid{font-family:var(--mono);font-size:0.72rem;color:var(--cyan)}
+.cs{font-family:var(--mono);font-size:0.63rem;padding:2px 7px;border-radius:2px}
+.sc{background:rgba(255,23,68,0.15);color:#ff1744;border:1px solid rgba(255,23,68,0.3)}
+.sh{background:var(--rd);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
+.sm{background:var(--od);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
+.ct{font-size:0.82rem;color:var(--tb);margin-bottom:4px;font-weight:500}
+.cd{font-size:0.72rem;color:var(--td);line-height:1.5;margin-bottom:6px}
+.cm{display:flex;gap:12px;font-family:var(--mono);font-size:0.58rem;color:var(--td);flex-wrap:wrap}
+.bi{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.bl{font-family:var(--mono);font-size:0.6rem;color:var(--td);width:92px;flex-shrink:0}
+.bt{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width 1.2s ease}
+.bv{font-family:var(--mono);font-size:0.6rem;color:var(--tb);width:34px;text-align:right;flex-shrink:0}
+.ni{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
+.ni:last-child{border-bottom:none}
+.nd{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ns{font-family:var(--mono);font-size:0.56rem;letter-spacing:2px;color:var(--td);margin-bottom:3px}
+.nt{font-size:0.82rem;color:var(--tb);font-weight:500;margin-bottom:3px;line-height:1.4}
+.nsum{font-size:0.72rem;color:var(--td);line-height:1.5}
+.ntm{font-family:var(--mono);font-size:0.56rem;color:var(--td);margin-top:4px}
 
-    /* Results */
-    #resultsSection{display:none;animation:fadeUp 0.5s ease both}
-    .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-    .results-url{font-family:var(--mono);font-size:0.72rem;color:var(--cyan);margin-bottom:4px}
-    #newScanBtn{background:transparent;border:1px solid var(--border-bright);color:var(--text-dim);padding:8px 20px;font-family:var(--mono);font-size:0.65rem;letter-spacing:2px;cursor:pointer;border-radius:2px;transition:all 0.2s}
-    #newScanBtn:hover{border-color:var(--cyan);color:var(--cyan)}
-    .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:32px}
-    .score-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px;text-align:center;position:relative;overflow:hidden;animation:fadeUp 0.5s ease both}
-    .score-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-    .score-card.danger{border-color:rgba(255,59,59,0.4)}.score-card.danger::before{background:var(--red);box-shadow:0 0 12px var(--red)}
-    .score-card.warning{border-color:rgba(255,140,0,0.4)}.score-card.warning::before{background:var(--orange);box-shadow:0 0 12px var(--orange)}
-    .score-card.safe{border-color:rgba(0,230,118,0.4)}.score-card.safe::before{background:var(--green);box-shadow:0 0 12px var(--green)}
-    .score-card.info{border-color:rgba(0,229,255,0.4)}.score-card.info::before{background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
-    .score-value{font-family:var(--display);font-size:2.4rem;letter-spacing:2px;line-height:1;margin-bottom:6px}
-    .score-card.danger .score-value{color:var(--red)}.score-card.warning .score-value{color:var(--orange)}.score-card.safe .score-value{color:var(--green)}.score-card.info .score-value{color:var(--cyan)}
-    .score-label{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
-    .info-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:0.8rem}
-    .info-row:last-child{border-bottom:none}
-    .info-key{color:var(--text-dim);font-family:var(--mono);font-size:0.68rem;letter-spacing:1px}
-    .info-val{color:var(--text-bright);font-weight:500;text-align:right;max-width:60%;word-break:break-all}
-    .info-val.good{color:var(--green)}.info-val.bad{color:var(--red)}
-    .engine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
-    .engine-item{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:7px 10px;font-family:var(--mono);font-size:0.62rem;display:flex;align-items:center;gap:7px}
-    .engine-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .engine-dot.clean{background:var(--green)}.engine-dot.malicious{background:var(--red);box-shadow:0 0 6px var(--red)}.engine-dot.suspicious{background:var(--orange)}.engine-dot.undetected{background:var(--text-dim)}
-    .engine-name{color:var(--text-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .engine-item.malicious-item{border-color:rgba(255,59,59,0.3);background:var(--red-dim)}
-    .engine-item.malicious-item .engine-name{color:var(--red)}
-    .vt-link{font-family:var(--mono);font-size:0.62rem;color:var(--cyan);text-decoration:none}
-    .vt-link:hover{text-decoration:underline}
-    .empty-state{text-align:center;padding:36px;font-family:var(--mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:2px}
-    .threat-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
-    .threat-item:last-child{border-bottom:none;padding-bottom:0}
-    .sev{font-family:var(--mono);font-size:0.56rem;letter-spacing:1px;padding:2px 7px;border-radius:2px;white-space:nowrap;margin-top:2px;flex-shrink:0}
-    .sev-critical{background:rgba(255,0,60,0.15);color:#ff1744;border:1px solid rgba(255,0,60,0.3)}
-    .sev-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
-    .sev-medium{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
-    .sev-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
-    .threat-name{font-weight:500;font-size:0.87rem;color:var(--text-bright);margin-bottom:4px}
-    .threat-desc{font-size:0.75rem;color:var(--text-dim);line-height:1.5}
-    .threat-mit{margin-top:5px;font-family:var(--mono);font-size:0.62rem;color:var(--cyan)}
-    .ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:8px}
-    .ref-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:18px;transition:border-color 0.2s,transform 0.2s}
-    .ref-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
-    .ref-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .ref-name{font-weight:500;font-size:0.85rem;color:var(--text-bright)}
-    .ref-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.6;margin-bottom:10px}
-    .ref-mit{font-family:var(--mono);font-size:0.65rem;color:var(--cyan);padding:7px 10px;background:var(--cyan-dim);border-radius:2px;border-left:2px solid var(--cyan)}
+/* ===== AI THREATS ===== */
+.ai-stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:12px;margin-bottom:32px}
+.ai-sc{background:var(--surface);border:1px solid rgba(204,68,255,0.3);border-radius:4px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.ai-sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);box-shadow:0 0 10px var(--purple)}
+.ai-num{font-family:var(--disp);font-size:1.8rem;letter-spacing:2px;color:var(--purple);line-height:1;margin-bottom:4px}
+.ai-lbl{font-family:var(--mono);font-size:0.56rem;letter-spacing:2px;color:var(--td);text-transform:uppercase}
+.sec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;margin-top:14px}
+.sec-item{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:11px 13px;display:flex;align-items:center;gap:9px}
+.sec-label{font-family:var(--mono);font-size:0.6rem;color:var(--td);letter-spacing:1px}
+.sec-status{font-family:var(--mono);font-size:0.56rem;margin-top:2px}
+.sec-status.ok{color:var(--green)}.sec-status.warn{color:var(--orange)}.sec-status.na{color:var(--td)}
 
-    /* ═══════════════════════════════════
-       PAGE 2: GLOBE
-    ═══════════════════════════════════ */
-    #page-globe{overflow:hidden}
-    #globeWrap{position:relative;width:100%;height:calc(100vh - 60px)}
-    #globeCanvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
-    #globeCanvas:active{cursor:grabbing}
-    .globe-panel{position:absolute;top:16px;width:260px;max-height:calc(100% - 80px);overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-    .globe-panel-left{left:16px}
-    .globe-panel-right{right:16px}
-    .gcard{background:rgba(9,13,22,0.88);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:4px;padding:14px}
-    .gcard-title{font-family:var(--mono);font-size:0.58rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-    .gcard-title::after{content:'';flex:1;height:1px;background:var(--border)}
-    .gstat{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:0.7rem}
-    .gstat:last-child{border-bottom:none}
-    .gstat-key{color:var(--text-dim);font-size:0.62rem}
-    .gstat-val{font-family:var(--mono);font-weight:bold}
-    .gstat-val.red{color:var(--red)}.gstat-val.cyan{color:var(--cyan)}.gstat-val.orange{color:var(--orange)}.gstat-val.green{color:var(--green)}
-    .feed{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
-    .feed-item{background:rgba(5,8,15,0.7);border:1px solid var(--border);border-radius:2px;padding:7px 9px;font-size:0.62rem;animation:slideIn 0.3s ease both}
-    .feed-item.high{border-left:2px solid var(--red)}.feed-item.medium{border-left:2px solid var(--orange)}.feed-item.low{border-left:2px solid var(--cyan)}
-    @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-    .feed-from{color:var(--red);margin-bottom:1px}.feed-to{color:var(--cyan);margin-bottom:1px}.feed-type{color:var(--text-dim)}.feed-time{color:var(--text-dim);font-size:0.55rem;float:right}
-    .legend-item{display:flex;align-items:center;gap:8px;font-size:0.62rem;color:var(--text-dim);margin-bottom:6px}
-    .ldot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-    .ctrl-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:4px 9px;font-family:var(--mono);font-size:0.58rem;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all 0.2s;margin:2px}
-    .ctrl-btn:hover,.ctrl-btn.active{border-color:var(--cyan);color:var(--cyan)}
-    .globe-ticker{position:absolute;bottom:0;left:0;right:0;background:rgba(5,8,15,0.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:7px 24px;display:flex;align-items:center;gap:16px;overflow:hidden;z-index:10}
-    .ticker-label{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--cyan);white-space:nowrap;border-right:1px solid var(--border);padding-right:14px}
-    .ticker-track{display:flex;gap:48px;animation:ticker 35s linear infinite;white-space:nowrap}
-    .ticker-item{font-family:var(--mono);font-size:0.62rem;color:var(--text-dim)}
-    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* ===== ABOUT ===== */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;margin-top:8px}
+.fc{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px;transition:border-color 0.2s,transform 0.2s}
+.fc:hover{border-color:var(--border-b);transform:translateY(-2px)}
+.fn{font-family:var(--mono);font-size:0.61rem;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+.fd{font-size:0.78rem;color:var(--td);line-height:1.6}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.ag{grid-template-columns:1fr}}
+.ac{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:16px}
+.an{font-family:var(--mono);font-size:0.68rem;letter-spacing:2px;color:var(--cyan);margin-bottom:4px}
+.ad{font-size:0.76rem;color:var(--td);line-height:1.5;margin-bottom:7px}
+.al{font-family:var(--mono);font-size:0.6rem;color:var(--cyan);text-decoration:none}
+.al:hover{text-decoration:underline}
+.wb{background:rgba(255,140,0,0.06);border:1px solid rgba(255,140,0,0.2);border-radius:4px;padding:16px;margin-top:24px}
+.wt{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--orange);margin-bottom:7px}
+.wd{font-size:0.81rem;color:var(--td);line-height:1.7}
+.asec{margin-bottom:44px}
+.ast{font-family:var(--disp);font-size:1.6rem;letter-spacing:2px;color:var(--tb);margin-bottom:11px}
+.atx{font-size:0.88rem;color:var(--td);line-height:1.9;margin-bottom:11px;font-weight:300}
 
-    /* ═══════════════════════════════════
-       PAGE 3: THREAT FEED
-    ═══════════════════════════════════ */
-    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:40px}
-    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px;text-align:center;position:relative;overflow:hidden}
-    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-    .stat-card.red::before{background:var(--red);box-shadow:0 0 10px var(--red)}
-    .stat-card.orange::before{background:var(--orange);box-shadow:0 0 10px var(--orange)}
-    .stat-card.cyan::before{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
-    .stat-card.green::before{background:var(--green);box-shadow:0 0 10px var(--green)}
-    .stat-card.yellow::before{background:var(--yellow);box-shadow:0 0 10px var(--yellow)}
-    .stat-num{font-family:var(--display);font-size:2rem;letter-spacing:2px;line-height:1;margin-bottom:5px}
-    .stat-card.red .stat-num{color:var(--red)}.stat-card.orange .stat-num{color:var(--orange)}.stat-card.cyan .stat-num{color:var(--cyan)}.stat-card.green .stat-num{color:var(--green)}.stat-card.yellow .stat-num{color:var(--yellow)}
-    .stat-lbl{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
-    .chart-wrap{position:relative;height:220px;padding:4px 0}
-    .cve-list{display:flex;flex-direction:column;gap:10px}
-    .cve-card{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:14px;transition:border-color 0.2s}
-    .cve-card:hover{border-color:var(--border-bright)}
-    .cve-card.critical{border-left:3px solid #ff1744}.cve-card.high{border-left:3px solid var(--red)}.cve-card.medium{border-left:3px solid var(--orange)}.cve-card.low{border-left:3px solid var(--cyan)}
-    .cve-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-    .cve-id{font-family:var(--mono);font-size:0.75rem;color:var(--cyan)}
-    .cve-score{font-family:var(--mono);font-size:0.65rem;padding:2px 7px;border-radius:2px}
-    .sc{background:rgba(255,23,68,0.15);color:#ff1744;border:1px solid rgba(255,23,68,0.3)}
-    .sh{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
-    .sm{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(255,140,0,0.3)}
-    .sl{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(0,229,255,0.3)}
-    .cve-title{font-size:0.84rem;color:var(--text-bright);margin-bottom:5px;font-weight:500}
-    .cve-desc{font-size:0.74rem;color:var(--text-dim);line-height:1.5;margin-bottom:7px}
-    .cve-meta{display:flex;gap:14px;font-family:var(--mono);font-size:0.6rem;color:var(--text-dim);flex-wrap:wrap}
-    .bar-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-    .bar-lbl{font-family:var(--mono);font-size:0.62rem;color:var(--text-dim);width:96px;flex-shrink:0}
-    .bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-    .bar-fill{height:100%;border-radius:3px;transition:width 1.2s ease}
-    .bar-val{font-family:var(--mono);font-size:0.62rem;color:var(--text-bright);width:36px;text-align:right;flex-shrink:0}
-    .news-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
-    .news-item:last-child{border-bottom:none}
-    .ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px}
-    .news-src{font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;color:var(--text-dim);margin-bottom:4px}
-    .news-title{font-size:0.84rem;color:var(--text-bright);font-weight:500;margin-bottom:4px;line-height:1.4}
-    .news-summary{font-size:0.74rem;color:var(--text-dim);line-height:1.5}
-    .news-time{font-family:var(--mono);font-size:0.58rem;color:var(--text-dim);margin-top:5px}
-
-    /* ═══════════════════════════════════
-       PAGE 4: ABOUT
-    ═══════════════════════════════════ */
-    .about-hero{text-align:center;padding:56px 0 64px}
-    .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:8px}
-    .feat-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:22px;transition:border-color 0.2s,transform 0.2s}
-    .feat-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
-    .feat-icon{font-size:1.6rem;margin-bottom:10px}
-    .feat-name{font-family:var(--mono);font-size:0.65rem;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:7px}
-    .feat-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.6}
-    .api-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media(max-width:600px){.api-grid{grid-template-columns:1fr}}
-    .api-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:18px}
-    .api-name{font-family:var(--mono);font-size:0.7rem;letter-spacing:2px;color:var(--cyan);margin-bottom:5px}
-    .api-desc{font-size:0.78rem;color:var(--text-dim);line-height:1.5;margin-bottom:8px}
-    .api-link{font-family:var(--mono);font-size:0.62rem;color:var(--cyan);text-decoration:none}
-    .api-link:hover{text-decoration:underline}
-    .warn-box{background:rgba(255,140,0,0.06);border:1px solid rgba(255,140,0,0.2);border-radius:4px;padding:18px;margin-top:32px}
-    .warn-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--orange);margin-bottom:8px}
-    .warn-text{font-size:0.82rem;color:var(--text-dim);line-height:1.7}
-    .about-section{margin-bottom:52px}
-    .about-section-title{font-family:var(--display);font-size:1.8rem;letter-spacing:2px;color:var(--text-bright);margin-bottom:14px}
-    .about-text{font-size:0.9rem;color:var(--text-dim);line-height:1.9;margin-bottom:14px;font-weight:300}
-
-    /* ═══════════════════════════════════
-       PAGE 5: TERMS
-    ═══════════════════════════════════ */
-    .terms-header{padding:48px 0 32px;border-bottom:1px solid var(--border);margin-bottom:40px}
-    .terms-meta{font-family:var(--mono);font-size:0.62rem;color:var(--text-dim);margin-top:10px}
-    .toc{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:22px;margin-bottom:40px}
-    .toc-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px}
-    .toc-item{display:flex;align-items:center;gap:10px;color:var(--text-dim);font-size:0.8rem;padding:4px 0;cursor:pointer;transition:color 0.2s}
-    .toc-item:hover{color:var(--cyan)}
-    .toc-num{font-family:var(--mono);font-size:0.62rem;color:var(--border-bright);width:22px}
-    .tsec{margin-bottom:44px}
-    .tsec-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-    .tsec-num{font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:2px}
-    .tsec-title{font-family:var(--display);font-size:1.5rem;letter-spacing:2px;color:var(--text-bright)}
-    .tdoc{font-size:0.88rem;color:var(--text-dim);line-height:1.9;margin-bottom:14px;font-weight:300}
-    .tdoc strong{color:var(--text)}
-    .tdoc a{color:var(--cyan);text-decoration:none}
-    .clause{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:14px 18px;margin-bottom:10px}
-    .clause-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:7px}
-    .clause-text{font-size:0.82rem;color:var(--text-dim);line-height:1.7}
-    .tinfo{background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.2);border-radius:4px;padding:16px;margin:16px 0}
-    .tinfo-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--cyan);margin-bottom:7px}
-    .tinfo-text{font-size:0.82rem;color:var(--text-dim);line-height:1.6}
-    .twarn{background:rgba(255,59,59,0.06);border:1px solid rgba(255,59,59,0.2);border-radius:4px;padding:16px;margin:16px 0}
-    .twarn-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--red);margin-bottom:7px}
-    .twarn-text{font-size:0.82rem;color:var(--text-dim);line-height:1.6}
-    .tdoc-list{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:7px;margin:10px 0}
-    .tdoc-list li{font-size:0.82rem;color:var(--text-dim);line-height:1.7;padding-left:18px;position:relative}
-    .tdoc-list li::before{content:'⟶';position:absolute;left:0;color:var(--cyan);font-size:0.65rem}
-  </style>
+/* ===== TERMS ===== */
+.th{padding:36px 0 24px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.tm{font-family:var(--mono);font-size:0.6rem;color:var(--td);margin-top:9px}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px;margin-bottom:32px}
+.toct{font-family:var(--mono);font-size:0.6rem;letter-spacing:3px;color:var(--td);text-transform:uppercase;margin-bottom:11px}
+.toci{display:flex;align-items:center;gap:9px;color:var(--td);font-size:0.78rem;padding:3px 0;cursor:pointer;transition:color 0.2s}
+.toci:hover{color:var(--cyan)}
+.tocn{font-family:var(--mono);font-size:0.6rem;color:var(--border-b);width:20px}
+.tsec{margin-bottom:36px}
+.tsh{display:flex;align-items:center;gap:11px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.tsn{font-family:var(--mono);font-size:0.66rem;color:var(--cyan);letter-spacing:2px}
+.tst{font-family:var(--disp);font-size:1.4rem;letter-spacing:2px;color:var(--tb)}
+.td{font-size:0.85rem;color:var(--td);line-height:1.9;margin-bottom:11px;font-weight:300}
+.td strong{color:var(--text)}.td a{color:var(--cyan);text-decoration:none}
+.clause{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:12px 16px;margin-bottom:9px}
+.ctitle{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+.ctxt{font-size:0.8rem;color:var(--td);line-height:1.7}
+.tinfo{background:var(--cd);border:1px solid rgba(0,229,255,0.2);border-radius:4px;padding:13px;margin:13px 0}
+.tinfot{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--cyan);margin-bottom:6px}
+.tinfod{font-size:0.8rem;color:var(--td);line-height:1.6}
+.twarn{background:rgba(255,59,59,0.06);border:1px solid rgba(255,59,59,0.2);border-radius:4px;padding:13px;margin:13px 0}
+.twarnt{font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--red);margin-bottom:6px}
+.twarnd{font-size:0.8rem;color:var(--td);line-height:1.6}
+.tlist{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;margin:9px 0}
+.tlist li{font-size:0.8rem;color:var(--td);line-height:1.7;padding-left:16px;position:relative}
+.tlist li::before{content:'⟶';position:absolute;left:0;color:var(--cyan);font-size:0.63rem}
+</style>
 </head>
 <body>
-<div class="ambient"></div>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav class="nav">
-  <a href="#" class="nav-logo" onclick="showPage('scanner');return false">
-    <svg width="26" height="26" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="20" stroke="#00e5ff" stroke-width="1" opacity="0.4"/><circle cx="21" cy="21" r="13" stroke="#00e5ff" stroke-width="1" opacity="0.6"/><circle cx="21" cy="21" r="6" stroke="#00e5ff" stroke-width="1"/><circle cx="21" cy="21" r="2" fill="#00e5ff"/><line x1="21" y1="1" x2="21" y2="8" stroke="#00e5ff" stroke-width="1"/><line x1="21" y1="34" x2="21" y2="41" stroke="#00e5ff" stroke-width="1"/><line x1="1" y1="21" x2="8" y2="21" stroke="#00e5ff" stroke-width="1"/><line x1="34" y1="21" x2="41" y2="21" stroke="#00e5ff" stroke-width="1"/></svg>
+  <button class="logo-btn" onclick="show('scanner')">
+    <svg width="24" height="24" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="20" stroke="#00e5ff" stroke-width="1" opacity="0.4"/><circle cx="21" cy="21" r="13" stroke="#00e5ff" stroke-width="1" opacity="0.6"/><circle cx="21" cy="21" r="6" stroke="#00e5ff" stroke-width="1"/><circle cx="21" cy="21" r="2" fill="#00e5ff"/><line x1="21" y1="1" x2="21" y2="8" stroke="#00e5ff" stroke-width="1"/><line x1="21" y1="34" x2="21" y2="41" stroke="#00e5ff" stroke-width="1"/><line x1="1" y1="21" x2="8" y2="21" stroke="#00e5ff" stroke-width="1"/><line x1="34" y1="21" x2="41" y2="21" stroke="#00e5ff" stroke-width="1"/></svg>
     ThreatScope
-  </a>
+  </button>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('scanner')" data-page="scanner"><div class="tab-dot"></div>Scanner</button>
-    <button class="nav-tab" onclick="showPage('globe')" data-page="globe"><div class="tab-dot"></div>Live Globe</button>
-    <button class="nav-tab" onclick="showPage('threats')" data-page="threats"><div class="tab-dot"></div>Threat Feed</button>
-    <button class="nav-tab" onclick="showPage('about')" data-page="about"><div class="tab-dot"></div>About</button>
-    <button class="nav-tab" onclick="showPage('terms')" data-page="terms"><div class="tab-dot"></div>Terms</button>
+    <button class="tab active" onclick="show('scanner')" data-p="scanner"><div class="tdot"></div>Scanner</button>
+    <button class="tab" onclick="show('globe')" data-p="globe"><div class="tdot"></div>Live Globe</button>
+    <button class="tab" onclick="show('threats')" data-p="threats"><div class="tdot"></div>Threat Feed</button>
+    <button class="tab" onclick="show('ai')" data-p="ai"><div class="tdot"></div>AI Threats</button>
+    <button class="tab" onclick="show('about')" data-p="about"><div class="tdot"></div>About</button>
+    <button class="tab" onclick="show('terms')" data-p="terms"><div class="tdot"></div>Terms</button>
   </div>
-  <div class="nav-right"><div class="pulse-dot"></div><span class="live-label">SYSTEM ONLINE</span></div>
+  <div class="nav-r"><div class="pd"></div><span class="pl">ONLINE</span></div>
 </nav>
 
-<!-- ══════════════════════════════════════
-     PAGE 1: SCANNER
-══════════════════════════════════════ -->
+<!-- PAGE: SCANNER -->
 <div id="page-scanner" class="page active">
   <div class="wrap">
     <div class="hero">
-      <div class="page-label">// Real-time threat intelligence</div>
-      <div class="page-title">SCAN ANY <span>WEBSITE</span></div>
-      <p class="page-sub" style="margin:0 auto">Analyze URLs against 70+ security engines. Detect malware, phishing, vulnerabilities, and known exploits instantly.</p>
+      <div class="pl2">// Real-time threat intelligence</div>
+      <div class="pt">SCAN ANY <span>WEBSITE</span></div>
+      <p class="ps" style="margin:0 auto">Analyze URLs against 70+ security engines. Detect malware, phishing, and known exploits instantly.</p>
     </div>
-
-    <div class="search-section">
-      <div class="search-box">
-        <div class="search-prefix">TARGET://</div>
-        <input type="text" id="urlInput" placeholder="enter domain or full URL to scan..." autocomplete="off" spellcheck="false"/>
+    <div class="sb">
+      <div class="sbox">
+        <div class="spfx">TARGET://</div>
+        <input type="text" id="urlInput" placeholder="enter domain or full URL..." autocomplete="off" spellcheck="false" maxlength="2048"/>
         <button id="scanBtn" onclick="startScan()">SCAN</button>
       </div>
-      <div class="search-hint">// POWERED BY VIRUSTOTAL + URLSCAN.IO — ENTER API KEYS BELOW</div>
-      <div class="api-keys">
-        <div class="api-field"><label>VirusTotal API Key (free at virustotal.com)</label><input type="password" id="vtKey" placeholder="Paste VirusTotal API key..."/></div>
-        <div class="api-field"><label>URLScan.io API Key (free at urlscan.io)</label><input type="password" id="usKey" placeholder="Paste URLScan.io API key..."/></div>
+      <div class="sh2">// POWERED BY VIRUSTOTAL + URLSCAN.IO — ADD FREE API KEYS BELOW</div>
+      <div class="ak">
+        <div class="af"><label>VirusTotal API Key <span style="color:var(--green);font-size:0.54rem">FREE @ virustotal.com</span></label><input type="password" id="vtKey" placeholder="Paste VirusTotal API key..." autocomplete="off"/></div>
+        <div class="af"><label>URLScan.io API Key <span style="color:var(--green);font-size:0.54rem">FREE @ urlscan.io</span></label><input type="password" id="usKey" placeholder="Paste URLScan.io API key..." autocomplete="off"/></div>
       </div>
+      <div class="sn">⚠ PRIVACY: URLs submitted to URLScan.io are PUBLIC by default. Do not scan internal/sensitive URLs. API keys stay in browser memory only — never stored.</div>
     </div>
-
-    <!-- Loading -->
-    <div id="loadingState">
-      <div class="radar"><div class="radar-ring"></div><div class="radar-ring"></div><div class="radar-ring"></div><div class="radar-sweep"></div><div class="radar-center"></div></div>
-      <p>Scanning Target...</p>
-      <div id="loadingLog"></div>
+    <div id="ls"><div class="radar"><div class="rr"></div><div class="rr"></div><div class="rr"></div><div class="rsw"></div><div class="rc"></div></div><p>Scanning Target...</p><div id="ll"></div></div>
+    <div id="rs">
+      <div class="rh"><div><div id="ru"></div><div style="font-family:var(--disp);font-size:1.25rem;letter-spacing:3px;color:var(--tb)">SCAN RESULTS</div></div><button id="nsb" onclick="resetScan()">↩ NEW SCAN</button></div>
+      <div class="sg" id="sg"></div>
+      <div class="two" id="rg"></div>
     </div>
-
-    <!-- Results -->
-    <div id="resultsSection">
-      <div class="results-header">
-        <div><div class="results-url" id="resultsUrl"></div><div style="font-family:var(--display);font-size:1.4rem;letter-spacing:3px;color:var(--text-bright)">SCAN RESULTS</div></div>
-        <button id="newScanBtn" onclick="resetScan()">↩ NEW SCAN</button>
-      </div>
-      <div class="score-grid" id="scoreGrid"></div>
-      <div class="two-col" id="resultsGrid"></div>
-    </div>
-
-    <!-- Threat reference -->
-    <div style="margin-top:48px">
-      <div class="section-label">// Common Web Threat Reference</div>
-      <div class="ref-grid" id="refGrid"></div>
-    </div>
+    <div style="margin-top:44px"><div class="sl">// Web Vulnerability Reference</div><div class="rg" id="refGrid"></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE 2: GLOBE
-══════════════════════════════════════ -->
+<!-- PAGE: GLOBE -->
 <div id="page-globe" class="page">
-  <div id="globeWrap">
-    <canvas id="globeCanvas"></canvas>
-
-    <div class="globe-panel globe-panel-left">
-      <div class="gcard">
-        <div class="gcard-title">Global Stats</div>
-        <div class="gstat"><span class="gstat-key">Attacks Today</span><span class="gstat-val red" id="gAttacks">0</span></div>
-        <div class="gstat"><span class="gstat-key">Active Sources</span><span class="gstat-val orange" id="gSources">0</span></div>
-        <div class="gstat"><span class="gstat-key">Countries Hit</span><span class="gstat-val cyan" id="gCountries">0</span></div>
-        <div class="gstat"><span class="gstat-key">Top Vector</span><span class="gstat-val" id="gTop">DDoS</span></div>
-        <div class="gstat"><span class="gstat-key">Threat Level</span><span class="gstat-val red">ELEVATED</span></div>
+  <div id="gw">
+    <canvas id="gc"></canvas>
+    <div class="gp gpl">
+      <div class="gcard"><div class="gct">Global Stats</div>
+        <div class="gs"><span class="gsk">Attacks Today</span><span class="gsv red" id="gA">0</span></div>
+        <div class="gs"><span class="gsk">Active Sources</span><span class="gsv orange" id="gS">0</span></div>
+        <div class="gs"><span class="gsk">Countries Hit</span><span class="gsv cyan" id="gC">0</span></div>
+        <div class="gs"><span class="gsk">Top Vector</span><span class="gsv" id="gT">DDoS</span></div>
+        <div class="gs"><span class="gsk">Threat Level</span><span class="gsv red">ELEVATED</span></div>
       </div>
-      <div class="gcard">
-        <div class="gcard-title">Legend</div>
-        <div class="legend-item"><div class="ldot" style="background:#ff3b3b;box-shadow:0 0 5px #ff3b3b"></div>DDoS / Volumetric</div>
-        <div class="legend-item"><div class="ldot" style="background:#ff8c00;box-shadow:0 0 5px #ff8c00"></div>Malware / Ransomware</div>
-        <div class="legend-item"><div class="ldot" style="background:#ffd600;box-shadow:0 0 5px #ffd600"></div>Phishing</div>
-        <div class="legend-item"><div class="ldot" style="background:#00e5ff;box-shadow:0 0 5px #00e5ff"></div>Port Scan / Recon</div>
-        <div class="legend-item"><div class="ldot" style="background:#00e676;box-shadow:0 0 5px #00e676"></div>Brute Force</div>
-        <div class="legend-item"><div class="ldot" style="background:#cc44ff;box-shadow:0 0 5px #cc44ff"></div>Zero-day Exploit</div>
+      <div class="gcard"><div class="gct">Legend</div>
+        <div class="li"><div class="ld" style="background:#ff3b3b;box-shadow:0 0 5px #ff3b3b"></div>DDoS / Volumetric</div>
+        <div class="li"><div class="ld" style="background:#ff8c00;box-shadow:0 0 5px #ff8c00"></div>Malware / Ransomware</div>
+        <div class="li"><div class="ld" style="background:#ffd600;box-shadow:0 0 5px #ffd600"></div>Phishing</div>
+        <div class="li"><div class="ld" style="background:#00e5ff;box-shadow:0 0 5px #00e5ff"></div>Port Scan / Recon</div>
+        <div class="li"><div class="ld" style="background:#00e676;box-shadow:0 0 5px #00e676"></div>Brute Force</div>
+        <div class="li"><div class="ld" style="background:#cc44ff;box-shadow:0 0 5px #cc44ff"></div>AI-Powered Attack</div>
       </div>
-      <div class="gcard">
-        <div class="gcard-title">Controls</div>
-        <button class="ctrl-btn active" id="btnRotate" onclick="toggleRotate(this)">AUTO-ROTATE</button>
-        <button class="ctrl-btn active" id="btnArcs" onclick="toggleArcs(this)">SHOW ARCS</button>
-        <button class="ctrl-btn active" id="btnPoints" onclick="togglePoints(this)">SHOW POINTS</button>
+      <div class="gcard"><div class="gct">Controls</div>
+        <button class="cb active" onclick="togRot(this)">AUTO-ROTATE</button>
+        <button class="cb active" onclick="togArcs(this)">SHOW ARCS</button>
+        <button class="cb active" onclick="togPts(this)">SHOW POINTS</button>
       </div>
     </div>
-
-    <div class="globe-panel globe-panel-right">
-      <div class="gcard">
-        <div class="gcard-title">Live Attack Feed</div>
-        <div class="feed" id="globeFeed"></div>
-      </div>
-      <div class="gcard">
-        <div class="gcard-title">Top Sources</div>
-        <div id="globeTopSrc"></div>
-      </div>
+    <div class="gp gpr">
+      <div class="gcard"><div class="gct">Live Attack Feed</div><div class="feed" id="gFeed"></div></div>
+      <div class="gcard"><div class="gct">Top Sources</div><div id="gTop"></div></div>
     </div>
-
-    <div class="globe-ticker">
-      <div class="ticker-label">// THREAT INTEL</div>
-      <div style="overflow:hidden;flex:1"><div class="ticker-track" id="globeTicker"></div></div>
-    </div>
+    <div class="gt"><div class="tl">// THREAT INTEL</div><div style="overflow:hidden;flex:1"><div class="tt" id="gTk"></div></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE 3: THREAT FEED
-══════════════════════════════════════ -->
+<!-- PAGE: THREATS -->
 <div id="page-threats" class="page">
   <div class="wrap">
-    <div style="padding:40px 0 32px">
-      <div class="page-label">// Real-time intelligence</div>
-      <div class="page-title">THREAT <span>FEED</span></div>
-      <p class="page-sub">Latest CVEs, breach reports, and global attack statistics.</p>
+    <div style="padding:32px 0 24px"><div class="pl2">// Real-time intelligence</div><div class="pt">THREAT <span>FEED</span></div><p class="ps">Latest CVEs, breach reports, and global attack statistics.</p></div>
+    <div class="stg">
+      <div class="stc red"><div class="stn" id="sCves">2,847</div><div class="stl">New CVEs / Month</div></div>
+      <div class="stc orange"><div class="stn" id="sCrit">143</div><div class="stl">Critical Severity</div></div>
+      <div class="stc yellow"><div class="stn" id="sBreach">38</div><div class="stl">Active Breaches</div></div>
+      <div class="stc cyan"><div class="stn">89%</div><div class="stl">Patch Rate (30d)</div></div>
+      <div class="stc green"><div class="stn" id="sMit">1,204</div><div class="stl">Threats Mitigated</div></div>
     </div>
-
-    <div class="stat-grid">
-      <div class="stat-card red"><div class="stat-num" id="sCves">2,847</div><div class="stat-lbl">New CVEs This Month</div></div>
-      <div class="stat-card orange"><div class="stat-num" id="sCrit">143</div><div class="stat-lbl">Critical Severity</div></div>
-      <div class="stat-card yellow"><div class="stat-num" id="sBreach">38</div><div class="stat-lbl">Active Breaches</div></div>
-      <div class="stat-card cyan"><div class="stat-num">89%</div><div class="stat-lbl">Patch Rate (30d)</div></div>
-      <div class="stat-card green"><div class="stat-num" id="sMit">1,204</div><div class="stat-lbl">Threats Mitigated</div></div>
+    <div class="two">
+      <div class="panel"><div class="ph"><span class="pt2">Attack Volume — 14 Days</span><span class="badge br">LIVE</span></div><div class="pb"><div class="cw"><canvas id="aC"></canvas></div></div></div>
+      <div class="panel"><div class="ph"><span class="pt2">Attack Distribution</span><span class="badge bc">TODAY</span></div><div class="pb"><div class="cw"><canvas id="tC"></canvas></div></div></div>
     </div>
-
-    <div class="two-col">
-      <div class="panel"><div class="panel-header"><span class="panel-title">Attack Volume — 14 Days</span><span class="badge badge-red">LIVE</span></div><div class="panel-body"><div class="chart-wrap"><canvas id="attackChart"></canvas></div></div></div>
-      <div class="panel"><div class="panel-header"><span class="panel-title">Attack Distribution</span><span class="badge badge-cyan">TODAY</span></div><div class="panel-body"><div class="chart-wrap"><canvas id="typeChart"></canvas></div></div></div>
+    <div class="two">
+      <div class="panel"><div class="ph"><span class="pt2">Top Attack Vectors</span></div><div class="pb" id="aBars"></div></div>
+      <div class="panel"><div class="ph"><span class="pt2">Severity Trend — 7 Days</span><span class="badge bo">CVE</span></div><div class="pb"><div class="cw"><canvas id="sC"></canvas></div></div></div>
     </div>
-
-    <div class="two-col">
-      <div class="panel"><div class="panel-header"><span class="panel-title">Top Attack Vectors</span></div><div class="panel-body" id="attackBars"></div></div>
-      <div class="panel"><div class="panel-header"><span class="panel-title">Severity Trend — 7 Days</span><span class="badge badge-orange">CVE</span></div><div class="panel-body"><div class="chart-wrap"><canvas id="severityChart"></canvas></div></div></div>
-    </div>
-
-    <div class="full">
-      <div class="panel"><div class="panel-header"><span class="panel-title">Latest CVEs — National Vulnerability Database</span><span class="badge badge-red">NVD</span></div><div class="panel-body"><div class="cve-list" id="cveList"></div></div></div>
-    </div>
-
-    <div class="full">
-      <div class="panel"><div class="panel-header"><span class="panel-title">Threat Intelligence News</span><span class="badge badge-cyan">INTEL</span></div><div class="panel-body" id="newsPanel"></div></div>
-    </div>
+    <div class="full"><div class="panel"><div class="ph"><span class="pt2">Latest CVEs — NVD</span><span class="badge br">NVD</span></div><div class="pb"><div class="cl" id="cveList"></div></div></div></div>
+    <div class="full"><div class="panel"><div class="ph"><span class="pt2">Threat Intelligence News</span><span class="badge bc">INTEL</span></div><div class="pb" id="newsPanel"></div></div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE 4: ABOUT
-══════════════════════════════════════ -->
+<!-- PAGE: AI THREATS -->
+<div id="page-ai" class="page">
+  <div class="wrap">
+    <div style="padding:32px 0 24px"><div class="pl2">// Emerging threat landscape</div><div class="pt">AI-POWERED <span>ATTACKS</span></div><p class="ps">How bad actors weaponize artificial intelligence — and how to defend against it.</p></div>
+    <div class="ai-stat">
+      <div class="ai-sc"><div class="ai-num">400%</div><div class="ai-lbl">AI Phishing Surge</div></div>
+      <div class="ai-sc"><div class="ai-num">3x</div><div class="ai-lbl">Faster Attack Cycles</div></div>
+      <div class="ai-sc"><div class="ai-num">92%</div><div class="ai-lbl">Orgs Hit by AI Attacks</div></div>
+      <div class="ai-sc"><div class="ai-num">$4.5T</div><div class="ai-lbl">Projected Cost 2025</div></div>
+    </div>
+    <div class="sl">// AI Attack Vectors</div>
+    <div class="rg" id="aiGrid"></div>
+    <div style="margin-top:40px">
+      <div class="sl">// AI vs Traditional — Speed Comparison</div>
+      <div class="two">
+        <div class="panel"><div class="ph"><span class="pt2">Traditional vs AI Attack Speed</span><span class="badge bp">ANALYSIS</span></div><div class="pb"><div class="cw"><canvas id="aiCC"></canvas></div></div></div>
+        <div class="panel"><div class="ph"><span class="pt2">AI Attack Category Breakdown</span><span class="badge bp">2024-2025</span></div><div class="pb"><div class="cw"><canvas id="aiTC"></canvas></div></div></div>
+      </div>
+    </div>
+    <div class="full"><div class="panel"><div class="ph"><span class="pt2">Real-World AI Attack Incidents</span><span class="badge bp">CASE STUDIES</span></div><div class="pb" id="aiInc"></div></div></div>
+    <div style="margin-top:16px"><div class="sl">// AI Defence Strategies</div><div class="rg" id="aiDef"></div></div>
+  </div>
+</div>
+
+<!-- PAGE: ABOUT -->
 <div id="page-about" class="page">
   <div class="wrap" style="max-width:900px">
-    <div class="about-hero">
-      <div class="page-label">// What is ThreatScope</div>
-      <div class="page-title">BUILT FOR <span>DEFENDERS</span></div>
-      <p class="page-sub" style="margin:0 auto">A free, open-source web security intelligence platform giving everyone access to enterprise-grade threat analysis.</p>
-    </div>
-
-    <div class="about-section">
-      <div class="section-label">// Mission</div>
-      <div class="about-section-title">Why We Built This</div>
-      <div class="about-text">Cybersecurity tools have historically been expensive, complex, and inaccessible to the small businesses, students, and individuals who need them most. ThreatScope changes that — bringing real threat intelligence to anyone with a browser.</div>
-      <div class="about-text">Whether you're a developer checking if your domain has been flagged, a student learning about cybersecurity, or a business owner protecting your customers — ThreatScope is built for you.</div>
-    </div>
-
-    <div class="about-section">
-      <div class="section-label">// Features</div>
-      <div class="about-section-title">What ThreatScope Does</div>
-      <div class="feat-grid">
-        <div class="feat-card"><div class="feat-icon">🔍</div><div class="feat-name">URL Scanner</div><div class="feat-desc">Scan any URL against 70+ security engines via VirusTotal. Detect malware, phishing, and known threats in real time.</div></div>
-        <div class="feat-card"><div class="feat-icon">🌍</div><div class="feat-name">Live Attack Globe</div><div class="feat-desc">Interactive 3D visualization of global cyber attack patterns with real-time attack arc animations.</div></div>
-        <div class="feat-card"><div class="feat-icon">📡</div><div class="feat-name">Threat Feed</div><div class="feat-desc">Latest CVEs from NVD, breach reports, attack statistics, severity charts, and threat news.</div></div>
-        <div class="feat-card"><div class="feat-icon">📚</div><div class="feat-name">Threat Reference</div><div class="feat-desc">Comprehensive library of common web vulnerabilities with severity ratings and mitigation strategies.</div></div>
-        <div class="feat-card"><div class="feat-icon">🔑</div><div class="feat-name">API Integration</div><div class="feat-desc">Bring your own free API keys. Keys are used client-side only — never stored or transmitted to any server.</div></div>
-        <div class="feat-card"><div class="feat-icon">🛡</div><div class="feat-name">Privacy First</div><div class="feat-desc">No accounts, no tracking, no data collection. Everything runs in your browser.</div></div>
+    <div style="text-align:center;padding:44px 0 52px"><div class="pl2">// What is ThreatScope</div><div class="pt">BUILT FOR <span>DEFENDERS</span></div><p class="ps" style="margin:0 auto">A free, open-source security intelligence platform giving everyone access to enterprise-grade threat analysis.</p></div>
+    <div class="asec"><div class="sl">// Mission</div><div class="ast">Why We Built This</div><div class="atx">Cybersecurity tools have historically been expensive and inaccessible. ThreatScope gives real threat intelligence to anyone with a browser — completely free, no account required.</div></div>
+    <div class="asec"><div class="sl">// Features</div><div class="ast">What ThreatScope Does</div>
+      <div class="fg">
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">🔍</div><div class="fn">URL Scanner</div><div class="fd">70+ engines via VirusTotal. Real-time malware and phishing detection.</div></div>
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">🌍</div><div class="fn">Live Globe</div><div class="fd">3D visualization of global cyber attack patterns with live animations.</div></div>
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">📡</div><div class="fn">Threat Feed</div><div class="fd">Latest CVEs, breach reports, attack stats and severity charts.</div></div>
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">🤖</div><div class="fn">AI Threats</div><div class="fd">Dedicated AI attack vectors, real incidents, and defence strategies.</div></div>
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">🔑</div><div class="fn">Your API Keys</div><div class="fd">Bring your free keys. Client-side only — never stored anywhere.</div></div>
+        <div class="fc"><div style="font-size:1.4rem;margin-bottom:8px">🛡</div><div class="fn">Privacy First</div><div class="fd">No accounts, no cookies, no tracking, no analytics whatsoever.</div></div>
       </div>
     </div>
-
-    <div class="about-section">
-      <div class="section-label">// Data Sources</div>
-      <div class="about-section-title">Powered By</div>
-      <div class="api-grid">
-        <div class="api-card"><div class="api-name">VirusTotal API</div><div class="api-desc">70+ antivirus engines and URL scanners. Free tier: 500 requests/day.</div><a href="https://virustotal.com" target="_blank" class="api-link">↗ virustotal.com</a></div>
-        <div class="api-card"><div class="api-name">URLScan.io API</div><div class="api-desc">Scans and analyses websites with detailed behaviour reports and security verdicts.</div><a href="https://urlscan.io" target="_blank" class="api-link">↗ urlscan.io</a></div>
-        <div class="api-card"><div class="api-name">NIST NVD</div><div class="api-desc">The US government repository of standards-based vulnerability management data.</div><a href="https://nvd.nist.gov" target="_blank" class="api-link">↗ nvd.nist.gov</a></div>
-        <div class="api-card"><div class="api-name">Three.js + Chart.js</div><div class="api-desc">3D globe rendering and data visualization libraries powering the interactive visuals.</div><a href="https://threejs.org" target="_blank" class="api-link">↗ threejs.org</a></div>
+    <div class="asec"><div class="sl">// Security Posture</div><div class="ast">How Secure Is ThreatScope?</div>
+      <div class="atx">ThreatScope is designed security-first. Here is our full current posture:</div>
+      <div class="sec-grid">
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">No Backend Server</div><div class="sec-status ok">Zero server-side attack surface</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">No Database</div><div class="sec-status ok">SQL injection impossible</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">No Cookies / Storage</div><div class="sec-status ok">No session hijacking possible</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">Content Security Policy</div><div class="sec-status ok">XSS mitigated via CSP meta tag</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">SRI on CDN Scripts</div><div class="sec-status ok">CDN tampering prevented</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">XSS-Safe Rendering</div><div class="sec-status ok">All API data escaped before render</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">✅</span><div><div class="sec-label">Referrer Policy</div><div class="sec-status ok">strict-origin-when-cross-origin</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">⚠️</span><div><div class="sec-label">API Keys in Transit</div><div class="sec-status warn">Visible in browser network tab</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">⚠️</span><div><div class="sec-label">URLScan Public Scans</div><div class="sec-status warn">Scanned URLs are public by default</div></div></div>
+        <div class="sec-item"><span style="font-size:1rem">ℹ️</span><div><div class="sec-label">GitHub Pages Logs</div><div class="sec-status na">GitHub may log server-level data</div></div></div>
       </div>
     </div>
-
-    <div class="warn-box">
-      <div class="warn-title">⚠ Important Disclaimer</div>
-      <div class="warn-text">ThreatScope is for <strong>educational and informational purposes only</strong>. Scan results should not be used as the sole basis for security decisions. The attack globe uses simulated data to illustrate global threat patterns — it does not represent specific real-time attacks. Always consult qualified cybersecurity professionals for critical assessments. Use responsibly and only on domains you own or have permission to test.</div>
+    <div class="asec"><div class="sl">// Powered By</div><div class="ast">Data Sources</div>
+      <div class="ag">
+        <div class="ac"><div class="an">VirusTotal API</div><div class="ad">70+ antivirus engines. Free: 500 req/day.</div><a href="https://virustotal.com" target="_blank" rel="noopener noreferrer" class="al">↗ virustotal.com</a></div>
+        <div class="ac"><div class="an">URLScan.io API</div><div class="ad">Website analysis with full security verdicts.</div><a href="https://urlscan.io" target="_blank" rel="noopener noreferrer" class="al">↗ urlscan.io</a></div>
+        <div class="ac"><div class="an">NIST NVD</div><div class="ad">US government vulnerability database.</div><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" class="al">↗ nvd.nist.gov</a></div>
+        <div class="ac"><div class="an">Three.js + Chart.js</div><div class="ad">3D globe and data visualization libraries.</div><a href="https://threejs.org" target="_blank" rel="noopener noreferrer" class="al">↗ threejs.org</a></div>
+      </div>
     </div>
+    <div class="wb"><div class="wt">⚠ Disclaimer</div><div class="wd">ThreatScope is for <strong>educational and informational purposes only</strong>. Results should not be the sole basis for security decisions. The globe uses simulated data. Only scan domains you own or have permission to test. Consult qualified cybersecurity professionals for critical assessments.</div></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE 5: TERMS
-══════════════════════════════════════ -->
+<!-- PAGE: TERMS -->
 <div id="page-terms" class="page">
-  <div class="wrap" style="max-width:860px">
-    <div class="terms-header">
-      <div class="page-label">// Legal</div>
-      <div class="page-title" style="font-size:clamp(2rem,5vw,3.5rem)">TERMS & <span>PRIVACY</span></div>
-      <div class="terms-meta">Last updated: May 2, 2026 &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; ThreatScope — Threat-Model Repository</div>
+  <div class="wrap" style="max-width:840px">
+    <div class="th"><div class="pl2">// Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3.2rem)">TERMS & <span>PRIVACY</span></div><div class="tm">Last updated: May 2026 | Version 1.0 | ThreatScope</div></div>
+    <div class="toc"><div class="toct">Table of Contents</div>
+      <div class="toci" onclick="st('t1')"><span class="tocn">01</span>Acceptance of Terms</div>
+      <div class="toci" onclick="st('t2')"><span class="tocn">02</span>Description of Service</div>
+      <div class="toci" onclick="st('t3')"><span class="tocn">03</span>Acceptable Use Policy</div>
+      <div class="toci" onclick="st('t4')"><span class="tocn">04</span>Prohibited Activities</div>
+      <div class="toci" onclick="st('t5')"><span class="tocn">05</span>API Keys & Third-Party Data</div>
+      <div class="toci" onclick="st('t6')"><span class="tocn">06</span>Disclaimers & Liability</div>
+      <div class="toci" onclick="st('t7')"><span class="tocn">07</span>Privacy Policy</div>
+      <div class="toci" onclick="st('t8')"><span class="tocn">08</span>Intellectual Property</div>
+      <div class="toci" onclick="st('t9')"><span class="tocn">09</span>Changes & Contact</div>
     </div>
-
-    <div class="toc">
-      <div class="toc-title">Table of Contents</div>
-      <div class="toc-item" onclick="scrollToTerm('t1')"><span class="toc-num">01</span>Acceptance of Terms</div>
-      <div class="toc-item" onclick="scrollToTerm('t2')"><span class="toc-num">02</span>Description of Service</div>
-      <div class="toc-item" onclick="scrollToTerm('t3')"><span class="toc-num">03</span>Acceptable Use Policy</div>
-      <div class="toc-item" onclick="scrollToTerm('t4')"><span class="toc-num">04</span>Prohibited Activities</div>
-      <div class="toc-item" onclick="scrollToTerm('t5')"><span class="toc-num">05</span>Third-Party API Keys & Data</div>
-      <div class="toc-item" onclick="scrollToTerm('t6')"><span class="toc-num">06</span>Disclaimers & Limitation of Liability</div>
-      <div class="toc-item" onclick="scrollToTerm('t7')"><span class="toc-num">07</span>Privacy Policy</div>
-      <div class="toc-item" onclick="scrollToTerm('t8')"><span class="toc-num">08</span>Intellectual Property</div>
-      <div class="toc-item" onclick="scrollToTerm('t9')"><span class="toc-num">09</span>Changes & Contact</div>
+    <div class="tsec" id="t1"><div class="tsh"><span class="tsn">01</span><span class="tst">Acceptance of Terms</span></div><div class="td">By accessing ThreatScope you accept these terms. If you disagree, do not use this service.</div><div class="tinfo"><div class="tinfot">// Plain English</div><div class="tinfod">Use this tool responsibly. Only scan websites you own or have explicit permission to test.</div></div></div>
+    <div class="tsec" id="t2"><div class="tsh"><span class="tsn">02</span><span class="tst">Description of Service</span></div><div class="td">ThreatScope is a <strong>free, open-source</strong> security intelligence platform. It is a static website on GitHub Pages with no backend servers. All API requests go directly from your browser to third-party services.</div></div>
+    <div class="tsec" id="t3"><div class="tsh"><span class="tsn">03</span><span class="tst">Acceptable Use Policy</span></div>
+      <div class="clause"><div class="ctitle">Authorised Use</div><div class="ctxt">Only scan URLs and domains you own, control, or have explicit written permission from the owner to test.</div></div>
+      <div class="clause"><div class="ctitle">Security Research</div><div class="ctxt">Legitimate security research, academic study, and professional penetration testing where proper authorisation has been obtained.</div></div>
+      <div class="clause"><div class="ctitle">Educational Use</div><div class="ctxt">All reference libraries, CVE feeds, AI threat sections, and globe visualizations may be used freely for educational purposes.</div></div>
     </div>
-
-    <div class="tsec" id="t1"><div class="tsec-header"><span class="tsec-num">01</span><span class="tsec-title">Acceptance of Terms</span></div><div class="tdoc">By accessing and using ThreatScope, you accept and agree to be bound by these terms. If you do not agree, please do not use this service. These terms apply to all users of the platform.</div><div class="tinfo"><div class="tinfo-title">// Plain English</div><div class="tinfo-text">By using ThreatScope, you agree to use it responsibly. Only scan websites you own or have explicit permission to test.</div></div></div>
-
-    <div class="tsec" id="t2"><div class="tsec-header"><span class="tsec-num">02</span><span class="tsec-title">Description of Service</span></div><div class="tdoc">ThreatScope is a <strong>free, open-source web security intelligence platform</strong> providing URL scanning, attack visualization, threat intelligence, and vulnerability references. It operates as a static website on GitHub Pages with no backend servers. All API requests are made directly from your browser.</div></div>
-
-    <div class="tsec" id="t3"><div class="tsec-header"><span class="tsec-num">03</span><span class="tsec-title">Acceptable Use Policy</span></div>
-      <div class="clause"><div class="clause-title">Authorised Use</div><div class="clause-text">You may only scan URLs and domains you own, control, or have explicit written permission from the owner to test.</div></div>
-      <div class="clause"><div class="clause-title">Security Research</div><div class="clause-text">ThreatScope may be used for legitimate security research, academic study, and professional penetration testing where proper authorisation has been obtained.</div></div>
-      <div class="clause"><div class="clause-title">Educational Use</div><div class="clause-text">The threat reference library, CVE feed, and attack visualisation may be used freely for educational and awareness purposes.</div></div>
+    <div class="tsec" id="t4"><div class="tsh"><span class="tsn">04</span><span class="tst">Prohibited Activities</span></div>
+      <div class="twarn"><div class="twarnt">⚠ Strictly Prohibited</div><div class="twarnd">Violations may result in legal action under the CFAA, UK Computer Misuse Act, IT Act 2000 (India), and equivalent global legislation.</div></div>
+      <ul class="tlist"><li>Scanning any system without explicit authorisation from the owner</li><li>Using ThreatScope to plan, facilitate, or execute cyberattacks</li><li>Identifying vulnerabilities for malicious exploitation</li><li>Conducting denial-of-service attacks</li><li>Using the service to harass or harm individuals or organisations</li><li>Violating any applicable local, national, or international law</li></ul>
     </div>
-
-    <div class="tsec" id="t4"><div class="tsec-header"><span class="tsec-num">04</span><span class="tsec-title">Prohibited Activities</span></div>
-      <div class="twarn"><div class="twarn-title">⚠ Strictly Prohibited</div><div class="twarn-text">The following activities may result in legal action under applicable cybercrime laws including the CFAA, UK Computer Misuse Act, and equivalent legislation worldwide.</div></div>
-      <ul class="tdoc-list">
-        <li>Scanning any system without explicit authorisation from the owner</li>
-        <li>Using ThreatScope to facilitate, plan, or execute cyberattacks</li>
-        <li>Identifying vulnerabilities for malicious exploitation</li>
-        <li>Conducting denial-of-service attacks or disrupting third-party services</li>
-        <li>Circumventing security features of any website or service</li>
-        <li>Using the service to harass, intimidate, or harm individuals or organisations</li>
-        <li>Violating any applicable local, national, or international law</li>
-      </ul>
+    <div class="tsec" id="t5"><div class="tsh"><span class="tsn">05</span><span class="tst">API Keys & Third-Party Data</span></div><div class="td"><strong>ThreatScope does not store, log, or transmit your API keys to us in any way.</strong> Keys live in browser memory for your session only. URLs you scan are sent from your browser directly to VirusTotal and URLScan.io. URLs submitted to URLScan.io with public visibility may appear in their public database.</div></div>
+    <div class="tsec" id="t6"><div class="tsh"><span class="tsn">06</span><span class="tst">Disclaimers & Liability</span></div>
+      <div class="clause"><div class="ctitle">Accuracy</div><div class="ctxt">Results come from third-party engines. Do not use as the sole basis for security decisions. False positives and negatives are possible.</div></div>
+      <div class="clause"><div class="ctitle">Globe Data</div><div class="ctxt">The attack globe uses simulated data to illustrate global threat patterns. It does not represent specific real-time attacks.</div></div>
+      <div class="clause"><div class="ctitle">Limitation of Liability</div><div class="ctxt">To the maximum extent permitted by law, ThreatScope contributors shall not be liable for any damages arising from use of this service.</div></div>
     </div>
-
-    <div class="tsec" id="t5"><div class="tsec-header"><span class="tsec-num">05</span><span class="tsec-title">Third-Party API Keys & Data</span></div><div class="tdoc">Your API keys are entered voluntarily. <strong>ThreatScope does not store, transmit, or log your API keys in any way.</strong> Keys are processed exclusively in your browser's memory and sent directly to VirusTotal and URLScan.io. We have no access to your keys. You are responsible for safeguarding them.</div></div>
-
-    <div class="tsec" id="t6"><div class="tsec-header"><span class="tsec-num">06</span><span class="tsec-title">Disclaimers & Limitation of Liability</span></div>
-      <div class="clause"><div class="clause-title">Accuracy of Results</div><div class="clause-text">Scan results come from third-party security engines. ThreatScope makes no representations about accuracy. Results should not be the sole basis for security decisions. False positives and negatives are possible.</div></div>
-      <div class="clause"><div class="clause-title">Globe Visualisation</div><div class="clause-text">The live attack globe uses algorithmically generated data to illustrate global threat patterns. It does not represent specific real-time attacks and is for educational purposes only.</div></div>
-      <div class="clause"><div class="clause-title">Limitation of Liability</div><div class="clause-text">To the maximum extent permitted by law, ThreatScope and its contributors shall not be liable for any direct, indirect, incidental, or consequential damages arising from your use of the service.</div></div>
+    <div class="tsec" id="t7"><div class="tsh"><span class="tsn">07</span><span class="tst">Privacy Policy</span></div>
+      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">We collect nothing. No cookies. No analytics. No database. No personal data of any kind.</div></div>
+      <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">Zero personally identifiable information collected. No cookies, no local storage, no tracking pixels, no fingerprinting.</div></div>
+      <div class="clause"><div class="ctitle">GitHub Pages Hosting</div><div class="ctxt">GitHub may collect standard server logs as part of their hosting service. See GitHub's Privacy Policy for details.</div></div>
     </div>
-
-    <div class="tsec" id="t7"><div class="tsec-header"><span class="tsec-num">07</span><span class="tsec-title">Privacy Policy</span></div>
-      <div class="tinfo"><div class="tinfo-title">// The Short Version</div><div class="tinfo-text">We don't collect your personal data. No cookies. No analytics. No database. Nothing to sell or leak.</div></div>
-      <div class="clause"><div class="clause-title">What We Collect</div><div class="clause-text">Nothing. ThreatScope does not collect, store, or process personally identifiable information. No cookies, no local storage, no tracking technologies.</div></div>
-      <div class="clause"><div class="clause-title">Third-Party Data Processing</div><div class="clause-text">When you scan a URL, it is sent to VirusTotal and/or URLScan.io. These services may log submitted URLs. URLs submitted to URLScan.io with public visibility may appear in their public database. Review their respective privacy policies.</div></div>
-      <div class="clause"><div class="clause-title">GitHub Pages Hosting</div><div class="clause-text">GitHub may collect standard server logs as part of hosting. This is governed by <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank">GitHub's Privacy Policy</a>.</div></div>
-    </div>
-
-    <div class="tsec" id="t8"><div class="tsec-header"><span class="tsec-num">08</span><span class="tsec-title">Intellectual Property</span></div><div class="tdoc">ThreatScope is open-source under the <strong>MIT License</strong>. You are free to fork, modify, and distribute the code. Third-party libraries (Three.js, Chart.js) are subject to their own licenses. CVE data from NIST NVD is in the public domain.</div></div>
-
-    <div class="tsec" id="t9"><div class="tsec-header"><span class="tsec-num">09</span><span class="tsec-title">Changes & Contact</span></div><div class="tdoc">We may modify these terms at any time. Continued use constitutes acceptance. Current version: <strong>1.0</strong>, effective May 2, 2026.</div><div class="tdoc">Questions or misuse reports: <a href="https://github.com/Arv1121/Threat-Model/issues" target="_blank">github.com/Arv1121/Threat-Model/issues</a></div></div>
+    <div class="tsec" id="t8"><div class="tsh"><span class="tsn">08</span><span class="tst">Intellectual Property</span></div><div class="td">ThreatScope is open-source under the <strong>MIT License</strong>. Free to fork, modify, and distribute. CVE data from NIST NVD is public domain.</div></div>
+    <div class="tsec" id="t9"><div class="tsh"><span class="tsn">09</span><span class="tst">Changes & Contact</span></div><div class="td">Terms may be updated at any time. Continued use constitutes acceptance. Version 1.0 — May 2026.<br/><br/>Contact: <a href="https://github.com/Arv1121/Threat-Model/issues" target="_blank" rel="noopener noreferrer">github.com/Arv1121/Threat-Model/issues</a></div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════ -->
 <script>
-// ── PAGE ROUTING ──
-let globeInitialized = false, threatsInitialized = false;
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => { t.classList.toggle('active', t.dataset.page === name); });
-  document.getElementById('page-' + name).classList.add('active');
-  if (name === 'globe' && !globeInitialized) { initGlobe(); globeInitialized = true; }
-  if (name === 'threats' && !threatsInitialized) { initThreats(); threatsInitialized = true; }
-  window.scrollTo(0, 0);
-}
-function scrollToTerm(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+'use strict';
+// ✅ XSS-safe escaper — used for ALL dynamic content
+function e(s){return s==null?'':(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
 
-// ═══════════════════════════════════
-// SCANNER
-// ═══════════════════════════════════
-const THREAT_DB = [
-  { name:'SQL Injection',severity:'HIGH',description:'Attackers manipulate database queries to access, modify, or delete data without authorization.',mitigation:'Use parameterized queries and ORM frameworks. Never concatenate user input into SQL strings.' },
-  { name:'Cross-Site Scripting (XSS)',severity:'MEDIUM',description:'Malicious scripts injected into web pages are executed in victims\' browsers, stealing sessions or data.',mitigation:'Escape all user input on output. Implement strict Content-Security-Policy headers.' },
-  { name:'Weak Authentication',severity:'HIGH',description:'Poor password policies, missing MFA, or insecure session handling allow unauthorized access.',mitigation:'Enforce strong passwords, enable multi-factor authentication, use secure session tokens.' },
-  { name:'CSRF',severity:'MEDIUM',description:'Cross-Site Request Forgery tricks authenticated users into submitting malicious requests.',mitigation:'Implement CSRF tokens on all state-changing requests. Use SameSite cookie attribute.' },
-  { name:'Insecure Direct Object Reference',severity:'HIGH',description:'Attackers access unauthorized resources by manipulating references to internal objects.',mitigation:'Implement proper authorization checks. Never trust client-supplied object IDs directly.' },
-  { name:'Security Misconfiguration',severity:'MEDIUM',description:'Default credentials, open cloud storage, verbose errors expose sensitive system information.',mitigation:'Harden all configurations. Disable default credentials. Suppress detailed error messages.' },
-  { name:'Sensitive Data Exposure',severity:'HIGH',description:'Unencrypted transmission or storage of sensitive data like passwords, credit cards, PII.',mitigation:'Use TLS everywhere. Encrypt data at rest. Avoid storing sensitive data unnecessarily.' },
-  { name:'Broken Access Control',severity:'CRITICAL',description:'Users can act outside their intended permissions — accessing others\' data or admin functions.',mitigation:'Enforce least privilege. Deny by default. Log and alert on access control failures.' },
-  { name:'Open Redirect',severity:'LOW',description:'Unvalidated redirects send users to malicious external sites, enabling phishing attacks.',mitigation:'Validate all redirect targets against an allowlist. Avoid redirect parameters when possible.' },
+// ── ROUTING ──
+let gI=false,tI=false,aI=false;
+function show(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===n));
+  document.getElementById('page-'+n).classList.add('active');
+  if(n==='globe'&&!gI){initGlobe();gI=true;}
+  if(n==='threats'&&!tI){initThreats();tI=true;}
+  if(n==='ai'&&!aI){initAI();aI=true;}
+  window.scrollTo(0,0);
+}
+function st(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ── DATA ──
+const THREATS=[
+  {name:'SQL Injection',sev:'HIGH',desc:'Attackers manipulate database queries to access, modify, or delete data.',mit:'Use parameterized queries and ORM frameworks. Never concatenate user input into SQL.'},
+  {name:'Cross-Site Scripting',sev:'MEDIUM',desc:'Malicious scripts injected into pages execute in victims\' browsers, stealing sessions.',mit:'Escape all user input on output. Implement Content-Security-Policy headers.'},
+  {name:'Broken Access Control',sev:'CRITICAL',desc:'Users act outside intended permissions — accessing others\' data or admin functions.',mit:'Enforce least privilege. Deny by default. Log all access control failures.'},
+  {name:'Weak Authentication',sev:'HIGH',desc:'Poor passwords, missing MFA, or insecure sessions allow unauthorized access.',mit:'Enforce strong passwords, enable MFA, use secure session tokens.'},
+  {name:'CSRF',sev:'MEDIUM',desc:'Tricks authenticated users into submitting malicious requests unknowingly.',mit:'Implement CSRF tokens. Use SameSite cookie attribute.'},
+  {name:'Security Misconfiguration',sev:'MEDIUM',desc:'Default credentials, open storage, verbose errors expose sensitive information.',mit:'Harden all configs. Disable defaults. Suppress detailed error messages.'},
+  {name:'Sensitive Data Exposure',sev:'HIGH',desc:'Unencrypted transmission or storage of passwords, card numbers, PII.',mit:'Use TLS everywhere. Encrypt data at rest. Minimise data retention.'},
+  {name:'Insecure Direct Object Ref',sev:'HIGH',desc:'Attackers access unauthorized resources by manipulating object references.',mit:'Implement authorization checks on every resource access request.'},
+  {name:'Open Redirect',sev:'LOW',desc:'Unvalidated redirects send users to malicious sites, enabling phishing.',mit:'Validate all redirect targets against an allowlist of permitted URLs.'},
 ];
 
-function renderRef() {
-  const sevClass = {CRITICAL:'sev-critical',HIGH:'sev-high',MEDIUM:'sev-medium',LOW:'sev-low'};
-  document.getElementById('refGrid').innerHTML = THREAT_DB.map(t => `
-    <div class="ref-card">
-      <div class="ref-header"><div class="ref-name">${t.name}</div><span class="sev ${sevClass[t.severity]}">${t.severity}</span></div>
-      <div class="ref-desc">${t.description}</div>
-      <div class="ref-mit">⟶ ${t.mitigation}</div>
-    </div>`).join('');
+const AI_THREATS=[
+  {name:'Prompt Injection',sev:'CRITICAL',desc:'Attackers embed malicious instructions in AI-processed content, hijacking model behaviour to bypass safety filters, leak data, or execute unintended actions.',mit:'Validate and sanitize all inputs to AI systems. Implement instruction hierarchy and privilege separation between user and system prompts.'},
+  {name:'AI-Powered Phishing',sev:'HIGH',desc:'LLMs generate hyper-personalised phishing emails at massive scale, indistinguishable from legitimate correspondence, at near-zero cost per target.',mit:'Deploy AI-based email security. Train users on AI-generated content indicators. Verify sensitive requests via secondary channels.'},
+  {name:'Deepfake Social Engineering',sev:'HIGH',desc:'Synthetic voice and video cloning impersonates executives or IT staff to authorise fraudulent transactions or extract credentials in real time.',mit:'Establish out-of-band verification for sensitive requests. Use code words. Never trust voice or video alone for high-stakes authorizations.'},
+  {name:'Model Inversion Attacks',sev:'MEDIUM',desc:'Adversaries query AI models to reconstruct training data, potentially exposing private user data, PII, or proprietary information.',mit:'Apply differential privacy during training. Implement query rate limits. Use output filtering to prevent training data reconstruction.'},
+  {name:'Adversarial Inputs',sev:'HIGH',desc:'Imperceptible-to-humans crafted inputs cause AI/ML models to misclassify objects, bypass fraud detection, or fool security scanners.',mit:'Use adversarial training and robust model evaluation. Implement ensemble methods and multi-layer input validation.'},
+  {name:'Jailbreaking / Bypass',sev:'MEDIUM',desc:'Attackers craft prompts to bypass AI safety guardrails and generate harmful content, malware code, or restricted information.',mit:'Implement multiple safety layers. Use fine-tuned classifiers for harmful outputs. Conduct regular red-team testing of all AI systems.'},
+  {name:'Data Poisoning',sev:'HIGH',desc:'Adversaries corrupt AI training datasets by injecting malicious samples, creating backdoors activated by specific triggers in production.',mit:'Verify training data provenance. Use anomaly detection on datasets. Implement rigorous data sanitization pipelines before training.'},
+  {name:'AI-Automated Exploitation',sev:'CRITICAL',desc:'AI agents autonomously discover vulnerabilities, generate exploits, and attack at superhuman speed — compressing timelines from weeks to minutes.',mit:'Accelerate patching cycles dramatically. Deploy AI-powered defensive tools. Implement automated threat hunting and incident response.'},
+  {name:'LLM Supply Chain Attacks',sev:'HIGH',desc:'Compromising AI APIs, model weights, or fine-tuning pipelines to inject malicious behaviour into deployed AI used by thousands of apps.',mit:'Verify model integrity via checksums. Audit all AI dependencies. Use model signing and provenance tracking for all AI components.'},
+  {name:'Synthetic Identity Fraud',sev:'MEDIUM',desc:'AI generates convincing fake identities — photos, documents, social histories — used to bypass KYC, open accounts, or infiltrate organizations.',mit:'Deploy liveness detection in verification flows. Use multi-factor identity verification. Implement behavioural biometrics.'},
+  {name:'AI Password Attacks',sev:'HIGH',desc:'LLMs trained on breach data generate contextually relevant password guesses based on personal info, dramatically improving credential attack success.',mit:'Enforce long passphrases. Mandate password managers. Require MFA. Rate-limit and lockout authentication attempts aggressively.'},
+  {name:'Autonomous Malware',sev:'CRITICAL',desc:'AI-driven malware adapts its behaviour to evade detection by learning from defensive responses and self-propagates intelligently across networks.',mit:'Use behaviour-based detection over signature scanning. Implement strict network segmentation. Deploy AI-powered EDR solutions.'},
+];
+
+const AI_DEF=[
+  {n:'AI Red Teaming',i:'🎯',d:'Regularly attack your own AI systems using adversarial prompts and injection attempts before bad actors do.'},
+  {n:'Zero Trust for AI',i:'🔒',d:'Treat every AI API call as untrusted. Validate inputs and outputs. Never grant AI systems excessive permissions.'},
+  {n:'AI Monitoring',i:'📊',d:'Monitor AI behaviour for anomalies — unusual query patterns, unexpected outputs, or signs of prompt injection.'},
+  {n:'Human-in-the-Loop',i:'👤',d:'Require human approval for high-stakes AI decisions. Never fully automate financial or security-critical actions.'},
+  {n:'Supply Chain Verify',i:'🔗',d:'Verify integrity of AI models and APIs via checksums. Use provenance tracking for all AI dependencies.'},
+  {n:'AI Awareness Training',i:'🧠',d:'Train staff to recognise AI-generated phishing, deepfakes, and social engineering. Establish verification protocols.'},
+];
+
+const AI_INC=[
+  {date:'2024',org:'Major Financial Institution',type:'Deepfake CEO Fraud',impact:'$25M stolen',desc:'AI deepfake video of the CFO used in a video call instructed employees to transfer $25 million to fraudulent accounts.'},
+  {date:'2024',org:'Healthcare Provider',type:'LLM Phishing Campaign',impact:'2.3M records exposed',desc:'AI-generated spear-phishing emails bypassed security filters, tricking 340 employees into credential theft leading to a major breach.'},
+  {date:'2023',org:'Financial Services Firm',type:'Prompt Injection',impact:'Customer PII leaked',desc:'Prompt injection payloads in support tickets caused the AI assistant to reveal other customers\' account details.'},
+  {date:'2024',org:'Software Company',type:'AI Supply Chain',impact:'500k users affected',desc:'Compromised AI coding assistant injected subtle vulnerabilities into generated code, affecting thousands of downstream applications.'},
+  {date:'2024',org:'Government Agency',type:'Autonomous Exploitation',impact:'Critical systems breached',desc:'AI-powered tooling discovered and exploited a zero-day within 6 minutes — far faster than human defenders could respond.'},
+];
+
+// ── SCANNER ──
+function nu(raw){raw=(raw||'').trim().slice(0,2048);if(!raw)return null;if(!/^https?:\/\//i.test(raw))raw='https://'+raw;try{return new URL(raw).href;}catch{return null;}}
+function gd(url){try{return new URL(url).hostname;}catch{return url;}}
+function lg(msg){const el=document.getElementById('ll');const d=document.createElement('div');d.style.cssText='margin-top:5px;animation:fu 0.3s ease both';d.textContent='// '+msg;el.appendChild(d);}
+
+let scanning=false;
+async function startScan(){
+  if(scanning)return;
+  const url=nu(document.getElementById('urlInput').value);
+  if(!url){alert('Please enter a valid URL or domain.');return;}
+  const vk=document.getElementById('vtKey').value.trim().slice(0,100);
+  const uk=document.getElementById('usKey').value.trim().slice(0,100);
+  scanning=true;document.getElementById('scanBtn').disabled=true;
+  document.getElementById('rs').style.display='none';
+  document.getElementById('ls').style.display='block';
+  document.getElementById('ll').innerHTML='';
+  document.getElementById('ru').textContent=url;
+  lg('Initializing scan modules...');
+  let vd=null,ud=null;
+  if(vk){lg('Querying VirusTotal engines...');vd=await scanVT(url,vk);lg(vd?`VirusTotal: ${vd.data?.attributes?.last_analysis_stats?.malicious||0} engines flagged`:'VirusTotal: no cached result, submitted...');}
+  else lg('VirusTotal: No API key (skipped)');
+  if(uk){lg('Submitting to URLScan.io...');ud=await scanUS(url,uk);lg(ud?`URLScan.io: risk score ${ud.verdicts?.overall?.score??'N/A'}`:'URLScan.io: timeout or error');}
+  else lg('URLScan.io: No API key (skipped)');
+  lg('Compiling threat report...');
+  await new Promise(r=>setTimeout(r,600));
+  document.getElementById('ls').style.display='none';
+  renderResults(url,vd,ud);
+  document.getElementById('rs').style.display='block';
+  scanning=false;document.getElementById('scanBtn').disabled=false;
 }
 
-function normalizeUrl(raw) {
-  raw = raw.trim();
-  if (!raw) return null;
-  if (!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
-  try { return new URL(raw).href; } catch { return null; }
-}
-function getDomain(url) { try { return new URL(url).hostname; } catch { return url; } }
-function log(msg) { document.getElementById('loadingLog').innerHTML += `<div style="margin-top:5px;animation:fadeUp 0.3s ease both">// ${msg}</div>`; }
-
-let scanning = false;
-async function startScan() {
-  if (scanning) return;
-  const raw = document.getElementById('urlInput').value;
-  const url = normalizeUrl(raw);
-  if (!url) { alert('Please enter a valid URL or domain.'); return; }
-  const vtKey = document.getElementById('vtKey').value.trim();
-  const usKey = document.getElementById('usKey').value.trim();
-  scanning = true;
-  document.getElementById('scanBtn').disabled = true;
-  document.getElementById('resultsSection').style.display = 'none';
-  document.getElementById('loadingState').style.display = 'block';
-  document.getElementById('loadingLog').innerHTML = '';
-  document.getElementById('resultsUrl').textContent = url;
-  log('Initializing scan modules...');
-  let vtData = null, usData = null;
-  if (vtKey) { log('Querying VirusTotal engines...'); vtData = await scanVT(url, vtKey); log(vtData ? `VirusTotal: ${vtData.data?.attributes?.last_analysis_stats?.malicious||0} engines flagged` : 'VirusTotal: submitting for analysis...'); }
-  else log('VirusTotal: No API key (skipped)');
-  if (usKey) { log('Submitting to URLScan.io...'); usData = await scanUS(url, usKey); log(usData ? `URLScan.io: Risk score ${usData.verdicts?.overall?.score??'N/A'}` : 'URLScan.io: timeout'); }
-  else log('URLScan.io: No API key (skipped)');
-  log('Compiling report...');
-  await new Promise(r => setTimeout(r, 600));
-  document.getElementById('loadingState').style.display = 'none';
-  renderResults(url, vtData, usData);
-  document.getElementById('resultsSection').style.display = 'block';
-  scanning = false;
-  document.getElementById('scanBtn').disabled = false;
-}
-
-async function scanVT(url, key) {
-  try {
-    const id = btoa(url).replace(/=/g,'');
-    const r = await fetch(`https://www.virustotal.com/api/v3/urls/${id}`, { headers:{'x-apikey':key} });
-    if (r.ok) return await r.json();
-    const f = new FormData(); f.append('url', url);
-    const s = await fetch('https://www.virustotal.com/api/v3/urls', { method:'POST', headers:{'x-apikey':key}, body:f });
-    if (!s.ok) return null;
-    const sid = (await s.json()).data?.id;
-    if (!sid) return null;
-    for (let i=0;i<6;i++) {
+async function scanVT(url,key){
+  try{
+    const id=btoa(url).replace(/=/g,'');
+    const r=await fetch(`https://www.virustotal.com/api/v3/urls/${id}`,{headers:{'x-apikey':key}});
+    if(r.ok)return await r.json();
+    const f=new FormData();f.append('url',url);
+    const s=await fetch('https://www.virustotal.com/api/v3/urls',{method:'POST',headers:{'x-apikey':key},body:f});
+    if(!s.ok)return null;
+    const sid=(await s.json()).data?.id;if(!sid)return null;
+    for(let i=0;i<6;i++){
       await new Promise(r=>setTimeout(r,4000));
-      const p = await fetch(`https://www.virustotal.com/api/v3/analyses/${sid}`, { headers:{'x-apikey':key} });
-      if (p.ok) { const pd = await p.json(); if (pd.data?.attributes?.status==='completed') { const ur = await fetch(`https://www.virustotal.com/api/v3/urls/${id}`, { headers:{'x-apikey':key} }); if (ur.ok) return await ur.json(); } }
-    }
-    return null;
-  } catch(e) { return null; }
+      const p=await fetch(`https://www.virustotal.com/api/v3/analyses/${sid}`,{headers:{'x-apikey':key}});
+      if(p.ok){const pd=await p.json();if(pd.data?.attributes?.status==='completed'){const ur=await fetch(`https://www.virustotal.com/api/v3/urls/${id}`,{headers:{'x-apikey':key}});if(ur.ok)return await ur.json();}}
+    }return null;
+  }catch{return null;}
 }
 
-async function scanUS(url, key) {
-  try {
-    const s = await fetch('https://urlscan.io/api/v1/scan/', { method:'POST', headers:{'API-Key':key,'Content-Type':'application/json'}, body:JSON.stringify({url,visibility:'public'}) });
-    if (!s.ok) return null;
-    const uuid = (await s.json()).uuid;
-    if (!uuid) return null;
-    for (let i=0;i<8;i++) { await new Promise(r=>setTimeout(r,3000)); try { const r = await fetch(`https://urlscan.io/api/v1/result/${uuid}/`); if (r.ok) return await r.json(); } catch {} }
+async function scanUS(url,key){
+  try{
+    const s=await fetch('https://urlscan.io/api/v1/scan/',{method:'POST',headers:{'API-Key':key,'Content-Type':'application/json'},body:JSON.stringify({url,visibility:'public'})});
+    if(!s.ok)return null;
+    const uuid=(await s.json()).uuid;if(!uuid)return null;
+    for(let i=0;i<8;i++){await new Promise(r=>setTimeout(r,3000));try{const r=await fetch(`https://urlscan.io/api/v1/result/${uuid}/`);if(r.ok)return await r.json();}catch{}}
     return null;
-  } catch(e) { return null; }
+  }catch{return null;}
 }
 
-function renderResults(url, vtData, usData) {
-  const vtStats = vtData?.data?.attributes?.last_analysis_stats || {};
-  const vtResults = vtData?.data?.attributes?.last_analysis_results || {};
-  const vtMeta = vtData?.data?.attributes || {};
-  const malicious = vtStats.malicious||0, suspicious = vtStats.suspicious||0, harmless = vtStats.harmless||0;
-  const total = malicious+suspicious+harmless+(vtStats.undetected||0);
-  const usScore = usData?.verdicts?.overall?.score??null;
-  const overallClass = (malicious>5||(usScore!==null&&usScore>70))?'danger':(malicious>0||suspicious>0||(usScore!==null&&usScore>30))?'warning':'safe';
-  const overallLabel = overallClass==='danger'?'MALICIOUS':overallClass==='warning'?'SUSPICIOUS':'CLEAN';
-  document.getElementById('scoreGrid').innerHTML = `
-    <div class="score-card ${overallClass}"><div class="score-value">${overallLabel}</div><div class="score-label">Overall Verdict</div></div>
-    <div class="score-card ${malicious>0?'danger':'safe'}"><div class="score-value">${malicious}</div><div class="score-label">Malicious</div></div>
-    <div class="score-card ${suspicious>0?'warning':'safe'}"><div class="score-value">${suspicious}</div><div class="score-label">Suspicious</div></div>
-    <div class="score-card info"><div class="score-value">${total||'—'}</div><div class="score-label">Engines</div></div>
-    ${usScore!==null?`<div class="score-card ${usScore>70?'danger':usScore>30?'warning':'safe'}"><div class="score-value">${usScore}</div><div class="score-label">URLScan Risk</div></div>`:''}`;
-  const grid = document.getElementById('resultsGrid');
-  grid.innerHTML = '';
-  if (!vtData && !usData) {
-    grid.innerHTML = `<div class="panel" style="grid-column:1/-1"><div class="panel-body"><div class="empty-state">⚠<br><br>No API keys provided.<br><br>Get free keys at <a href="https://virustotal.com" target="_blank" style="color:var(--cyan)">virustotal.com</a> and <a href="https://urlscan.io" target="_blank" style="color:var(--cyan)">urlscan.io</a></div></div></div>`;
-    return;
-  }
-  if (vtData) {
-    const malEng = Object.entries(vtResults).filter(([,r])=>r.category==='malicious');
-    const badge = malicious>0?`<span class="badge badge-red">${malicious} FLAGGED</span>`:`<span class="badge badge-green">CLEAN</span>`;
-    const engines = Object.entries(vtResults).slice(0,60).map(([e,r])=>{
-      const isMal=r.category==='malicious',isSus=r.category==='suspicious';
-      return `<div class="engine-item ${isMal?'malicious-item':''}"><div class="engine-dot ${isMal?'malicious':isSus?'suspicious':r.category==='harmless'?'clean':'undetected'}"></div><div class="engine-name">${e}</div></div>`;
+function renderResults(url,vd,ud){
+  const vs=vd?.data?.attributes?.last_analysis_stats||{};
+  const vr=vd?.data?.attributes?.last_analysis_results||{};
+  const vm=vd?.data?.attributes||{};
+  const mal=vs.malicious||0,sus=vs.suspicious||0,harm=vs.harmless||0;
+  const total=mal+sus+harm+(vs.undetected||0);
+  const usc=ud?.verdicts?.overall?.score??null;
+  const oc=(mal>5||(usc!==null&&usc>70))?'danger':(mal>0||sus>0||(usc!==null&&usc>30))?'warning':'safe';
+  const ol=oc==='danger'?'MALICIOUS':oc==='warning'?'SUSPICIOUS':'CLEAN';
+  document.getElementById('sg').innerHTML=`
+    <div class="sc2 ${oc}"><div class="sv">${ol}</div><div class="slb">Overall Verdict</div></div>
+    <div class="sc2 ${mal>0?'danger':'safe'}"><div class="sv">${mal}</div><div class="slb">Malicious</div></div>
+    <div class="sc2 ${sus>0?'warning':'safe'}"><div class="sv">${sus}</div><div class="slb">Suspicious</div></div>
+    <div class="sc2 info"><div class="sv">${total||'—'}</div><div class="slb">Engines</div></div>
+    ${usc!==null?`<div class="sc2 ${usc>70?'danger':usc>30?'warning':'safe'}"><div class="sv">${usc}</div><div class="slb">URLScan Risk</div></div>`:''}`;
+  const grid=document.getElementById('rg');grid.innerHTML='';
+  if(!vd&&!ud){const div=document.createElement('div');div.className='panel';div.style.gridColumn='1/-1';div.innerHTML='<div class="pb"><div class="es">⚠<br><br>No API keys provided.<br>Get free keys at virustotal.com and urlscan.io</div></div>';grid.appendChild(div);return;}
+  if(vd){
+    const malE=Object.entries(vr).filter(([,r])=>r.category==='malicious');
+    const badge=mal>0?`<span class="badge br">${mal} FLAGGED</span>`:`<span class="badge bg2">CLEAN</span>`;
+    const engines=Object.entries(vr).slice(0,60).map(([en,r])=>{
+      const iM=r.category==='malicious',iS=r.category==='suspicious';
+      const dc=iM?'malicious':iS?'suspicious':r.category==='harmless'?'clean':'undetected';
+      return `<div class="ei ${iM?'mi':''}"><div class="edot ${dc}"></div><div class="en">${e(en)}</div></div>`;
     }).join('');
-    grid.innerHTML += `
+    const mw=malE.length?`<div style="margin-bottom:12px;padding:9px;background:var(--rd);border:1px solid rgba(255,59,59,0.3);border-radius:3px"><div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:2px;color:var(--red);margin-bottom:5px">⚠ FLAGGED BY ${malE.length} ENGINE${malE.length>1?'S':''}</div>${malE.map(([en,r])=>`<div style="font-size:0.74rem;color:var(--text);margin-bottom:2px"><span style="color:var(--red);font-family:var(--mono)">${e(en)}:</span> ${e(r.result||'malicious')}</div>`).join('')}</div>`:'';
+    const vtId=btoa(url).replace(/=/g,'');
+    grid.innerHTML+=`
       <div class="panel" style="grid-column:1/-1">
-        <div class="panel-header"><span class="panel-title">VirusTotal Engine Results</span>${badge}<a class="vt-link" href="https://www.virustotal.com/gui/url/${btoa(url).replace(/=/g,'')}" target="_blank">↗ FULL REPORT</a></div>
-        <div class="panel-body">
-          ${malEng.length?`<div style="margin-bottom:14px;padding:10px;background:var(--red-dim);border:1px solid rgba(255,59,59,0.3);border-radius:3px"><div style="font-family:var(--mono);font-size:0.62rem;letter-spacing:2px;color:var(--red);margin-bottom:6px">⚠ FLAGGED BY ${malEng.length} ENGINE${malEng.length>1?'S':''}</div>${malEng.map(([e,r])=>`<div style="font-size:0.76rem;color:var(--text);margin-bottom:3px"><span style="color:var(--red);font-family:var(--mono)">${e}:</span> ${r.result||'malicious'}</div>`).join('')}</div>`:''}
-          <div class="engine-grid">${engines}</div>
-        </div>
+        <div class="ph"><span class="pt2">VirusTotal Engine Results</span>${badge}<a class="vtl" href="https://www.virustotal.com/gui/url/${e(vtId)}" target="_blank" rel="noopener noreferrer">↗ FULL REPORT</a></div>
+        <div class="pb">${mw}<div class="eg">${engines}</div></div>
       </div>
       <div class="panel">
-        <div class="panel-header"><span class="panel-title">URL Intelligence</span></div>
-        <div class="panel-body">
-          ${[['Domain',getDomain(url)],['Reputation',vtMeta.reputation??'—'],['Submitted',vtMeta.times_submitted||'—'],['Last Analysis',vtMeta.last_analysis_date?new Date(vtMeta.last_analysis_date*1000).toLocaleDateString():'—'],['Tags',vtMeta.tags?.join(', ')||'None']].map(([k,v])=>`<div class="info-row"><span class="info-key">${k}</span><span class="info-val">${v}</span></div>`).join('')}
-        </div>
+        <div class="ph"><span class="pt2">URL Intelligence</span></div>
+        <div class="pb">${[['Domain',gd(url)],['Reputation',vm.reputation??'—'],['Submitted',vm.times_submitted||'—'],['Last Analysis',vm.last_analysis_date?new Date(vm.last_analysis_date*1000).toLocaleDateString():'—'],['Tags',(vm.tags||[]).join(', ')||'None']].map(([k,v])=>`<div class="ir"><span class="ik">${e(String(k))}</span><span class="iv">${e(String(v))}</span></div>`).join('')}</div>
       </div>`;
   }
-  if (usData) {
-    const page = usData.page||{}, uv = usData.verdicts||{};
-    grid.innerHTML += `
+  if(ud){
+    const pg=ud.page||{},uv=ud.verdicts||{};
+    grid.innerHTML+=`
       <div class="panel">
-        <div class="panel-header"><span class="panel-title">URLScan.io Analysis</span>${usScore!==null?`<span class="badge ${usScore>70?'badge-red':usScore>30?'badge-orange':'badge-green'}">RISK: ${usScore}</span>`:''}</div>
-        <div class="panel-body">
-          ${[['IP',page.ip||'—'],['Country',page.country||'—'],['Server',page.server||'—'],['ASN',page.asnname||'—'],['TLS Days',page.tlsValidDays||'—'],['Malicious',uv.urlscan?.malicious?'<span class="info-val bad">YES ⚠</span>':'<span class="info-val good">NO ✓</span>']].map(([k,v])=>`<div class="info-row"><span class="info-key">${k}</span>${v.includes('class=')?v:`<span class="info-val">${v}</span>`}</div>`).join('')}
-        </div>
+        <div class="ph"><span class="pt2">URLScan.io Analysis</span>${usc!==null?`<span class="badge ${usc>70?'br':usc>30?'bo':'bg2'}">RISK: ${usc}</span>`:''}</div>
+        <div class="pb">${[['IP',pg.ip||'—'],['Country',pg.country||'—'],['Server',pg.server||'—'],['ASN',pg.asnname||'—'],['TLS Days',pg.tlsValidDays||'—'],['Malicious',uv.urlscan?.malicious?'YES ⚠':'NO ✓']].map(([k,v])=>`<div class="ir"><span class="ik">${e(k)}</span><span class="iv ${v==='YES ⚠'?'bad':v==='NO ✓'?'good':''}">${e(String(v))}</span></div>`).join('')}</div>
       </div>`;
   }
 }
 
-function resetScan() { document.getElementById('resultsSection').style.display='none'; document.getElementById('urlInput').value=''; document.getElementById('urlInput').focus(); }
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('urlInput').addEventListener('keydown', e => { if(e.key==='Enter') startScan(); });
-  renderRef();
-});
+function resetScan(){document.getElementById('rs').style.display='none';document.getElementById('urlInput').value='';document.getElementById('urlInput').focus();}
 
-// ═══════════════════════════════════
-// GLOBE
-// ═══════════════════════════════════
-const COUNTRIES=[{name:'United States',lat:37.09,lon:-95.71},{name:'China',lat:35.86,lon:104.19},{name:'Russia',lat:61.52,lon:105.31},{name:'Germany',lat:51.16,lon:10.45},{name:'UK',lat:55.37,lon:-3.43},{name:'Brazil',lat:-14.23,lon:-51.92},{name:'India',lat:20.59,lon:78.96},{name:'Australia',lat:-25.27,lon:133.77},{name:'Japan',lat:36.20,lon:138.25},{name:'France',lat:46.22,lon:2.21},{name:'South Korea',lat:35.90,lon:127.76},{name:'Netherlands',lat:52.13,lon:5.29},{name:'Canada',lat:56.13,lon:-106.34},{name:'Ukraine',lat:48.37,lon:31.16},{name:'Iran',lat:32.42,lon:53.68},{name:'Singapore',lat:1.35,lon:103.81},{name:'South Africa',lat:-30.55,lon:22.93},{name:'Mexico',lat:23.63,lon:-102.55},{name:'Indonesia',lat:-0.78,lon:113.92},{name:'Turkey',lat:38.96,lon:35.24}];
-const ATYPES=['DDoS','Malware','Phishing','Port Scan','Brute Force','Ransomware','SQL Injection','XSS','Zero-day'];
-const ACOLORS={DDoS:0xff3b3b,Malware:0xff8c00,Phishing:0xffd600,'Port Scan':0x00e5ff,'Brute Force':0x00e676,Ransomware:0xff0044,'SQL Injection':0xcc44ff,XSS:0xff6600,'Zero-day':0xff1744};
-let globeScene, globeCamera, globeRenderer, globeObj, globePtGroup, globeArcs=[], globeAutoRot=true, globeShowArcs=true, globeShowPts=true, globeFeedItems=[], globeSrcCounts={}, globeTotalAtk=12847, globeAnimId=null;
+function renderRef(){
+  const sc={CRITICAL:'sev-critical',HIGH:'sev-high',MEDIUM:'sev-medium',LOW:'sev-low'};
+  document.getElementById('refGrid').innerHTML=THREATS.map(t=>`
+    <div class="rc2"><div class="rch"><div class="rn">${e(t.name)}</div><span class="sev ${sc[t.sev]}">${e(t.sev)}</span></div><div class="rd2">${e(t.desc)}</div><div class="rm">⟶ ${e(t.mit)}</div></div>`).join('');
+}
 
-function initGlobe() {
-  const canvas = document.getElementById('globeCanvas');
-  globeRenderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  globeRenderer.setPixelRatio(window.devicePixelRatio);
-  globeRenderer.setClearColor(0x000000,0);
-  globeScene = new THREE.Scene();
-  globeCamera = new THREE.PerspectiveCamera(45,1,0.1,1000);
-  globeCamera.position.z=2.8;
-  function resizeGlobe() { const w=canvas.clientWidth,h=canvas.clientHeight; globeRenderer.setSize(w,h,false); globeCamera.aspect=w/h; globeCamera.updateProjectionMatrix(); }
-  window.addEventListener('resize',resizeGlobe); resizeGlobe();
+// ── GLOBE ──
+const CTR=[{n:'United States',la:37.09,lo:-95.71},{n:'China',la:35.86,lo:104.19},{n:'Russia',la:61.52,lo:105.31},{n:'Germany',la:51.16,lo:10.45},{n:'UK',la:55.37,lo:-3.43},{n:'Brazil',la:-14.23,lo:-51.92},{n:'India',la:20.59,lo:78.96},{n:'Australia',la:-25.27,lo:133.77},{n:'Japan',la:36.2,lo:138.25},{n:'France',la:46.22,lo:2.21},{n:'S.Korea',la:35.9,lo:127.76},{n:'Netherlands',la:52.13,lo:5.29},{n:'Canada',la:56.13,lo:-106.34},{n:'Ukraine',la:48.37,lo:31.16},{n:'Iran',la:32.42,lo:53.68},{n:'Singapore',la:1.35,lo:103.81},{n:'S.Africa',la:-30.55,lo:22.93},{n:'Mexico',la:23.63,lo:-102.55},{n:'Indonesia',la:-0.78,lo:113.92},{n:'Turkey',la:38.96,lo:35.24}];
+const AT=['DDoS','Malware','Phishing','Port Scan','Brute Force','Ransomware','SQL Injection','XSS','Zero-day','AI Attack'];
+const AC={DDoS:0xff3b3b,Malware:0xff8c00,Phishing:0xffd600,'Port Scan':0x00e5ff,'Brute Force':0x00e676,Ransomware:0xff0044,'SQL Injection':0xaa44ff,XSS:0xff6600,'Zero-day':0xff1744,'AI Attack':0xcc44ff};
+let gSc,gCm,gRr,gGb,gPg,gAr=[],gAuto=true,gSA=true,gSP=true,gFI=[],gSrc={},gTot=12847;
+
+function initGlobe(){
+  const cv=document.getElementById('gc');
+  gRr=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  gRr.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  gRr.setClearColor(0x000000,0);
+  gSc=new THREE.Scene();gCm=new THREE.PerspectiveCamera(45,1,0.1,1000);gCm.position.z=2.8;
+  function rz(){const w=cv.clientWidth,h=cv.clientHeight;gRr.setSize(w,h,false);gCm.aspect=w/h;gCm.updateProjectionMatrix();}
+  window.addEventListener('resize',rz);rz();
   const R=1;
-  globeObj = new THREE.Mesh(new THREE.SphereGeometry(R,64,64), new THREE.MeshPhongMaterial({color:0x0a1628,emissive:0x061020,shininess:20,transparent:true,opacity:0.92}));
-  globeScene.add(globeObj);
-  globeScene.add(new THREE.Mesh(new THREE.SphereGeometry(R+0.001,32,32), new THREE.MeshBasicMaterial({color:0x00e5ff,wireframe:true,transparent:true,opacity:0.04})));
-  globeScene.add(new THREE.Mesh(new THREE.SphereGeometry(R*1.05,32,32), new THREE.MeshBasicMaterial({color:0x003344,transparent:true,opacity:0.12,side:THREE.BackSide})));
-  const sv=[]; for(let i=0;i<3000;i++){sv.push((Math.random()-.5)*100,(Math.random()-.5)*100,(Math.random()-.5)*100);}
-  const sg=new THREE.BufferGeometry(); sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));
-  globeScene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:0.05,transparent:true,opacity:0.5})));
-  globeScene.add(Object.assign(new THREE.AmbientLight(0x223344)));
-  const dl=new THREE.DirectionalLight(0x00e5ff,0.4); dl.position.set(5,3,5); globeScene.add(dl);
-  globePtGroup=new THREE.Group(); globeScene.add(globePtGroup);
-  COUNTRIES.forEach(c=>{const pos=ll2v(c.lat,c.lon,R+0.005);const d=new THREE.Mesh(new THREE.SphereGeometry(0.007,8,8),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.6}));d.position.copy(pos);globePtGroup.add(d);});
-  let isDrag=false,prev={x:0,y:0};
-  canvas.addEventListener('mousedown',e=>{isDrag=true;prev={x:e.clientX,y:e.clientY}});
-  canvas.addEventListener('mouseup',()=>isDrag=false);
-  canvas.addEventListener('mousemove',e=>{if(!isDrag)return;const dx=e.clientX-prev.x,dy=e.clientY-prev.y;globeObj.rotation.y+=dx*0.005;globeObj.rotation.x+=dy*0.005;globePtGroup.rotation.copy(globeObj.rotation);prev={x:e.clientX,y:e.clientY};globeAutoRot=false;});
-  buildGlobeTicker();
-  setInterval(spawnGlobeAttack,1200);
-  setInterval(updateGlobeTopSrc,3000);
-  setInterval(updateGlobeStats,5000);
-  for(let i=0;i<8;i++) setTimeout(spawnGlobeAttack,i*300);
-  animateGlobe();
+  gGb=new THREE.Mesh(new THREE.SphereGeometry(R,64,64),new THREE.MeshPhongMaterial({color:0x0a1628,emissive:0x061020,shininess:20,transparent:true,opacity:0.92}));
+  gSc.add(gGb);
+  gSc.add(new THREE.Mesh(new THREE.SphereGeometry(R+0.001,32,32),new THREE.MeshBasicMaterial({color:0x00e5ff,wireframe:true,transparent:true,opacity:0.04})));
+  gSc.add(new THREE.Mesh(new THREE.SphereGeometry(R*1.05,32,32),new THREE.MeshBasicMaterial({color:0x003344,transparent:true,opacity:0.12,side:THREE.BackSide})));
+  const sv=[];for(let i=0;i<3000;i++)sv.push((Math.random()-.5)*100,(Math.random()-.5)*100,(Math.random()-.5)*100);
+  const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));
+  gSc.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:0.05,transparent:true,opacity:0.5})));
+  gSc.add(Object.assign(new THREE.AmbientLight(0x223344)));
+  const dl=new THREE.DirectionalLight(0x00e5ff,0.4);dl.position.set(5,3,5);gSc.add(dl);
+  gPg=new THREE.Group();gSc.add(gPg);
+  CTR.forEach(c=>{const p=l2v(c.la,c.lo,R+0.005);const d=new THREE.Mesh(new THREE.SphereGeometry(0.007,8,8),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.6}));d.position.copy(p);gPg.add(d);});
+  let id=false,pv={x:0,y:0};
+  cv.addEventListener('mousedown',ev=>{id=true;pv={x:ev.clientX,y:ev.clientY};});
+  window.addEventListener('mouseup',()=>id=false);
+  cv.addEventListener('mousemove',ev=>{if(!id)return;const dx=ev.clientX-pv.x,dy=ev.clientY-pv.y;gGb.rotation.y+=dx*0.005;gGb.rotation.x+=dy*0.005;gPg.rotation.copy(gGb.rotation);pv={x:ev.clientX,y:ev.clientY};gAuto=false;});
+  mkTicker();
+  setInterval(spawnA,1200);setInterval(updSrc,3000);setInterval(updGS,5000);
+  for(let i=0;i<8;i++)setTimeout(spawnA,i*300);
+  animG();
 }
 
-function ll2v(lat,lon,r=1){const phi=(90-lat)*Math.PI/180,theta=(lon+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));}
+function l2v(la,lo,r=1){const phi=(90-la)*Math.PI/180,theta=(lo+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));}
 
-function createGlobeArc(from,to,color){
-  const fv=ll2v(from.lat,from.lon),tv=ll2v(to.lat,to.lon);
-  const mid=fv.clone().add(tv).multiplyScalar(0.5).normalize().multiplyScalar(1+0.4+Math.random()*0.3);
-  const curve=new THREE.QuadraticBezierCurve3(fv,mid,tv);
-  const geo=new THREE.BufferGeometry().setFromPoints(curve.getPoints(60));
-  const mat=new THREE.LineBasicMaterial({color,transparent:true,opacity:0.8});
-  const line=new THREE.Line(geo,mat);
-  const head=new THREE.Mesh(new THREE.SphereGeometry(0.011,6,6),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));
-  globeScene.add(line); globeScene.add(head);
-  globeArcs.push({line,head,curve,t:0,speed:0.004+Math.random()*0.006,life:1.0,mat});
+function mkArc(f,t,col){
+  const fv=l2v(f.la,f.lo),tv=l2v(t.la,t.lo);
+  const mid=fv.clone().add(tv).multiplyScalar(0.5).normalize().multiplyScalar(1.4+Math.random()*0.3);
+  const cv=new THREE.QuadraticBezierCurve3(fv,mid,tv);
+  const geo=new THREE.BufferGeometry().setFromPoints(cv.getPoints(60));
+  const mat=new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.8});
+  const ln=new THREE.Line(geo,mat);
+  const hd=new THREE.Mesh(new THREE.SphereGeometry(0.011,6,6),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:1}));
+  gSc.add(ln);gSc.add(hd);
+  gAr.push({line:ln,head:hd,curve:cv,t:0,speed:0.004+Math.random()*0.006,life:1.0,mat});
 }
 
-function spawnGlobeAttack(){
-  const from=COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)];
-  let to; do{to=COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)]}while(to===from);
-  const type=ATYPES[Math.floor(Math.random()*ATYPES.length)];
-  const color=ACOLORS[type]||0x00e5ff;
-  if(globeShowArcs) createGlobeArc(from,to,color);
-  addGlobeFeed(from.name,to.name,type,color);
-  updateGlobeStats();
+function spawnA(){
+  const f=CTR[Math.floor(Math.random()*CTR.length)];
+  let t;do{t=CTR[Math.floor(Math.random()*CTR.length)];}while(t===f);
+  const tp=AT[Math.floor(Math.random()*AT.length)];
+  const col=AC[tp]||0x00e5ff;
+  if(gSA)mkArc(f,t,col);
+  addFI(f.n,t.n,tp,col);updGS();
 }
 
-function addGlobeFeed(from,to,type,color){
-  const feed=document.getElementById('globeFeed');
-  const sev=['DDoS','Ransomware','Zero-day'].includes(type)?'high':['Malware','Phishing'].includes(type)?'medium':'low';
-  const item=document.createElement('div');
-  item.className=`feed-item ${sev}`;
-  const ch='#'+color.toString(16).padStart(6,'0');
-  item.innerHTML=`<div class="feed-time">${new Date().toLocaleTimeString()}</div><div class="feed-from">FROM: ${from}</div><div class="feed-to">TARGET: ${to}</div><div class="feed-type" style="color:${ch}">${type}</div>`;
+function addFI(fr,to,tp,col){
+  const feed=document.getElementById('gFeed');
+  const sv=['DDoS','Ransomware','Zero-day','AI Attack'].includes(tp)?'h':['Malware','Phishing'].includes(tp)?'m':'l';
+  const item=document.createElement('div');item.className=`fi ${sv}`;
+  const tm=document.createElement('div');tm.className='ftm';tm.textContent=new Date().toLocaleTimeString();
+  const fr2=document.createElement('div');fr2.className='ff';fr2.textContent='FROM: '+fr;
+  const to2=document.createElement('div');to2.className='ft';to2.textContent='TARGET: '+to;
+  const tp2=document.createElement('div');tp2.className='ftp';tp2.style.color='#'+col.toString(16).padStart(6,'0');tp2.textContent=tp;
+  item.appendChild(tm);item.appendChild(fr2);item.appendChild(to2);item.appendChild(tp2);
   feed.insertBefore(item,feed.firstChild);
-  globeFeedItems.push(item);
-  if(globeFeedItems.length>14){const old=globeFeedItems.shift();old.remove();}
+  gFI.push(item);if(gFI.length>14){gFI.shift().remove();}
 }
 
-function updateGlobeStats(){
-  globeTotalAtk+=Math.floor(Math.random()*3)+1;
-  document.getElementById('gAttacks').textContent=globeTotalAtk.toLocaleString();
-  document.getElementById('gSources').textContent=200+Math.floor(Math.random()*80);
-  document.getElementById('gCountries').textContent=60+Math.floor(Math.random()*20);
-  document.getElementById('gTop').textContent=ATYPES[Math.floor(Math.random()*3)];
+function updGS(){
+  gTot+=Math.floor(Math.random()*3)+1;
+  document.getElementById('gA').textContent=gTot.toLocaleString();
+  document.getElementById('gS').textContent=200+Math.floor(Math.random()*80);
+  document.getElementById('gC').textContent=60+Math.floor(Math.random()*20);
+  document.getElementById('gT').textContent=AT[Math.floor(Math.random()*4)];
 }
 
-function updateGlobeTopSrc(){
-  COUNTRIES.slice(0,6).forEach(c=>{globeSrcCounts[c.name]=(globeSrcCounts[c.name]||0)+Math.floor(Math.random()*10);});
-  const sorted=Object.entries(globeSrcCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  document.getElementById('globeTopSrc').innerHTML=sorted.map(([n,c])=>`<div class="gstat"><span class="gstat-key" style="font-size:0.58rem">${n}</span><span class="gstat-val red">${c}</span></div>`).join('');
+function updSrc(){
+  CTR.slice(0,6).forEach(c=>{gSrc[c.n]=(gSrc[c.n]||0)+Math.floor(Math.random()*10);});
+  const s=Object.entries(gSrc).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const c=document.getElementById('gTop');c.innerHTML='';
+  s.forEach(([n,v])=>{const r=document.createElement('div');r.className='gs';const k=document.createElement('span');k.className='gsk';k.style.fontSize='0.56rem';k.textContent=n;const val=document.createElement('span');val.className='gsv red';val.textContent=v;r.appendChild(k);r.appendChild(val);c.appendChild(r);});
 }
 
-function buildGlobeTicker(){
-  const items=['CVE-2024-3400 | PAN-OS Zero-Day | CRITICAL','DDoS spike | Asia Pacific | 2.4Tbps','Ransomware | Healthcare | 47 victims','Botnet | 180k IPs compromised','Phishing | Banking | 12 countries','Log4Shell | Still active | PATCH NOW','APT29 | Government targets | Europe','Cryptojacking | Cloud infrastructure','Supply chain | npm packages | 3.2M affected','Brute force storm | RDP 3389 | Global'];
-  const doubled=[...items,...items];
-  document.getElementById('globeTicker').innerHTML=doubled.map(t=>`<span class="ticker-item">${t}</span>`).join('');
+function mkTicker(){
+  const items=['CVE-2024-3400 | PAN-OS Zero-Day | CRITICAL','DDoS spike | Asia Pacific | 2.4Tbps','Ransomware | Healthcare | 47 victims','AI Phishing surge | 400% increase | Global','Prompt injection | LLM systems | Escalating','Deepfake fraud | Financial sector | $25M lost','Botnet | 180k IPs compromised','Log4Shell | Still active | PATCH NOW'];
+  const track=document.getElementById('gTk');track.innerHTML='';
+  [...items,...items].forEach(t=>{const s=document.createElement('span');s.className='ti';s.textContent=t;track.appendChild(s);});
 }
 
-function toggleRotate(btn){globeAutoRot=!globeAutoRot;btn.classList.toggle('active',globeAutoRot);}
-function toggleArcs(btn){globeShowArcs=!globeShowArcs;btn.classList.toggle('active',globeShowArcs);globeArcs.forEach(a=>{a.line.visible=globeShowArcs;a.head.visible=globeShowArcs;});}
-function togglePoints(btn){globeShowPts=!globeShowPts;btn.classList.toggle('active',globeShowPts);globePtGroup.visible=globeShowPts;}
+function togRot(b){gAuto=!gAuto;b.classList.toggle('active',gAuto);}
+function togArcs(b){gSA=!gSA;b.classList.toggle('active',gSA);gAr.forEach(a=>{a.line.visible=gSA;a.head.visible=gSA;});}
+function togPts(b){gSP=!gSP;b.classList.toggle('active',gSP);gPg.visible=gSP;}
 
-function animateGlobe(){
-  globeAnimId=requestAnimationFrame(animateGlobe);
-  if(globeAutoRot){globeObj.rotation.y+=0.001;globePtGroup.rotation.y+=0.001;}
-  for(let i=globeArcs.length-1;i>=0;i--){
-    const a=globeArcs[i];
-    a.t+=a.speed;
-    if(a.t>=1){a.t=1;a.life-=0.02;a.mat.opacity=a.life*0.8;}
+function animG(){
+  requestAnimationFrame(animG);
+  if(gAuto){gGb.rotation.y+=0.001;gPg.rotation.y+=0.001;}
+  for(let i=gAr.length-1;i>=0;i--){
+    const a=gAr[i];a.t+=a.speed;
+    if(a.t>=1){a.life-=0.02;a.mat.opacity=a.life*0.8;}
     const pos=a.curve.getPoint(Math.min(a.t,1));
     a.head.position.copy(pos);
-    a.line.rotation.copy(globeObj.rotation);
-    a.head.position.applyEuler(globeObj.rotation);
-    if(a.life<=0){globeScene.remove(a.line);globeScene.remove(a.head);a.line.geometry.dispose();a.mat.dispose();globeArcs.splice(i,1);}
+    a.line.rotation.copy(gGb.rotation);
+    a.head.position.applyEuler(gGb.rotation);
+    if(a.life<=0){gSc.remove(a.line);gSc.remove(a.head);a.line.geometry.dispose();a.mat.dispose();gAr.splice(i,1);}
   }
-  globeArcs.forEach(a=>{a.line.rotation.copy(globeObj.rotation);});
-  globeRenderer.render(globeScene,globeCamera);
+  gAr.forEach(a=>a.line.rotation.copy(gGb.rotation));
+  gRr.render(gSc,gCm);
 }
 
-// ═══════════════════════════════════
-// THREAT FEED
-// ═══════════════════════════════════
+// ── THREATS ──
 function initThreats(){
-  Chart.defaults.color='#4a6080';
-  Chart.defaults.borderColor='#1a2540';
-  Chart.defaults.font.family="'Share Tech Mono',monospace";
-  Chart.defaults.font.size=11;
+  Chart.defaults.color='#4a6080';Chart.defaults.borderColor='#1a2540';
+  Chart.defaults.font.family="'Share Tech Mono',monospace";Chart.defaults.font.size=11;
   const days=[],now=new Date();
   for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en',{month:'short',day:'numeric'}));}
-  new Chart(document.getElementById('attackChart'),{type:'line',data:{labels:days,datasets:[{label:'Attacks',data:[12400,14200,11800,16500,18200,15600,22100,19800,24500,21300,26800,23400,28100,31200],borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#00e5ff',pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{maxTicksLimit:7}},y:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k'}}}}});
-  new Chart(document.getElementById('typeChart'),{type:'doughnut',data:{labels:['DDoS','Malware','Phishing','Ransomware','SQL Inj','Other'],datasets:[{data:[34,22,18,12,8,6],backgroundColor:['#ff3b3b','#ff8c00','#ffd600','#ff0044','#cc44ff','#4a6080'],borderColor:'#05080f',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:10,boxWidth:8}}},cutout:'65%'}});
-  new Chart(document.getElementById('severityChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Critical',data:[18,22,15,28,19,12,24],backgroundColor:'rgba(255,23,68,0.7)',borderRadius:2},{label:'High',data:[45,52,38,61,44,30,58],backgroundColor:'rgba(255,59,59,0.5)',borderRadius:2},{label:'Medium',data:[82,95,71,110,88,62,104],backgroundColor:'rgba(255,140,0,0.5)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:7,padding:7}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(26,37,64,0.8)'}}}}});
-  const VECS=[{n:'DDoS',p:89,c:'#ff3b3b'},{n:'Malware',p:74,c:'#ff8c00'},{n:'Phishing',p:68,c:'#ffd600'},{n:'Ransomware',p:52,c:'#ff0044'},{n:'SQL Inject',p:41,c:'#cc44ff'},{n:'Brute Force',p:38,c:'#00e676'},{n:'Zero-day',p:23,c:'#00e5ff'},{n:'Supply Chain',p:18,c:'#4a9fff'}];
-  document.getElementById('attackBars').innerHTML=VECS.map(v=>`<div class="bar-item"><div class="bar-lbl">${v.n}</div><div class="bar-track"><div class="bar-fill" style="width:${v.p}%;background:${v.c}"></div></div><div class="bar-val">${v.p}%</div></div>`).join('');
-  const CVES=[{id:'CVE-2024-3400',score:10.0,cls:'critical',sc:'sc',title:'PAN-OS GlobalProtect Gateway Command Injection',desc:'Command injection in Palo Alto Networks PAN-OS allows unauthenticated attackers to execute arbitrary code with root privileges on the firewall.',vendor:'Palo Alto',product:'PAN-OS',date:'2024-04-12'},{id:'CVE-2024-21887',score:9.1,cls:'critical',sc:'sc',title:'Ivanti Connect Secure Command Injection',desc:'Command injection in Ivanti Connect Secure allows authenticated admins to execute arbitrary commands via specially crafted requests.',vendor:'Ivanti',product:'Connect Secure',date:'2024-01-10'},{id:'CVE-2024-1709',score:10.0,cls:'critical',sc:'sc',title:'ConnectWise ScreenConnect Authentication Bypass',desc:'Authentication bypass allowing unauthenticated access to confidential information or critical systems.',vendor:'ConnectWise',product:'ScreenConnect',date:'2024-02-21'},{id:'CVE-2023-44487',score:7.5,cls:'high',sc:'sh',title:'HTTP/2 Rapid Reset DoS Attack',desc:'The HTTP/2 protocol allows denial of service via rapid request cancellation, as widely exploited in 2023.',vendor:'Various',product:'HTTP/2 Implementations',date:'2023-10-10'},{id:'CVE-2024-23897',score:9.8,cls:'critical',sc:'sc',title:'Jenkins Arbitrary File Read via CLI',desc:'Jenkins allows unauthenticated attackers to read arbitrary files via the CLI command parser.',vendor:'Jenkins',product:'Jenkins CI',date:'2024-01-24'},{id:'CVE-2024-4577',score:9.8,cls:'critical',sc:'sc',title:'PHP CGI Argument Injection on Windows',desc:'PHP on Windows with CGI allows argument injection leading to remote code execution.',vendor:'PHP Group',product:'PHP 8.x',date:'2024-06-09'}];
-  document.getElementById('cveList').innerHTML=CVES.map(c=>`<div class="cve-card ${c.cls}"><div class="cve-header"><span class="cve-id">${c.id}</span><span class="cve-score ${c.sc}">CVSS ${c.score} — ${c.cls.toUpperCase()}</span></div><div class="cve-title">${c.title}</div><div class="cve-desc">${c.desc}</div><div class="cve-meta"><span>📦 ${c.vendor}</span><span>🖥 ${c.product}</span><span>📅 ${c.date}</span></div></div>`).join('');
-  const NEWS=[{src:'Threat Intel',c:'#ff3b3b',title:'LockBit Ransomware Gang Resurfaces After Law Enforcement Takedown',summary:'Despite a major international operation seizing infrastructure, LockBit has resumed operations with new infrastructure and is actively recruiting affiliates.',time:'2 hours ago'},{src:'CISA Advisory',c:'#ff8c00',title:'CISA Adds 6 Known Exploited Vulnerabilities to Catalog',summary:'Federal agencies are required to patch six newly added vulnerabilities by specified deadlines.',time:'4 hours ago'},{src:'Security Research',c:'#ffd600',title:'New Phishing Campaign Targeting Microsoft 365 Users Bypasses MFA',summary:'An adversary-in-the-middle campaign captures session cookies after MFA authentication, bypassing multi-factor authentication protections.',time:'6 hours ago'},{src:'Breach Report',c:'#cc44ff',title:'Major Healthcare Provider Discloses Breach Affecting 2.9 Million Patients',summary:'A US healthcare network disclosed a breach exposing names, SSNs, medical records, and insurance data after a ransomware attack.',time:'8 hours ago'},{src:'Zero-Day',c:'#ff1744',title:'Critical Zero-Day in Popular VPN Client Under Active Exploitation',summary:'A critical RCE vulnerability in a widely-deployed enterprise VPN client is being actively exploited before a patch is available.',time:'1 day ago'}];
-  document.getElementById('newsPanel').innerHTML=NEWS.map(n=>`<div class="news-item"><div class="ndot" style="background:${n.c};box-shadow:0 0 5px ${n.c}"></div><div><div class="news-src">${n.src}</div><div class="news-title">${n.title}</div><div class="news-summary">${n.summary}</div><div class="news-time">${n.time}</div></div></div>`).join('');
-  function animCounter(el,target){let c=0;const s=target/60;const t=setInterval(()=>{c=Math.min(c+s,target);el.textContent=Math.floor(c).toLocaleString();if(c>=target)clearInterval(t);},16);}
-  setTimeout(()=>{animCounter(document.getElementById('sCves'),2847);animCounter(document.getElementById('sCrit'),143);animCounter(document.getElementById('sBreach'),38);animCounter(document.getElementById('sMit'),1204);},200);
+  new Chart(document.getElementById('aC'),{type:'line',data:{labels:days,datasets:[{label:'Attacks',data:[12400,14200,11800,16500,18200,15600,22100,19800,24500,21300,26800,23400,28100,31200],borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#00e5ff',pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{maxTicksLimit:7}},y:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k'}}}}});
+  new Chart(document.getElementById('tC'),{type:'doughnut',data:{labels:['DDoS','Malware','Phishing','Ransomware','AI-Powered','Other'],datasets:[{data:[28,20,16,12,16,8],backgroundColor:['#ff3b3b','#ff8c00','#ffd600','#ff0044','#cc44ff','#4a6080'],borderColor:'#05080f',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:9,boxWidth:7}}},cutout:'65%'}});
+  new Chart(document.getElementById('sC'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Critical',data:[18,22,15,28,19,12,24],backgroundColor:'rgba(255,23,68,0.7)',borderRadius:2},{label:'High',data:[45,52,38,61,44,30,58],backgroundColor:'rgba(255,59,59,0.5)',borderRadius:2},{label:'Medium',data:[82,95,71,110,88,62,104],backgroundColor:'rgba(255,140,0,0.5)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:7,padding:7}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(26,37,64,0.8)'}}}}});
+  const V=[{n:'DDoS',p:89,c:'#ff3b3b'},{n:'AI Phishing',p:82,c:'#cc44ff'},{n:'Malware',p:74,c:'#ff8c00'},{n:'Ransomware',p:65,c:'#ff0044'},{n:'Phishing',p:62,c:'#ffd600'},{n:'SQL Inject',p:41,c:'#aa44ff'},{n:'Brute Force',p:38,c:'#00e676'},{n:'Zero-day',p:27,c:'#00e5ff'}];
+  document.getElementById('aBars').innerHTML=V.map(v=>`<div class="bi"><div class="bl">${e(v.n)}</div><div class="bt"><div class="bf" style="width:${v.p}%;background:${v.c}"></div></div><div class="bv">${v.p}%</div></div>`).join('');
+  const CV=[{id:'CVE-2024-3400',score:10.0,cls:'critical',sc:'sc',title:'PAN-OS GlobalProtect Command Injection',desc:'Unauthenticated RCE with root privileges in Palo Alto Networks PAN-OS.',v:'Palo Alto',p:'PAN-OS',d:'2024-04-12'},{id:'CVE-2024-21887',score:9.1,cls:'critical',sc:'sc',title:'Ivanti Connect Secure Command Injection',desc:'Authenticated command injection enabling arbitrary code execution.',v:'Ivanti',p:'Connect Secure',d:'2024-01-10'},{id:'CVE-2024-1709',score:10.0,cls:'critical',sc:'sc',title:'ConnectWise ScreenConnect Auth Bypass',desc:'Authentication bypass allowing unauthenticated access to critical systems.',v:'ConnectWise',p:'ScreenConnect',d:'2024-02-21'},{id:'CVE-2023-44487',score:7.5,cls:'high',sc:'sh',title:'HTTP/2 Rapid Reset DoS Attack',desc:'HTTP/2 allows server resource exhaustion via rapid stream cancellation.',v:'Various',p:'HTTP/2',d:'2023-10-10'},{id:'CVE-2024-23897',score:9.8,cls:'critical',sc:'sc',title:'Jenkins Arbitrary File Read via CLI',desc:'Unauthenticated file read via CLI parser in Jenkins before 2.441.',v:'Jenkins',p:'Jenkins CI',d:'2024-01-24'},{id:'CVE-2024-4577',score:9.8,cls:'critical',sc:'sc',title:'PHP CGI Argument Injection (Windows)',desc:'PHP on Windows with CGI allows argument injection leading to RCE.',v:'PHP Group',p:'PHP 8.x',d:'2024-06-09'}];
+  document.getElementById('cveList').innerHTML=CV.map(c=>`<div class="cc ${e(c.cls)}"><div class="cch"><span class="cid">${e(c.id)}</span><span class="cs ${e(c.sc)}">CVSS ${e(String(c.score))} — ${e(c.cls.toUpperCase())}</span></div><div class="ct">${e(c.title)}</div><div class="cd">${e(c.desc)}</div><div class="cm"><span>📦 ${e(c.v)}</span><span>🖥 ${e(c.p)}</span><span>📅 ${e(c.d)}</span></div></div>`).join('');
+  const N=[{s:'Threat Intel',c:'#ff3b3b',t:'LockBit Ransomware Resurfaces After Law Enforcement Takedown',sum:'Despite infrastructure seizures, LockBit resumed operations with new servers and is recruiting affiliates.',tm:'2 hours ago'},{s:'AI Security',c:'#cc44ff',t:'AI-Powered Phishing Attacks Surge 400% in 2024',sum:'LLM-generated phishing emails are now indistinguishable from legitimate communications, bypassing traditional filters at unprecedented scale.',tm:'4 hours ago'},{s:'CISA Advisory',c:'#ff8c00',t:'CISA Adds 6 Known Exploited Vulnerabilities to Catalog',sum:'Federal agencies required to patch six newly added vulnerabilities by specified deadlines.',tm:'5 hours ago'},{s:'Security Research',c:'#ffd600',t:'MFA Bypass Campaign Targets Microsoft 365 Users',sum:'Session cookie theft after MFA authentication allows attackers to bypass multi-factor authentication entirely.',tm:'7 hours ago'},{s:'Breach Report',c:'#aa44ff',t:'Healthcare Provider Discloses Breach Affecting 2.9 Million Patients',sum:'Ransomware attack exposed names, SSNs, medical records, and insurance data.',tm:'9 hours ago'}];
+  const np=document.getElementById('newsPanel');np.innerHTML='';
+  N.forEach(n=>{const item=document.createElement('div');item.className='ni';const dot=document.createElement('div');dot.className='nd';dot.style.background=n.c;dot.style.boxShadow=`0 0 5px ${n.c}`;const ct=document.createElement('div');const src=document.createElement('div');src.className='ns';src.textContent=n.s;const tl=document.createElement('div');tl.className='nt';tl.textContent=n.t;const sm=document.createElement('div');sm.className='nsum';sm.textContent=n.sum;const tm=document.createElement('div');tm.className='ntm';tm.textContent=n.tm;ct.appendChild(src);ct.appendChild(tl);ct.appendChild(sm);ct.appendChild(tm);item.appendChild(dot);item.appendChild(ct);np.appendChild(item);});
+  function ac(el,tg){let c=0;const step=tg/60;const ti=setInterval(()=>{c=Math.min(c+step,tg);el.textContent=Math.floor(c).toLocaleString();if(c>=tg)clearInterval(ti);},16);}
+  setTimeout(()=>{ac(document.getElementById('sCves'),2847);ac(document.getElementById('sCrit'),143);ac(document.getElementById('sBreach'),38);ac(document.getElementById('sMit'),1204);},200);
 }
+
+// ── AI THREATS ──
+function initAI(){
+  const sc={CRITICAL:'sev-critical',HIGH:'sev-high',MEDIUM:'sev-medium'};
+  document.getElementById('aiGrid').innerHTML=AI_THREATS.map(t=>`
+    <div class="rc2 ai"><div class="rch"><div class="rn">${e(t.name)}</div><span class="sev ${sc[t.sev]||'sev-medium'}">${e(t.sev)}</span></div><div class="rd2">${e(t.desc)}</div><div class="rm ai">⟶ ${e(t.mit)}</div></div>`).join('');
+  Chart.defaults.color='#4a6080';Chart.defaults.borderColor='#1a2540';
+  Chart.defaults.font.family="'Share Tech Mono',monospace";Chart.defaults.font.size=11;
+  new Chart(document.getElementById('aiCC'),{type:'bar',data:{labels:['Recon','Exploit Dev','Phishing Scale','Detection Evasion','Patch Window'],datasets:[{label:'Traditional (hrs)',data:[72,168,1000,40,30],backgroundColor:'rgba(0,229,255,0.4)',borderRadius:2},{label:'AI-Powered (hrs)',data:[0.03,6,1000000,85,4],backgroundColor:'rgba(204,68,255,0.65)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:7,padding:8}}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{callback:v=>v>=1000?Math.round(v/1000)+'k':v}}}}});
+  new Chart(document.getElementById('aiTC'),{type:'doughnut',data:{labels:['AI Phishing','Autonomous Exploit','Deepfake Fraud','Prompt Injection','Data Poisoning','Other AI'],datasets:[{data:[34,21,18,13,8,6],backgroundColor:['#cc44ff','#ff1744','#ff8c00','#ffd600','#00e5ff','#4a6080'],borderColor:'#05080f',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:9,boxWidth:7}}},cutout:'65%'}});
+  const ip=document.getElementById('aiInc');ip.innerHTML='';
+  AI_INC.forEach(inc=>{
+    const item=document.createElement('div');item.className='ni';
+    const dot=document.createElement('div');dot.className='nd';dot.style.background='#cc44ff';dot.style.boxShadow='0 0 5px #cc44ff';
+    const ct=document.createElement('div');ct.style.flex='1';
+    const hd=document.createElement('div');hd.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px';
+    const org=document.createElement('div');org.className='ns';org.textContent=inc.org+' — '+inc.date;
+    const imp=document.createElement('span');imp.style.cssText='font-family:var(--mono);font-size:0.58rem;color:var(--red);background:var(--rd);padding:2px 7px;border-radius:2px;border:1px solid rgba(255,59,59,0.3)';imp.textContent=inc.impact;
+    hd.appendChild(org);hd.appendChild(imp);
+    const tp=document.createElement('div');tp.className='nt';tp.textContent=inc.type;
+    const dc=document.createElement('div');dc.className='nsum';dc.textContent=inc.desc;
+    ct.appendChild(hd);ct.appendChild(tp);ct.appendChild(dc);
+    item.appendChild(dot);item.appendChild(ct);ip.appendChild(item);
+  });
+  document.getElementById('aiDef').innerHTML=AI_DEF.map(d=>`
+    <div class="rc2 ai"><div class="rch"><div style="font-size:1.2rem">${e(d.i)}</div><div class="rn" style="flex:1">${e(d.n)}</div></div><div class="rd2">${e(d.d)}</div></div>`).join('');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('urlInput').addEventListener('keydown',ev=>{if(ev.key==='Enter')startScan();});
+  renderRef();
+});
 </script>
 </body>
 </html>
