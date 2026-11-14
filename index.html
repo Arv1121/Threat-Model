@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://arv1121.github.io/Threat-Model/"/>
 <meta name="twitter:card" content="summary"/>
 <link rel="canonical" href="https://arv1121.github.io/Threat-Model/"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com https://rdap.org https://www.virustotal.com https://urlscan.io https://dns.google https://api.shodan.io https://haveibeenpwned.com https://raw.githubusercontent.com; img-src 'self' data:; object-src 'none';"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://rdap.org https://www.virustotal.com https://urlscan.io https://dns.google https://api.shodan.io https://haveibeenpwned.com https://raw.githubusercontent.com; img-src 'self' data:; object-src 'none';"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
 <!-- TS-SIG:a7f3c9d2e1b4 -->
@@ -265,7 +265,18 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .feed-status{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:10px 13px;margin-bottom:14px;font-family:var(--mono);font-size:0.62rem;line-height:1.6;color:var(--td)}
 .feed-status.error{color:var(--orange);border-color:rgba(255,140,0,0.3)}
 .community-summary .stg{margin:0 0 14px}
+.community-summary .stg[hidden],.aggregate-state[hidden],.aggregate-retry[hidden]{display:none}
 .community-summary .feed-status{margin-bottom:14px}
+.aggregate-state{display:flex;align-items:flex-start;gap:12px;padding:15px;border:1px solid var(--border);border-radius:12px;background:linear-gradient(145deg,rgba(20,30,49,.7),rgba(15,24,40,.75));margin:0 0 14px}
+.aggregate-state[data-state="waiting"]{border-color:rgba(102,217,193,.25)}
+.aggregate-state[data-state="error"]{border-color:rgba(255,114,122,.4)}
+.aggregate-state-mark{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:rgba(102,217,193,.1);color:var(--cyan);font-size:1rem;font-weight:700}
+.aggregate-state[data-state="error"] .aggregate-state-mark{background:rgba(255,114,122,.1);color:var(--red)}
+.aggregate-state-copy{min-width:0;flex:1}
+.aggregate-state-copy strong{display:block;color:var(--tb);font-size:.84rem}
+.aggregate-state-copy p{margin-top:5px;color:var(--td);font-size:.75rem;line-height:1.55}
+.aggregate-retry{flex:0 0 auto;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--cyan);font:600 .72rem var(--body);cursor:pointer}
+.aggregate-retry:hover{border-color:var(--cyan)}
 .feed-source{font-size:0.68rem;color:var(--td);line-height:1.6;margin:-4px 0 14px}
 .feed-source a,.contribute-links a{color:var(--cyan);text-decoration:none}
 .feed-source a:hover,.contribute-links a:hover{text-decoration:underline}
@@ -699,9 +710,17 @@ body::before,body::after{display:none}
         <div class="ph"><span class="pt2">Opt-In Repository Dependency Risk</span><span class="badge bc">OWNER AUTHORIZED</span></div>
         <div class="pb">
           <div class="feed-status" id="repoAggregateStatus" role="status" aria-live="polite">Loading the latest community aggregate…</div>
-          <div class="stg">
-            <div class="stc cyan"><div class="stn" id="repoPackages">—</div><div class="stl">Dependency Entries Scanned</div></div>
-            <div class="stc orange"><div class="stn" id="repoAffected">—</div><div class="stl">Affected Entries</div></div>
+          <div id="repoAggregateState" class="aggregate-state" data-state="loading">
+            <span class="aggregate-state-mark" aria-hidden="true">···</span>
+            <div class="aggregate-state-copy">
+              <strong id="repoAggregateStateTitle">Checking opted-in reports…</strong>
+              <p id="repoAggregateStateText">Totals appear only after at least 10 fresh, owner-authorized repository reports are available.</p>
+            </div>
+            <button id="repoAggregateRetry" class="aggregate-retry" type="button" onclick="loadRepositoryAggregate()" hidden>Retry</button>
+          </div>
+          <div class="stg" id="repoAggregateMetrics" hidden>
+            <div class="stc cyan"><div class="stn" id="repoPackages">—</div><div class="stl">Packages Scanned</div></div>
+            <div class="stc orange"><div class="stn" id="repoAffected">—</div><div class="stl">Affected Packages</div></div>
             <div class="stc red"><div class="stn" id="repoMatches">—</div><div class="stl">Vulnerability Matches</div></div>
           </div>
           <div class="feed-source">This is an aggregate of dependency-only OSV-Scanner reports from explicitly opted-in public repositories; this site does not scan GitHub globally. No repository names, package names, vulnerability IDs, or file paths are published here. Totals stay hidden until at least 10 fresh reports are available. Scans send dependency identifiers and versions to OSV's public vulnerability service. <a href="https://github.com/Arv1121/Threat-Model/blob/main/README.md#owner-opt-in-repository-scanning" target="_blank" rel="noopener noreferrer">How to opt in</a>.</div>
@@ -1824,23 +1843,55 @@ function initThreats(){
 
 async function loadRepositoryAggregate(){
   const status=document.getElementById('repoAggregateStatus');
+  const metrics=document.getElementById('repoAggregateMetrics');
+  const state=document.getElementById('repoAggregateState');
+  const stateTitle=document.getElementById('repoAggregateStateTitle');
+  const stateText=document.getElementById('repoAggregateStateText');
+  const retry=document.getElementById('repoAggregateRetry');
+  const showState=(kind,title,message)=>{
+    state.dataset.state=kind;
+    stateTitle.textContent=title;
+    stateText.textContent=message;
+    state.hidden=false;
+  };
+  metrics.hidden=true;
+  retry.hidden=true;
+  status.classList.remove('error');
+  status.textContent='Checking the latest owner-authorized repository reports…';
+  showState('loading','Checking opted-in reports…','Totals appear only after at least 10 fresh, owner-authorized repository reports are available.');
   try{
     const {fetchCommunityAggregate}=await import('./repo-scan.mjs');
     const aggregate=await fetchCommunityAggregate();
     status.classList.remove('error');
     if(aggregate.status!=='ready'){
-      status.textContent=`Insufficient cohort: ${aggregate.reportingRepositories} of ${aggregate.minimumRepositories} fresh, owner-authorized repositories are reporting. Vulnerability totals are hidden; this is not a zero-risk result.`;
+      const registered=aggregate.reportingRepositories+aggregate.excludedReports;
+      const noOptIns=registered===0;
+      status.textContent=noOptIns
+        ?'No owner-authorized repositories are currently opted in.'
+        :`${aggregate.reportingRepositories} of ${aggregate.minimumRepositories} required fresh reports are available.`;
+      showState(
+        'waiting',
+        noOptIns?'No repositories have opted in yet':'Waiting for more fresh reports',
+        noOptIns
+          ?`There are currently no enrolled repositories. At least ${aggregate.minimumRepositories} must opt in and publish fresh reports before totals can be shown. No totals does not mean zero risk.`
+          :`${aggregate.reportingRepositories} of ${aggregate.minimumRepositories} required reports are fresh; ${aggregate.excludedReports} enrolled reports are missing, stale, or invalid. Totals remain hidden to protect privacy, and this is not a zero-risk result.`
+      );
       return;
     }
 
     document.getElementById('repoPackages').textContent=aggregate.totals.packagesScanned.toLocaleString();
     document.getElementById('repoAffected').textContent=aggregate.totals.affectedPackages.toLocaleString();
     document.getElementById('repoMatches').textContent=aggregate.totals.vulnerabilityMatches.toLocaleString();
+    state.hidden=true;
+    metrics.hidden=false;
     status.textContent=`Aggregate from ${aggregate.reportingRepositories.toLocaleString()} fresh, owner-authorized repositories. Updated ${new Date(aggregate.updatedAt).toLocaleString()}. These are dependency findings only; individual repositories and findings are not listed.`;
   }catch(error){
     console.error('Unable to load the opted-in repository aggregate:',error);
     status.classList.add('error');
-    status.textContent='Community aggregate unavailable. No vulnerability totals are shown; this is not a zero-risk result.';
+    status.textContent='Could not load the community aggregate. No vulnerability totals are shown.';
+    const detail=error instanceof Error?error.message:'Unexpected aggregate loading error.';
+    showState('error','Community data is temporarily unavailable',`${detail} Check your connection and retry. No totals are shown; this is not a zero-risk result.`);
+    retry.hidden=false;
   }
 }
 
