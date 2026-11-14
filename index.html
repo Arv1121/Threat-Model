@@ -368,17 +368,21 @@ body::before,body::after{display:none}
 .dashboard-title span{color:var(--cyan);background:linear-gradient(90deg,#66d9c1,#a5b9ff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .dashboard-copy{max-width:620px;color:var(--td);line-height:1.7;margin-top:12px}
 .eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
-.hero-visual{position:relative;min-height:320px;overflow:hidden;border:1px solid rgba(102,217,193,.2);border-radius:22px;background:radial-gradient(ellipse at 52% 48%,rgba(102,217,193,.1),transparent 58%),linear-gradient(145deg,rgba(19,34,53,.86),rgba(12,19,33,.88));box-shadow:inset 0 1px rgba(255,255,255,.04),0 28px 80px rgba(0,0,0,.22)}
-.hero-visual::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(165,185,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(165,185,255,.045) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(135deg,#000,transparent 90%)}
-.hero-visual svg{position:relative;display:block;width:100%;height:280px}
-.hero-visual g[fill="none"]{stroke-width:1}
-.hero-nodes circle{fill:#66d9c1;filter:drop-shadow(0 0 8px rgba(102,217,193,.8));animation:nodeBreathe 3s ease-in-out infinite alternate}
-.hero-nodes circle:nth-child(3n){animation-delay:-1.3s}
-.hero-core{fill:rgba(102,217,193,.16);stroke:#66d9c1;stroke-width:1.5;filter:drop-shadow(0 0 16px rgba(102,217,193,.55))}
-.hero-core-ring{fill:none;stroke:#66d9c1;stroke-opacity:.35;stroke-dasharray:3 7;animation:orbit 24s linear infinite}
-.hero-visual-label{position:absolute;right:16px;bottom:14px;left:16px;display:flex;justify-content:space-between;gap:10px;color:var(--td);font:600 .58rem var(--body);letter-spacing:.08em}
-@keyframes nodeBreathe{from{opacity:.42}to{opacity:1}}
-@keyframes orbit{to{transform:rotate(360deg)}}
+.hero-live-panel{min-height:320px;padding:22px;border:1px solid rgba(102,217,193,.2);border-radius:22px;background:linear-gradient(145deg,rgba(19,34,53,.92),rgba(12,19,33,.96));box-shadow:inset 0 1px rgba(255,255,255,.04),0 28px 80px rgba(0,0,0,.22)}
+.hero-live-source{display:flex;align-items:center;gap:9px}
+.hero-live-title{margin-top:19px;color:var(--tb);font-size:1.12rem;font-weight:650;letter-spacing:-.03em}
+.hero-live-copy{margin-top:5px;color:var(--td);font-size:.75rem;line-height:1.55}
+.hero-live-bars{display:grid;gap:7px;margin:17px 0}
+.hero-live-row{display:grid;grid-template-columns:56px minmax(0,1fr) 34px;align-items:center;gap:9px;color:var(--td);font-size:.66rem;font-variant-numeric:tabular-nums}
+.hero-live-month{white-space:nowrap}
+.hero-live-track{height:7px;overflow:hidden;border-radius:8px;background:rgba(150,167,191,.12)}
+.hero-live-bar{display:block;height:100%;min-width:0;border-radius:8px;background:linear-gradient(90deg,#66d9c1,#a5b9ff)}
+.hero-live-count{color:var(--tb);text-align:right}
+.hero-live-footer{display:flex;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--border);color:var(--td);font-size:.7rem}
+.hero-live-footer time{color:var(--tb);font-variant-numeric:tabular-nums}
+.hero-live-link{display:inline-block;margin-top:12px;color:var(--cyan);font-size:.74rem;text-decoration:none}
+.hero-live-link:hover{text-decoration:underline}
+.hero-live-empty{grid-column:1/-1;color:var(--td);font-size:.75rem;line-height:1.5}
 .feedback-wrap{max-width:1120px}
 .feedback-hero{padding:42px 0 26px}
 .feedback-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:18px;align-items:start}
@@ -478,7 +482,7 @@ body::before,body::after{display:none}
 .repo-pagination[hidden]{display:none}
 .repo-pagination .action-link{min-height:36px;padding:0 12px}
 .repo-pagination button:disabled{opacity:.5;cursor:not-allowed}
-@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:34px}.hero-visual{min-height:280px}.hero-visual svg{height:250px}.feedback-layout{grid-template-columns:1fr}.intel-grid,.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-layout{grid-template-columns:1fr}}
+@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:34px}.hero-live-panel{min-height:0}.feedback-layout{grid-template-columns:1fr}.intel-grid,.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-layout{grid-template-columns:1fr}}
 @media(max-width:600px){.nav{padding:0 10px}.logo-btn{margin-right:8px}.logo-btn svg{display:none}.tab{padding:0 9px;font-size:.72rem}.nav-r{display:none}.wrap{padding:24px 14px 52px}.repo-form{flex-direction:column}.repo-form .lookup-button{width:100%}.intel-grid{gap:8px}.intel-card{padding:13px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
@@ -531,32 +535,15 @@ body::before,body::after{display:none}
           <button class="action-link" onclick="show('repositories')">Browse GitHub projects</button>
         </div>
       </div>
-      <div class="hero-visual" role="img" aria-label="Decorative cybersecurity network illustration; it does not represent live activity.">
-        <svg viewBox="0 0 560 360" aria-hidden="true" focusable="false">
-          <defs>
-            <radialGradient id="heroGlow"><stop offset="0" stop-color="#66d9c1" stop-opacity=".22"/><stop offset="1" stop-color="#66d9c1" stop-opacity="0"/></radialGradient>
-            <linearGradient id="heroLine" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#66d9c1" stop-opacity=".08"/><stop offset=".5" stop-color="#66d9c1" stop-opacity=".75"/><stop offset="1" stop-color="#b7a3ff" stop-opacity=".25"/></linearGradient>
-          </defs>
-          <circle cx="300" cy="170" r="155" fill="url(#heroGlow)"/>
-          <g fill="none" stroke="url(#heroLine)">
-            <path d="M66 242 155 116 252 185 346 82 474 149"/>
-            <path d="m108 304 96-88 118 46 92-113 70 65"/>
-            <path d="m155 116 49 100 142-134 24 180"/>
-            <circle cx="300" cy="180" r="112" opacity=".35"/>
-            <circle cx="300" cy="180" r="148" opacity=".18"/>
-            <path d="M54 180h492M300 24v312" opacity=".15"/>
-          </g>
-          <g class="hero-nodes">
-            <circle cx="66" cy="242" r="5"/><circle cx="155" cy="116" r="7"/>
-            <circle cx="252" cy="185" r="5"/><circle cx="346" cy="82" r="6"/>
-            <circle cx="474" cy="149" r="8"/><circle cx="108" cy="304" r="4"/>
-            <circle cx="204" cy="216" r="6"/><circle cx="322" cy="262" r="5"/>
-            <circle cx="414" cy="149" r="4"/><circle cx="484" cy="214" r="6"/>
-          </g>
-          <circle class="hero-core" cx="300" cy="180" r="24"/>
-          <circle class="hero-core-ring" cx="300" cy="180" r="42"/>
-        </svg>
-        <div class="hero-visual-label"><span>THREATSCOPE / OPEN SIGNALS</span><span>ILLUSTRATIVE · NOT LIVE TELEMETRY</span></div>
+      <div class="hero-live-panel" aria-labelledby="dashboardKevTrendTitle">
+        <div class="hero-live-source"><span class="badge bc">SOURCE: CISA KEV</span><span class="badge bg2c">CATALOG DATA</span></div>
+        <h2 class="hero-live-title" id="dashboardKevTrendTitle">Vulnerabilities added to the catalog</h2>
+        <p class="hero-live-copy">Actual catalog additions by month over the past year. These dates show when CISA added an entry, not when an attack occurred.</p>
+        <div id="dashboardKevTrend" class="hero-live-bars" role="list" aria-label="Monthly additions from the CISA Known Exploited Vulnerabilities catalog">
+          <div class="hero-live-empty">Waiting for the CISA catalog. No sample data is displayed.</div>
+        </div>
+        <div class="hero-live-footer"><span>Catalog released</span><time id="dashboardTrendDate">Waiting for source data</time></div>
+        <a class="hero-live-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Verify against the official CISA catalog ↗</a>
       </div>
     </section>
     <div id="dashboardStatus" class="feed-status" role="status" aria-live="polite">Loading the CISA KEV catalog…</div>
@@ -574,7 +561,7 @@ body::before,body::after{display:none}
       <aside class="panel">
         <div class="ph"><span class="pt2">Data and update cadence</span></div>
         <div class="pb source-list">
-          <div class="source-row"><div><div class="source-name">CISA KEV</div><div class="source-detail">Confirmed known-exploited vulnerabilities. Public mirror refreshes daily; this is not a real-time attack feed.</div></div><span class="badge bg2c">LIVE CATALOG</span></div>
+          <div class="source-row"><div><div class="source-name">CISA KEV</div><div class="source-detail">Confirmed known-exploited vulnerabilities. Public mirror refreshes daily; this is not a real-time attack feed.</div></div><span class="badge bg2c">DAILY MIRROR</span></div>
           <div class="source-row"><div><div class="source-name">GitHub REST API</div><div class="source-detail">Public repository search results and metadata for repositories you select.</div></div><span class="badge bc">ON DEMAND</span></div>
           <div class="source-row"><div><div class="source-name">Community dependency data</div><div class="source-detail">Owner-authorized aggregate. Totals remain hidden until the minimum fresh-report cohort is met.</div></div><span class="badge bo">OPT IN</span></div>
           <a class="action-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Open CISA source ↗</a>
@@ -1861,13 +1848,26 @@ async function loadRepositoryAggregate(){
 async function loadDashboardData(){
   const status=document.getElementById('dashboardStatus');
   try{
-    const {fetchKevCatalog,getKevStats,filterKevVulnerabilities}=await import('./threat-feed.mjs');
+    const {fetchKevCatalog,getKevStats,filterKevVulnerabilities,getKevMonthlyAdditions}=await import('./threat-feed.mjs');
     const catalog=await fetchKevCatalog();
     const stats=getKevStats(catalog);
     document.getElementById('dashboardKevTotal').textContent=stats.total.toLocaleString();
     document.getElementById('dashboardRecent').textContent=stats.addedInLast30Days.toLocaleString();
     document.getElementById('dashboardRansomware').textContent=stats.ransomwareKnown.toLocaleString();
     document.getElementById('dashboardCatalogDate').textContent=new Date(stats.catalogDate).toLocaleDateString();
+    const monthly=getKevMonthlyAdditions(catalog.vulnerabilities);
+    const peak=Math.max(0,...monthly.map((month)=>month.count));
+    document.getElementById('dashboardKevTrend').innerHTML=monthly.map((month)=>{
+      const width=peak?Math.round(month.count/peak*100):0;
+      return`<div class="hero-live-row" role="listitem" aria-label="${e(month.label)}: ${month.count.toLocaleString()} catalog additions">
+        <span class="hero-live-month">${e(month.label)}</span>
+        <span class="hero-live-track" aria-hidden="true"><span class="hero-live-bar" style="width:${width}%"></span></span>
+        <strong class="hero-live-count">${month.count.toLocaleString()}</strong>
+      </div>`;
+    }).join('');
+    const releaseDate=document.getElementById('dashboardTrendDate');
+    releaseDate.dateTime=stats.catalogDate;
+    releaseDate.textContent=new Date(stats.catalogDate).toLocaleDateString();
     const latest=filterKevVulnerabilities(catalog.vulnerabilities).slice(0,6);
     document.getElementById('dashboardKevList').innerHTML=latest.length?latest.map((item)=>`
       <article class="latest-item">
@@ -1881,6 +1881,8 @@ async function loadDashboardData(){
     console.error('Unable to load the dashboard KEV data:',error);
     status.classList.add('error');
     status.textContent='CISA KEV data is unavailable. No sample values are shown; retry from Threat Intel or visit the official source.';
+    document.getElementById('dashboardKevTrend').innerHTML='<div class="hero-live-empty">CISA catalog data is unavailable. No sample chart is substituted.</div>';
+    document.getElementById('dashboardTrendDate').textContent='Unavailable';
     document.getElementById('dashboardKevList').innerHTML='<div class="es">Live catalog unavailable. No sample entries are substituted.</div>';
   }
 }

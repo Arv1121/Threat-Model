@@ -20,7 +20,7 @@ The site remains a static GitHub Pages app; it has no application server or data
 
 Other URL lookup requests go directly from the browser to the selected third-party service. Review each provider's terms before submitting URLs; URLScan.io submissions may be public. Feedback remains in the page until you follow the prepared issue link; GitHub receives the draft and any issue you submit is public. Do not include secrets or sensitive information. TLS and HTTP-header grades are not estimated because this static browser app cannot produce reliable checks for arbitrary hosts. If data is unavailable, the dashboard shows that state instead of substituting a clean result or sample data.
 
-The learning library is static educational content, not a current incident feed. No globe, attack locations, or fabricated real-time activity is shown.
+The home-page monthly chart is calculated from actual CISA KEV entry dates and labels catalog additions, not attack timing. If the source cannot be loaded, the chart stays unavailable rather than showing sample values. The learning library remains authored educational reference content, not a current incident feed.
 
 Optional scanner API keys stay in browser memory for the current page session. Do not enter internal or sensitive URLs into public scanning services.
 
