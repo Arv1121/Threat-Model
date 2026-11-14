@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "status": "insufficient-cohort",
+  "updatedAt": null,
+  "minimumRepositories": 10,
+  "reportingRepositories": 0,
+  "excludedReports": 0,
+  "totals": null
+}
