@@ -12,6 +12,8 @@ ThreatScope is a browser-based defensive intelligence dashboard. It combines a s
 - Offers an exact repository lookup with direct links to that repository's security resources.
 - Offers optional VirusTotal, URLScan.io, Shodan, and Have I Been Pwned lookups for authorized targets.
 - Provides a feedback form that prepares a GitHub issue draft for review; it does not submit feedback automatically.
+- Includes on-demand browser health checks for the hosted page, CISA catalog, GitHub REST API, and community aggregate.
+- Offers a dark/light theme toggle and a local keyword-based navigation guide; guide messages are not sent to an AI service.
 - Keeps evergreen educational material separate from current threat intelligence.
 
 ## Data freshness and privacy
@@ -20,9 +22,11 @@ The site remains a static GitHub Pages app; it has no application server or data
 
 Other URL lookup requests go directly from the browser to the selected third-party service. Review each provider's terms before submitting URLs; URLScan.io submissions may be public. Feedback remains in the page until you follow the prepared issue link; GitHub receives the draft and any issue you submit is public. Do not include secrets or sensitive information. TLS and HTTP-header grades are not estimated because this static browser app cannot produce reliable checks for arbitrary hosts. If data is unavailable, the dashboard shows that state instead of substituting a clean result or sample data.
 
-The home-page monthly chart is calculated from actual CISA KEV entry dates and labels catalog additions, not attack timing. If the source cannot be loaded, the chart stays unavailable rather than showing sample values. The learning library remains authored educational reference content, not a current incident feed.
+Threat Intel charts are calculated from actual CISA KEV entry dates and catalog vendor counts, not attack timing. If the source cannot be loaded, the charts stay unavailable rather than showing sample values. The home page keeps a concise catalog snapshot and a short list of recent additions. The learning library remains authored educational reference content, not a current incident feed.
 
 Optional scanner API keys stay in browser memory for the current page session. Do not enter internal or sensitive URLs into public scanning services.
+
+Health checks make direct browser requests to the listed public sources and are not continuous server monitoring. Theme selection and guide conversations remain in page memory only; the navigation guide is not a generative AI chatbot and sends no prompts to an external provider.
 
 ## Owner opt-in repository scanning
 
