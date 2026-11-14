@@ -3,14 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="ThreatScope - Free URL vulnerability scanner and cyber threat intelligence platform"/>
+<meta name="description" content="ThreatScope is a free security dashboard with a live CISA Known Exploited Vulnerabilities feed, URL scanning, and practical threat references."/>
 <meta name="author" content="ThreatScope by Arv1121"/>
 <meta name="copyright" content="Copyright 2026 ThreatScope - Arv1121. All rights reserved."/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://www.virustotal.com https://urlscan.io https://dns.google https://api.shodan.io https://haveibeenpwned.com; img-src 'self' data:; object-src 'none';"/>
+<meta property="og:title" content="ThreatScope — Security Intelligence Dashboard"/>
+<meta property="og:description" content="Explore the live CISA Known Exploited Vulnerabilities catalog, scan authorized URLs, and learn practical defenses."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arv1121.github.io/Threat-Model/"/>
+<meta name="twitter:card" content="summary"/>
+<link rel="canonical" href="https://arv1121.github.io/Threat-Model/"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://www.virustotal.com https://urlscan.io https://dns.google https://api.shodan.io https://haveibeenpwned.com https://raw.githubusercontent.com; img-src 'self' data:; object-src 'none';"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
 <!-- TS-SIG:a7f3c9d2e1b4 -->
-<title>ThreatScope — Cyber Intelligence Platform</title>
+<title>ThreatScope — Security Intelligence Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" crossorigin="anonymous"></script>
@@ -260,6 +266,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .cl{display:flex;flex-direction:column;gap:9px}
 .cc{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:13px;cursor:pointer;transition:border-color 0.2s,transform 0.15s}
 .cc:hover{border-color:var(--bb);transform:translateX(3px)}
+.cc.known{border-left:3px solid var(--orange)}
 .cc.critical{border-left:3px solid #ff1744}.cc.high{border-left:3px solid var(--red)}.cc.medium{border-left:3px solid var(--orange)}
 .cch{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px}
 .cid{font-family:var(--mono);font-size:0.72rem;color:var(--cyan)}
@@ -286,6 +293,25 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .cvs-input input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 14px;font-family:var(--mono);font-size:0.78rem;color:var(--text);outline:none;transition:border-color 0.2s}
 .cvs-input input:focus{border-color:var(--cyan)}
 .cvs-input button{background:var(--cyan);color:var(--bg);border:none;padding:10px 20px;font-family:var(--disp);font-size:0.9rem;letter-spacing:2px;cursor:pointer;border-radius:3px}
+.cvs-input button:disabled{opacity:0.55;cursor:wait}
+.feed-status{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:10px 13px;margin-bottom:14px;font-family:var(--mono);font-size:0.62rem;line-height:1.6;color:var(--td)}
+.feed-status.error{color:var(--orange);border-color:rgba(255,140,0,0.3)}
+.community-summary .stg{margin:0 0 14px}
+.community-summary .feed-status{margin-bottom:14px}
+.feed-source{font-size:0.68rem;color:var(--td);line-height:1.6;margin:-4px 0 14px}
+.feed-source a,.contribute-links a{color:var(--cyan);text-decoration:none}
+.feed-source a:hover,.contribute-links a:hover{text-decoration:underline}
+.kev-count{font-family:var(--mono);font-size:0.62rem;color:var(--td);margin:-4px 0 10px}
+.cc:not(.known){cursor:pointer}
+.cc.known{cursor:default}
+.cc.known:hover{transform:none}
+.kev-link{font-family:var(--mono);font-size:0.58rem;color:var(--cyan);text-decoration:none}
+.kev-link:hover{text-decoration:underline}
+.contribute-panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px}
+.contribute-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-family:var(--mono);font-size:0.68rem;letter-spacing:1px}
+.simulation-banner{position:absolute;z-index:3;top:14px;left:50%;transform:translateX(-50%);background:rgba(255,140,0,0.95);color:#05080f;padding:7px 12px;border-radius:3px;font-family:var(--mono);font-size:0.6rem;letter-spacing:1px;text-align:center;white-space:nowrap}
+@media(max-width:560px){.simulation-banner{top:8px;max-width:calc(100% - 24px);white-space:normal}}
+@media(max-width:560px){.cvs-input{flex-wrap:wrap}.cvs-input input{flex-basis:100%}.cvs-input button{flex:1}}
 
 /* AI */
 .ai-stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:28px}
@@ -373,7 +399,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   </button>
   <div class="nav-tabs">
     <button class="tab active" onclick="show('scanner')" data-p="scanner"><div class="tdot"></div>Scanner</button>
-    <button class="tab" onclick="show('globe')" data-p="globe"><div class="tdot"></div>Live Globe</button>
+    <button class="tab" onclick="show('globe')" data-p="globe"><div class="tdot"></div>Threat Globe · SIMULATED</button>
     <button class="tab" onclick="show('threats')" data-p="threats"><div class="tdot"></div>Threat Feed</button>
     <button class="tab" onclick="show('ai')" data-p="ai"><div class="tdot"></div>AI Threats</button>
     <button class="tab" onclick="show('about')" data-p="about"><div class="tdot"></div>About</button>
@@ -460,15 +486,16 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <div id="page-globe" class="page">
   <div id="gw">
     <canvas id="gc"></canvas>
+    <div class="simulation-banner">SIMULATION ONLY — no live attack telemetry</div>
     <div class="gp gpl">
-      <div class="gcard"><div class="gct">Global Stats</div>
-        <div class="gs"><span class="gsk">Attacks Today</span><span class="gsv red" id="gA">0</span></div>
-        <div class="gs"><span class="gsk">Active Sources</span><span class="gsv orange" id="gS">0</span></div>
-        <div class="gs"><span class="gsk">Countries Hit</span><span class="gsv cyan" id="gC">0</span></div>
-        <div class="gs"><span class="gsk">Top Vector</span><span class="gsv" id="gT">DDoS</span></div>
-        <div class="gs"><span class="gsk">Threat Level</span><span class="gsv red">ELEVATED</span></div>
+      <div class="gcard"><div class="gct">Illustrative Simulation</div>
+      <div class="gs"><span class="gsk">Animated Events</span><span class="gsv red" id="gA">0</span></div>
+      <div class="gs"><span class="gsk">Sample Sources</span><span class="gsv orange" id="gS">0</span></div>
+      <div class="gs"><span class="gsk">Sample Locations</span><span class="gsv cyan" id="gC">0</span></div>
+      <div class="gs"><span class="gsk">Sample Vector</span><span class="gsv" id="gT">DDoS</span></div>
+      <div class="gs"><span class="gsk">Data Type</span><span class="gsv orange">SIMULATED</span></div>
       </div>
-      <div class="gcard"><div class="gct">Attack Legend — click to learn</div>
+      <div class="gcard"><div class="gct">Simulated Attack Types — click to learn</div>
         <div class="li" onclick="openGlobeLegend('DDoS')"><div class="ld" style="background:#ff3b3b;box-shadow:0 0 5px #ff3b3b"></div>DDoS / Volumetric <span style="font-family:var(--mono);font-size:0.52rem;color:var(--td);margin-left:auto">→</span></div>
         <div class="li" onclick="openGlobeLegend('Malware')"><div class="ld" style="background:#ff8c00;box-shadow:0 0 5px #ff8c00"></div>Malware / Ransomware <span style="font-family:var(--mono);font-size:0.52rem;color:var(--td);margin-left:auto">→</span></div>
         <div class="li" onclick="openGlobeLegend('Phishing')"><div class="ld" style="background:#ffd600;box-shadow:0 0 5px #ffd600"></div>Phishing <span style="font-family:var(--mono);font-size:0.52rem;color:var(--td);margin-left:auto">→</span></div>
@@ -483,45 +510,62 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       </div>
     </div>
     <div class="gp gpr">
-      <div class="gcard"><div class="gct">Live Attack Feed</div><div class="feed" id="gFeed"></div></div>
-      <div class="gcard"><div class="gct">Top Sources</div><div id="gTop"></div></div>
+      <div class="gcard"><div class="gct">Simulated Event Feed</div><div class="feed" id="gFeed"></div></div>
+      <div class="gcard"><div class="gct">Sample Source Locations</div><div id="gTop"></div></div>
     </div>
-    <div class="gt"><div class="tl">// THREAT INTEL</div><div style="overflow:hidden;flex:1"><div class="tt" id="gTk"></div></div></div>
+    <div class="gt"><div class="tl">// SIMULATED THREAT INTEL</div><div style="overflow:hidden;flex:1"><div class="tt" id="gTk"></div></div></div>
   </div>
 </div>
 
 <!-- PAGE: THREATS -->
 <div id="page-threats" class="page">
   <div class="wrap">
-    <div style="padding:32px 0 24px"><div class="pl2">// Real-time intelligence</div><div class="pt">THREAT <span>FEED</span></div><p class="ps">Latest CVEs, breaches, and global attack statistics.</p></div>
+    <div style="padding:32px 0 24px"><div class="pl2">// Public vulnerability intelligence</div><div class="pt">EXPLOITED <span>VULNERABILITIES</span></div><p class="ps">Search the CISA Known Exploited Vulnerabilities (KEV) catalog. The upstream catalog is maintained by CISA and its public mirror refreshes daily.</p></div>
+    <div class="feed-status" id="kevStatus" role="status" aria-live="polite">Connecting to the CISA KEV catalog…</div>
+    <div class="full">
+      <div class="panel community-summary">
+        <div class="ph"><span class="pt2">Opt-In Repository Dependency Risk</span><span class="badge bc">OWNER AUTHORIZED</span></div>
+        <div class="pb">
+          <div class="feed-status" id="repoAggregateStatus" role="status" aria-live="polite">Loading the latest community aggregate…</div>
+          <div class="stg">
+            <div class="stc cyan"><div class="stn" id="repoPackages">—</div><div class="stl">Dependency Entries Scanned</div></div>
+            <div class="stc orange"><div class="stn" id="repoAffected">—</div><div class="stl">Affected Entries</div></div>
+            <div class="stc red"><div class="stn" id="repoMatches">—</div><div class="stl">Vulnerability Matches</div></div>
+          </div>
+          <div class="feed-source">This is an aggregate of dependency-only OSV-Scanner reports from explicitly opted-in public repositories; this site does not scan GitHub globally. No repository names, package names, vulnerability IDs, or file paths are published here. Totals stay hidden until at least 10 fresh reports are available. Scans send dependency identifiers and versions to OSV's public vulnerability service. <a href="https://github.com/Arv1121/Threat-Model/blob/main/README.md#owner-opt-in-repository-scanning" target="_blank" rel="noopener noreferrer">How to opt in</a>.</div>
+        </div>
+      </div>
+    </div>
     <div class="stg">
-      <div class="stc red"><div class="stn" id="sCves">2,847</div><div class="stl">New CVEs / Month</div></div>
-      <div class="stc orange"><div class="stn" id="sCrit">143</div><div class="stl">Critical Severity</div></div>
-      <div class="stc yellow"><div class="stn" id="sBreach">38</div><div class="stl">Active Breaches</div></div>
-      <div class="stc cyan"><div class="stn">89%</div><div class="stl">Patch Rate (30d)</div></div>
-      <div class="stc green"><div class="stn" id="sMit">1,204</div><div class="stl">Threats Mitigated</div></div>
+      <div class="stc red"><div class="stn" id="sCves">—</div><div class="stl">Known Exploited CVEs</div></div>
+      <div class="stc orange"><div class="stn" id="sAdded">—</div><div class="stl">Added in 30 Days</div></div>
+      <div class="stc yellow"><div class="stn" id="sRansomware">—</div><div class="stl">Ransomware Use Known</div></div>
+      <div class="stc cyan"><div class="stn" id="sCatalogDate">—</div><div class="stl">Catalog Release Date</div></div>
     </div>
     <div class="two">
-      <div class="panel"><div class="ph"><span class="pt2">Attack Volume — 14 Days</span><span class="badge br">LIVE</span></div><div class="pb"><div class="cw"><canvas id="aC"></canvas></div></div></div>
-      <div class="panel"><div class="ph"><span class="pt2">Attack Distribution</span><span class="badge bc">TODAY</span></div><div class="pb"><div class="cw"><canvas id="tC"></canvas></div></div></div>
-    </div>
-    <div class="two">
-      <div class="panel"><div class="ph"><span class="pt2">Top Attack Vectors</span></div><div class="pb" id="aBars"></div></div>
-      <div class="panel"><div class="ph"><span class="pt2">Severity Trend — 7 Days</span><span class="badge bo">CVE</span></div><div class="pb"><div class="cw"><canvas id="sC"></canvas></div></div></div>
+      <div class="panel"><div class="ph"><span class="pt2">KEV Additions — Last 12 Months</span><span class="badge bc">CISA DATA</span></div><div class="pb"><div class="cw"><canvas id="kevTrendChart"></canvas></div></div></div>
+      <div class="panel"><div class="ph"><span class="pt2">Most Represented Vendors</span><span class="badge bc">CISA DATA</span></div><div class="pb"><div class="cw"><canvas id="kevVendorChart"></canvas></div></div></div>
     </div>
     <div class="full">
       <div class="panel">
-        <div class="ph"><span class="pt2">CVE Search — NVD</span><span class="badge br">SEARCH</span></div>
+        <div class="ph"><span class="pt2">CISA KEV Catalog Search</span><span class="badge br">LIVE CATALOG</span></div>
         <div class="pb">
           <div class="cvs-input">
-            <input type="text" id="cveSearch" placeholder="Search by CVE ID, product, or vendor (e.g. Apache, Log4j, CVE-2024-...)"/>
+            <input type="search" id="cveSearch" aria-label="Search CISA KEV vulnerabilities" placeholder="Search CVE, vendor, product, or vulnerability..."/>
             <button onclick="searchCVE()">SEARCH</button>
+            <button id="kevRefresh" onclick="refreshKevFeed()">REFRESH</button>
           </div>
+          <div class="feed-source">Source: <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a>, delivered through the <a href="https://github.com/aboutcode-org/aboutcode-mirror-kev" target="_blank" rel="noopener noreferrer">AboutCode public mirror</a>. CVE details link to NVD. Catalog data is refreshed daily; results are not a real-time attack stream.</div>
+          <div class="kev-count" id="kevResultCount" aria-live="polite"></div>
           <div class="cl" id="cveList"></div>
         </div>
       </div>
     </div>
-    <div class="full"><div class="panel"><div class="ph"><span class="pt2">Threat Intelligence News — click for full story</span><span class="badge bc">INTEL</span></div><div class="pb" id="newsPanel"></div></div></div>
+    <div class="full"><div class="panel"><div class="ph"><span class="pt2">Official Threat Intelligence Sources</span><span class="badge bc">SOURCE LINKS</span></div><div class="pb"><div class="ag">
+      <div class="ac"><div class="an">CISA Alerts</div><div class="ad">Official cybersecurity advisories and alerts from CISA.</div><a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener noreferrer" class="al">↗ CISA advisories</a></div>
+      <div class="ac"><div class="an">NIST NVD</div><div class="ad">Search the National Vulnerability Database for CVE records and scoring.</div><a href="https://nvd.nist.gov/vuln/search" target="_blank" rel="noopener noreferrer" class="al">↗ NVD CVE search</a></div>
+      <div class="ac"><div class="an">GitHub Security Advisories</div><div class="ad">Browse published security advisories for open-source packages.</div><a href="https://github.com/advisories" target="_blank" rel="noopener noreferrer" class="al">↗ GitHub advisories</a></div>
+    </div></div></div></div>
   </div>
 </div>
 
@@ -552,7 +596,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <!-- PAGE: ABOUT -->
 <div id="page-about" class="page">
   <div class="wrap" style="max-width:900px">
-    <div style="text-align:center;padding:40px 0 48px"><div class="pl2">// What is ThreatScope</div><div class="pt">BUILT FOR <span>DEFENDERS</span></div><p class="ps" style="margin:0 auto">Free, open-source cyber intelligence platform. Click any feature card to learn more.</p></div>
+    <div style="text-align:center;padding:40px 0 48px"><div class="pl2">// What is ThreatScope</div><div class="pt">BUILT FOR <span>DEFENDERS</span></div><p class="ps" style="margin:0 auto">Free security intelligence dashboard for defenders. Click any feature card to learn more.</p></div>
     <div class="asec"><div class="sl">// Features — click any card</div><div class="ast">What ThreatScope Does</div>
       <div class="fg" id="featureGrid"></div>
     </div>
@@ -575,17 +619,28 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
         <div class="ac"><div class="an">HaveIBeenPwned</div><div class="ad">Breach database lookup.</div><a href="https://haveibeenpwned.com" target="_blank" rel="noopener noreferrer" class="al">↗ haveibeenpwned.com</a></div>
         <div class="ac"><div class="an">Shodan API</div><div class="ad">Port scanning and host info.</div><a href="https://shodan.io" target="_blank" rel="noopener noreferrer" class="al">↗ shodan.io</a></div>
         <div class="ac"><div class="an">Google DNS API</div><div class="ad">DNS record lookups. No key needed.</div><a href="https://dns.google" target="_blank" rel="noopener noreferrer" class="al">↗ dns.google</a></div>
-        <div class="ac"><div class="an">NIST NVD</div><div class="ad">US government vulnerability database.</div><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" class="al">↗ nvd.nist.gov</a></div>
+        <div class="ac"><div class="an">CISA KEV Catalog</div><div class="ad">Public catalog of vulnerabilities known to be exploited in the wild; mirrored daily for browser access.</div><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer" class="al">↗ cisa.gov</a></div>
+        <div class="ac"><div class="an">NIST NVD</div><div class="ad">CVE detail pages linked from catalog results.</div><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" class="al">↗ nvd.nist.gov</a></div>
       </div>
     </div>
-    <div class="wb"><div class="wt">⚠ Disclaimer</div><div class="wd">ThreatScope is for educational and informational purposes only. Only scan domains you own or have permission to test. Globe data is simulated.</div></div>
+    <div class="asec"><div class="sl">// Get involved</div><div class="ast">Help Improve ThreatScope</div>
+      <div class="contribute-panel">
+        <div class="atx">Found a bug, want a feature, or interested in contributing? Open an issue to start a conversation, or send a pull request with your improvement.</div>
+        <div class="contribute-links">
+          <a href="https://github.com/Arv1121/Threat-Model" target="_blank" rel="noopener noreferrer">★ STAR THE REPOSITORY</a>
+          <a href="https://github.com/Arv1121/Threat-Model/issues/new/choose" target="_blank" rel="noopener noreferrer">OPEN AN ISSUE</a>
+          <a href="https://github.com/Arv1121/Threat-Model/compare" target="_blank" rel="noopener noreferrer">CONTRIBUTE A PULL REQUEST</a>
+        </div>
+      </div>
+    </div>
+    <div class="wb"><div class="wt">⚠ Disclaimer</div><div class="wd">ThreatScope is for educational and informational purposes only. Only scan domains you own or have permission to test. The CISA KEV catalog is updated by its public mirror daily; the globe is a simulation, not live attack data.</div></div>
   </div>
 </div>
 
 <!-- PAGE: TERMS -->
 <div id="page-terms" class="page">
   <div class="wrap" style="max-width:840px">
-    <div class="th2"><div class="pl2">// Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3rem)">TERMS & <span>PRIVACY</span></div><div class="tm">Last updated: May 2026 | Version 1.1 | © 2026 ThreatScope — Arv1121</div></div>
+    <div class="th2"><div class="pl2">// Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3rem)">TERMS & <span>PRIVACY</span></div><div class="tm">Last updated: November 2026 | Version 1.2 | © 2026 ThreatScope — Arv1121</div></div>
     <div class="toc"><div class="toct">Table of Contents</div>
       <div class="toci" onclick="st('t1')"><span class="tocn">01</span>Acceptance of Terms</div>
       <div class="toci" onclick="st('t2')"><span class="tocn">02</span>Description of Service</div>
@@ -598,7 +653,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div class="toci" onclick="st('t9')"><span class="tocn">09</span>Changes & Contact</div>
     </div>
     <div class="tsec" id="t1"><div class="tsh"><span class="tsn">01</span><span class="tst">Acceptance of Terms</span></div><div class="td2">By accessing ThreatScope you accept these terms. If you disagree, do not use this service.</div><div class="tinfo"><div class="tinfot">// Plain English</div><div class="tinfod">Use this tool responsibly. Only scan websites you own or have explicit permission to test.</div></div></div>
-    <div class="tsec" id="t2"><div class="tsh"><span class="tsn">02</span><span class="tst">Description of Service</span></div><div class="td2">ThreatScope is a <strong>free, open-source</strong> security intelligence platform. It is a static website on GitHub Pages with no backend servers. All API requests go directly from your browser to third-party services.</div></div>
+    <div class="tsec" id="t2"><div class="tsh"><span class="tsn">02</span><span class="tst">Description of Service</span></div><div class="td2">ThreatScope is a <strong>free security intelligence dashboard</strong>. It is a static website on GitHub Pages with no backend servers. API requests go directly from your browser to third-party services. The vulnerability catalog uses CISA data delivered by a daily public mirror; the globe visualization is simulated.</div></div>
     <div class="tsec" id="t3"><div class="tsh"><span class="tsn">03</span><span class="tst">Acceptable Use Policy</span></div>
       <div class="clause"><div class="ctitle">Authorised Use</div><div class="ctxt">Only scan URLs and domains you own, control, or have explicit written permission from the owner to test.</div></div>
       <div class="clause"><div class="ctitle">Security Research</div><div class="ctxt">Legitimate security research, academic study, and professional penetration testing where proper authorisation has been obtained.</div></div>
@@ -608,16 +663,16 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div class="twarn"><div class="twarnt">⚠ Strictly Prohibited</div><div class="twarnd">Violations may result in legal action under the CFAA, UK Computer Misuse Act, IT Act 2000 (India), and equivalent global legislation.</div></div>
       <ul class="tlist"><li>Scanning any system without explicit authorisation from the owner</li><li>Using ThreatScope to plan, facilitate, or execute cyberattacks</li><li>Identifying vulnerabilities for malicious exploitation</li><li>Conducting denial-of-service attacks</li><li>Using the service to harass or harm individuals or organisations</li><li>Violating any applicable local, national, or international law</li></ul>
     </div>
-    <div class="tsec" id="t5"><div class="tsh"><span class="tsn">05</span><span class="tst">API Keys & Third-Party Data</span></div><div class="td2"><strong>ThreatScope does not store, log, or transmit your API keys.</strong> Keys are held in browser memory for your session only. URLs you scan are sent directly from your browser to third-party services.</div></div>
+    <div class="tsec" id="t5"><div class="tsh"><span class="tsn">05</span><span class="tst">API Keys & Third-Party Data</span></div><div class="td2"><strong>ThreatScope does not store, log, or transmit your API keys.</strong> Keys are held in browser memory for your session only. URLs you scan are sent directly from your browser to third-party services. The CISA KEV catalog is fetched from the AboutCode public mirror, which refreshes daily from CISA.</div></div>
     <div class="tsec" id="t6"><div class="tsh"><span class="tsn">06</span><span class="tst">Disclaimers & Liability</span></div>
       <div class="clause"><div class="ctitle">Accuracy</div><div class="ctxt">Results come from third-party engines. Do not use as the sole basis for security decisions. False positives and negatives are possible.</div></div>
       <div class="clause"><div class="ctitle">Globe & Simulated Data</div><div class="ctxt">The attack globe uses algorithmically generated data to illustrate global threat patterns. It does not represent specific real-time attacks.</div></div>
       <div class="clause"><div class="ctitle">Limitation of Liability</div><div class="ctxt">To the maximum extent permitted by law, ThreatScope contributors shall not be liable for any damages arising from use of this service.</div></div>
     </div>
     <div class="tsec" id="t7"><div class="tsh"><span class="tsn">07</span><span class="tst">Privacy Policy</span></div>
-      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">We collect nothing. No cookies. No analytics. No database. No personal data of any kind.</div></div>
-      <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">Zero personally identifiable information is collected. No cookies, no local storage, no tracking pixels, no fingerprinting.</div></div>
-      <div class="clause"><div class="ctitle">GitHub Pages Hosting</div><div class="ctxt">GitHub may collect standard server logs as part of their hosting service. Governed by GitHub's Privacy Policy.</div></div>
+      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">ThreatScope does not run analytics or store personal data. Third-party services may receive standard network metadata when your browser requests their content or scans.</div></div>
+      <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">ThreatScope does not use cookies, local storage, tracking pixels, or fingerprinting. Third-party services receive requests directly from your browser and may process standard connection metadata under their own privacy policies.</div></div>
+      <div class="clause"><div class="ctitle">Hosting & Threat Feed</div><div class="ctxt">GitHub Pages hosts this website. The KEV feed is delivered by the AboutCode mirror hosted on GitHub; GitHub and other service providers may collect standard server logs. Review each provider's privacy policy.</div></div>
     </div>
     <div class="tsec" id="t8"><div class="tsh"><span class="tsn">08</span><span class="tst">Intellectual Property & Copyright</span></div>
       <div class="td2"><strong>© 2026 ThreatScope — Arv1121. All rights reserved.</strong></div>
@@ -631,17 +686,6 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 
 <script>
 'use strict';
-// ✅ COPY PROTECTION
-(function(){
-  const allowed=['arv1121.github.io','localhost','127.0.0.1'];
-  const host=window.location.hostname;
-  if(!allowed.some(d=>host===d||host.endsWith('.'+d))){
-    document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#05080f;color:#ff3b3b;font-family:monospace;font-size:1rem;text-align:center;padding:20px">⚠ ThreatScope is only authorized to run on arv1121.github.io<br/>© 2026 ThreatScope — Arv1121</div>';
-    return;
-  }
-})();
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C','U'].includes(e.key))||(e.ctrlKey&&e.key==='U'))e.preventDefault();});
 
 // ✅ XSS-safe
 function e(s){return s==null?'':(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
@@ -936,25 +980,6 @@ const GLOBE_LEGEND={
   AIAttack:{title:'AI-Powered Cyber Attack',color:'#cc44ff',desc:'Cyberattacks that leverage artificial intelligence to automate, accelerate, or enhance attack capabilities. Includes AI-generated phishing, autonomous vulnerability exploitation, deepfake social engineering, and self-adapting malware that evades detection.',stats:['400% increase in AI phishing 2022-2024','AI can exploit zero-days in minutes vs weeks','WormGPT/FraudGPT sold on dark web forums','AI attacks now accessible to non-technical attackers'],steps:['Deploy AI-powered defensive tools (AI vs AI)','Conduct AI red teaming exercises','Train staff specifically on AI-generated threats','Implement behavioural anomaly detection','Establish human verification protocols for sensitive actions']},
 };
 
-// ── DATA: NEWS ──
-const NEWS_DATA=[
-  {s:'AI Security',c:'#cc44ff',t:'AI-Powered Phishing Attacks Surge 400% in 2024',sum:'LLM-generated phishing emails now indistinguishable from legitimate comms, bypassing traditional filters at unprecedented scale.',tm:'2 hours ago',
-   full:'Security researchers at multiple firms have confirmed a dramatic acceleration in AI-generated phishing campaigns throughout 2024. Unlike traditional phishing which could be identified by poor grammar or generic content, AI-generated attacks reference real recent events, mimic individual writing styles, and pass human inspection. The surge is attributed to the widespread availability of uncensored LLM tools on dark web forums including WormGPT and FraudGPT.',
-   actions:['Deploy AI-powered email security that analyses behaviour, not just content','Enable DMARC with p=reject policy on all sending domains','Train all staff with AI-generated phishing simulations','Implement secondary verification for any unusual requests']},
-  {s:'Threat Intel',c:'#ff3b3b',t:'LockBit Ransomware Resurfaces After Law Enforcement Takedown',sum:'Despite infrastructure seizures, LockBit resumed operations and is actively recruiting affiliates.',tm:'4 hours ago',
-   full:'Following a major February 2024 international law enforcement operation (Operation Cronos) that seized LockBit\'s infrastructure and charged members, the group has reconstituted with new infrastructure. The group has posted new victims on a rebuilt leak site and is actively recruiting affiliates with improved terms. This demonstrates the resilience of ransomware-as-a-service (RaaS) operations and the difficulty of permanently disrupting them.',
-   actions:['Ensure all systems are patched and up to date','Verify offline backup integrity and test restoration procedures','Review and harden RDP and VPN access points','Enable MFA on all remote access systems']},
-  {s:'CISA Advisory',c:'#ff8c00',t:'CISA Adds 6 Known Exploited Vulnerabilities to Catalog',sum:'Federal agencies required to patch six newly added vulnerabilities by specified deadlines.',tm:'6 hours ago',
-   full:'The Cybersecurity and Infrastructure Security Agency (CISA) has added six new vulnerabilities to its Known Exploited Vulnerabilities (KEV) catalog, citing active exploitation in the wild. Federal civilian executive branch agencies are required to remediate these vulnerabilities by specified deadlines under Binding Operational Directive 22-01. CISA strongly recommends all organisations prioritise remediation of KEV catalog vulnerabilities as part of their vulnerability management practice.',
-   actions:['Check your systems against the full CISA KEV catalog at cisa.gov/known-exploited-vulnerabilities-catalog','Prioritise patching KEV entries above other vulnerabilities','If immediate patching is not possible, apply mitigations or isolate affected systems','Subscribe to CISA alerts for immediate notification of new additions']},
-  {s:'Security Research',c:'#ffd600',t:'MFA Bypass Campaign Targets Microsoft 365 Users',sum:'Adversary-in-the-middle phishing captures session cookies after MFA, bypassing multi-factor authentication entirely.',tm:'8 hours ago',
-   full:'A large-scale adversary-in-the-middle (AiTM) phishing campaign has been identified targeting Microsoft 365 users. The attack uses a reverse proxy between the victim and the legitimate Microsoft login page. When the victim completes MFA authentication, the attacker captures the resulting session cookie — effectively bypassing MFA entirely. The campaign has targeted financial services, insurance, and legal sectors.',
-   actions:['Implement phishing-resistant MFA: FIDO2 hardware keys or certificate-based authentication','Enable Microsoft Conditional Access policies to detect anomalous sign-in behaviour','Monitor for impossible travel and concurrent session anomalies','Educate users that even MFA can be bypassed by this technique']},
-  {s:'Breach Report',c:'#aa44ff',t:'Healthcare Provider Discloses Breach Affecting 2.9M Patients',sum:'Ransomware attack exposed names, SSNs, medical records, and insurance data across the network.',tm:'12 hours ago',
-   full:'A large US healthcare network has disclosed a significant data breach affecting approximately 2.9 million current and former patients. The breach, caused by a ransomware attack, exposed names, Social Security numbers, dates of birth, medical record numbers, health insurance information, and clinical data. The organisation has offered 24 months of free credit monitoring to affected individuals. The breach is subject to mandatory HIPAA breach notification requirements and is being investigated by HHS.',
-   actions:['Healthcare organisations: review and test incident response plans','Ensure medical device security is included in vulnerability management','Implement network segmentation to isolate clinical systems','Verify cyber insurance coverage includes ransomware and data breach scenarios']},
-];
-
 // ── DATA: ABOUT FEATURES ──
 const FEATURES=[
   {icon:'🔍',name:'URL Scanner',desc:'70+ engines via VirusTotal.',
@@ -997,9 +1022,9 @@ const FEATURES=[
    detail:'The URL Comparison tool allows you to scan two URLs simultaneously and compare their results side-by-side. This is particularly useful for due diligence — comparing a known-good vendor site against a suspicious lookalike domain, or evaluating two similar services against each other.',
    howTo:['Enter two URLs in the Compare Two URLs section below the scanner','Click COMPARE BOTH — both URLs are scanned in parallel','Results appear side-by-side showing verdict, engine flags, SSL, DNS, and domain age','This uses your VirusTotal API key so counts against your daily limit','Most useful for identifying phishing lookalike domains'],
    apiKey:'Uses VirusTotal API key if provided — comparison works without keys too'},
-  {icon:'🌍',name:'Live Attack Globe',desc:'3D visualization of global cyber attack patterns.',
-   detail:'The Live Attack Globe is a 3D interactive visualization showing simulated global cyber attack patterns. Attack arcs animate between source and target countries, colour-coded by attack type. Click any legend item to learn about that attack type. Drag the globe to rotate it, and use the controls to toggle features.',
-   howTo:['Click the "Live Globe" tab to open the visualization','Drag the globe to rotate to any region','Click any legend item to learn about that attack type','Use controls to toggle auto-rotation, arcs, and country dots','The live feed on the right shows the most recent simulated attacks'],
+  {icon:'🌍',name:'Threat Globe (Simulation)',desc:'3D illustration of global cyber threat patterns; no live attack telemetry.',
+   detail:'The Threat Globe is a 3D interactive simulation. Its attack arcs and event feed are generated for illustration and do not represent real attacks, source locations, or targets. Click any legend item to learn about that attack type. Drag the globe to rotate it, and use the controls to toggle features.',
+   howTo:['Click the "Threat Globe · SIMULATED" tab to open the visualization','Drag the globe to rotate to any region','Click any legend item to learn about that attack type','Use controls to toggle auto-rotation, arcs, and country dots','The event feed is simulated and must not be interpreted as live telemetry'],
    apiKey:'No API key required — visualization is self-contained'},
   {icon:'🤖',name:'AI Threats Section',desc:'AI attack vectors, incidents, and defence strategies with full detail modals.',
    detail:'The AI Threats section covers the rapidly evolving landscape of AI-powered cyberattacks. It includes 12 attack vector cards with full details, real incident case studies, speed comparison charts, and 6 defence strategy cards — all with clickable modals providing step-by-step guidance, recommended tools, and real-world examples.',
@@ -1071,16 +1096,117 @@ function openVulnModal(i){
 }
 
 // ── RENDER: CVE LIST ──
+let kevCatalog=null,kevHelpers=null,kevRefreshPromise=null,kevFetchedAt=null,kevLoadFailed=false,kevTrendChart=null,kevVendorChart=null;
+
 function searchCVE(){
   const q=(document.getElementById('cveSearch').value||'').toLowerCase().trim();
+  const list=document.getElementById('cveList');
+  const count=document.getElementById('kevResultCount');
+  if(kevCatalog&&kevHelpers){
+    const results=kevHelpers.filterKevVulnerabilities(kevCatalog.vulnerabilities,q);
+    const visible=results.slice(0,50);
+    count.textContent=results.length>visible.length
+      ?`Showing ${visible.length} of ${results.length.toLocaleString()} matching CVEs. Refine your search to narrow results.`
+      :`${results.length.toLocaleString()} matching CVEs`;
+    list.innerHTML=visible.length?visible.map(c=>`
+      <article class="cc known">
+        <div class="cch"><span class="cid">${e(c.cveID)}</span><span class="cs sm">ADDED ${e(c.dateAdded)}</span></div>
+        <div class="ct">${e(c.vulnerabilityName||'Known exploited vulnerability')}</div>
+        <div class="cd2">${e(c.shortDescription||'No description supplied by the catalog.')}</div>
+        <div class="cm">
+          <span>🏢 ${e(c.vendorProject)}</span><span>📦 ${e(c.product)}</span>
+          ${c.dueDate?`<span>⏱ Due ${e(c.dueDate)}</span>`:''}
+          ${c.knownRansomwareCampaignUse==='Known'?'<span class="badge br">RANSOMWARE USE KNOWN</span>':''}
+          <a class="kev-link" href="https://nvd.nist.gov/vuln/detail/${encodeURIComponent(c.cveID)}" target="_blank" rel="noopener noreferrer">NVD DETAILS ↗</a>
+        </div>
+        ${c.requiredAction?`<div class="rm" style="margin-top:9px">${e(c.requiredAction)}</div>`:''}
+      </article>`).join(''):'<div class="es">No catalog entries match your search.</div>';
+    return;
+  }
+
+  if(!kevLoadFailed){
+    count.textContent='Waiting for the live catalog…';
+    list.innerHTML='<div class="es">Loading current CISA KEV entries…</div>';
+    return;
+  }
+
   const results=q?CVE_DATA.filter(c=>c.id.toLowerCase().includes(q)||c.title.toLowerCase().includes(q)||c.v.toLowerCase().includes(q)||c.p.toLowerCase().includes(q)):CVE_DATA;
-  document.getElementById('cveList').innerHTML=results.length?results.map((c,i)=>`
+  count.textContent='Curated examples only — live catalog is unavailable.';
+  list.innerHTML=results.length?results.map((c,i)=>`
     <div class="cc ${e(c.cls)}" onclick="openCVEModal(${CVE_DATA.indexOf(c)})">
       <div class="cch"><span class="cid">${e(c.id)}</span><span class="cs ${e(c.sc)}">CVSS ${e(String(c.score))} — ${e(c.cls.toUpperCase())}</span></div>
       <div class="ct">${e(c.title)}</div>
       <div class="cd2">${e(c.desc)}</div>
       <div class="cm"><span>📦 ${e(c.v)}</span><span>🖥 ${e(c.p)}</span><span>📅 ${e(c.d)}</span><span style="color:var(--cyan);margin-left:auto">click for full detail →</span></div>
     </div>`).join(''):`<div class="es">No CVEs found matching "${e(q)}"</div>`;
+}
+
+async function refreshKevFeed(){
+  if(kevRefreshPromise)return kevRefreshPromise;
+  const status=document.getElementById('kevStatus');
+  const button=document.getElementById('kevRefresh');
+  status.classList.remove('error');
+  status.textContent='Fetching the latest available CISA KEV catalog…';
+  button.disabled=true;
+  kevRefreshPromise=(async()=>{
+    try{
+      kevHelpers=await import('./threat-feed.mjs');
+      kevCatalog=await kevHelpers.fetchKevCatalog();
+      kevLoadFailed=false;
+      kevFetchedAt=new Date();
+      const stats=kevHelpers.getKevStats(kevCatalog);
+      document.getElementById('sCves').textContent=stats.total.toLocaleString();
+      document.getElementById('sAdded').textContent=stats.addedInLast30Days.toLocaleString();
+      document.getElementById('sRansomware').textContent=stats.ransomwareKnown.toLocaleString();
+      document.getElementById('sCatalogDate').textContent=new Date(stats.catalogDate).toLocaleDateString();
+      status.classList.remove('error');
+      status.textContent=`Catalog v${kevCatalog.catalogVersion||'latest'} released ${new Date(stats.catalogDate).toLocaleString()}. Retrieved ${kevFetchedAt.toLocaleTimeString()}. The public mirror refreshes daily.`;
+      searchCVE();
+      try{
+        if(!renderKevCharts())throw new Error('Chart.js is unavailable');
+      }catch(chartError){
+        console.error('Unable to render catalog charts:',chartError);
+        status.classList.add('error');
+        status.textContent+=' Charts are unavailable, but the live catalog search is working.';
+      }
+    }catch(error){
+      console.error('Unable to load the CISA KEV catalog:',error);
+      status.classList.add('error');
+      if(kevCatalog){
+        status.textContent=`Catalog refresh failed. Showing the last successful catalog (released ${new Date(kevCatalog.dateReleased).toLocaleString()}, retrieved ${kevFetchedAt.toLocaleTimeString()}).`;
+      }else{
+        kevLoadFailed=true;
+        status.textContent='Live catalog unavailable. Showing the built-in curated examples; retry or check the public feed connection.';
+        searchCVE();
+      }
+    }finally{
+      button.disabled=false;
+      kevRefreshPromise=null;
+    }
+  })();
+  return kevRefreshPromise;
+}
+
+function renderKevCharts(){
+  if(typeof Chart==='undefined'){
+    console.error('Chart.js is unavailable; the live catalog list is still available.');
+    return false;
+  }
+  const months=kevHelpers.getKevMonthlyAdditions(kevCatalog.vulnerabilities);
+  const vendors=kevHelpers.getTopKevVendors(kevCatalog.vulnerabilities);
+  if(kevTrendChart)kevTrendChart.destroy();
+  if(kevVendorChart)kevVendorChart.destroy();
+  kevTrendChart=new Chart(document.getElementById('kevTrendChart'),{
+    type:'bar',
+    data:{labels:months.map(month=>month.label),datasets:[{label:'CVEs added',data:months.map(month=>month.count),backgroundColor:'rgba(0,229,255,0.55)',borderColor:'#00e5ff',borderWidth:1,borderRadius:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'rgba(26,37,64,0.8)'},ticks:{precision:0}}}}
+  });
+  kevVendorChart=new Chart(document.getElementById('kevVendorChart'),{
+    type:'bar',
+    data:{labels:vendors.map(vendor=>vendor.vendor),datasets:[{label:'Catalog entries',data:vendors.map(vendor=>vendor.count),backgroundColor:'rgba(204,68,255,0.55)',borderColor:'#cc44ff',borderWidth:1,borderRadius:2}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(26,37,64,0.8)'},ticks:{precision:0}},y:{grid:{display:false}}}}
+  });
+  return true;
 }
 
 function openCVEModal(i){
@@ -1106,33 +1232,6 @@ function openCVEModal(i){
     <span class="modal-tag">${e(c.d)}</span>
   </div>`;
   openModal('CVE — '+c.cls.toUpperCase()+' SEVERITY', c.title, body, col);
-}
-
-// ── RENDER: NEWS ──
-function renderNews(){
-  const np=document.getElementById('newsPanel');np.innerHTML='';
-  NEWS_DATA.forEach((n,i)=>{
-    const item=document.createElement('div');item.className='ni';item.onclick=()=>openNewsModal(i);
-    const dot=document.createElement('div');dot.className='nd';dot.style.background=n.c;dot.style.boxShadow=`0 0 5px ${n.c}`;
-    const ct=document.createElement('div');ct.style.flex='1';
-    const src=document.createElement('div');src.className='ns';src.textContent=n.s;
-    const tl=document.createElement('div');tl.className='nt';tl.textContent=n.t;
-    const sm=document.createElement('div');sm.className='nsum';sm.textContent=n.sum;
-    const tm=document.createElement('div');tm.className='ntm';tm.textContent=n.tm+' — click for full story →';tm.style.color='var(--cyan)';
-    ct.appendChild(src);ct.appendChild(tl);ct.appendChild(sm);ct.appendChild(tm);
-    item.appendChild(dot);item.appendChild(ct);np.appendChild(item);
-  });
-}
-
-function openNewsModal(i){
-  const n=NEWS_DATA[i];
-  let body=`<div class="modal-section-title">Full Story</div><div class="modal-desc">${e(n.full||n.sum)}</div>`;
-  if(n.actions&&n.actions.length){
-    body+=`<div class="modal-section-title">Recommended Actions</div>`;
-    body+=n.actions.map((a,idx)=>`<div class="modal-step"><span class="modal-step-num" style="color:${n.c}">${String(idx+1).padStart(2,'0')}</span><span class="modal-step-text">${e(a)}</span></div>`).join('');
-  }
-  body+=`<div style="margin-top:14px"><span class="modal-tag">${e(n.s)}</span><span class="modal-tag" style="margin-left:8px">${e(n.tm)}</span></div>`;
-  openModal('Threat Intelligence — '+n.s, n.t, body, n.c);
 }
 
 // ── RENDER: GLOBE LEGEND ──
@@ -1640,15 +1739,15 @@ function addFI(fr,to,tp,col){
   const sv=['DDoS','Ransomware','Zero-day','AI Attack'].includes(tp)?'h':['Malware','Phishing'].includes(tp)?'m':'l';
   const item=document.createElement('div');item.className=`fi ${sv}`;
   const tm=document.createElement('div');tm.className='ftm';tm.textContent=new Date().toLocaleTimeString();
-  const fr2=document.createElement('div');fr2.className='ff';fr2.textContent='FROM: '+fr;
-  const to2=document.createElement('div');to2.className='ft';to2.textContent='TARGET: '+to;
+  const fr2=document.createElement('div');fr2.className='ff';fr2.textContent='SAMPLE SOURCE: '+fr;
+  const to2=document.createElement('div');to2.className='ft';to2.textContent='SAMPLE DESTINATION: '+to;
   const tp2=document.createElement('div');tp2.className='ftp';tp2.style.color='#'+col.toString(16).padStart(6,'0');tp2.textContent=tp;
   item.appendChild(tm);item.appendChild(fr2);item.appendChild(to2);item.appendChild(tp2);
   feed.insertBefore(item,feed.firstChild);gFI.push(item);if(gFI.length>14){gFI.shift().remove();}
 }
 function updGS(){gTot+=Math.floor(Math.random()*3)+1;document.getElementById('gA').textContent=gTot.toLocaleString();document.getElementById('gS').textContent=200+Math.floor(Math.random()*80);document.getElementById('gC').textContent=60+Math.floor(Math.random()*20);document.getElementById('gT').textContent=AT[Math.floor(Math.random()*4)];}
 function updSrc(){CTR.slice(0,6).forEach(c=>{gSrc[c.n]=(gSrc[c.n]||0)+Math.floor(Math.random()*10);});const s=Object.entries(gSrc).sort((a,b)=>b[1]-a[1]).slice(0,6);const c=document.getElementById('gTop');c.innerHTML='';s.forEach(([n,v])=>{const r=document.createElement('div');r.className='gs';const k=document.createElement('span');k.className='gsk';k.style.fontSize='0.56rem';k.textContent=n;const val=document.createElement('span');val.className='gsv red';val.textContent=v;r.appendChild(k);r.appendChild(val);c.appendChild(r);});}
-function mkTicker(){const items=['CVE-2024-3400 | PAN-OS Zero-Day | CRITICAL','DDoS spike | Asia Pacific | 2.4Tbps','Ransomware | Healthcare | 47 victims','AI Phishing surge | 400% increase | Global','Prompt injection | LLM systems | Escalating','Deepfake fraud | Financial sector | $25M','Log4Shell | Still exploited | PATCH NOW'];const track=document.getElementById('gTk');track.innerHTML='';[...items,...items].forEach(t=>{const s=document.createElement('span');s.className='ti';s.textContent=t;track.appendChild(s);});}
+function mkTicker(){const items=['SIMULATION ONLY | DDoS arc example','SIMULATION ONLY | malware path example','SIMULATION ONLY | phishing vector example','SIMULATION ONLY | sample locations','SIMULATION ONLY | no live incident data'];const track=document.getElementById('gTk');track.innerHTML='';[...items,...items].forEach(t=>{const s=document.createElement('span');s.className='ti';s.textContent=t;track.appendChild(s);});}
 function togRot(b){gAuto=!gAuto;b.classList.toggle('active',gAuto);}
 function togArcs(b){gSA=!gSA;b.classList.toggle('active',gSA);gAr.forEach(a=>{a.line.visible=gSA;a.head.visible=gSA;});}
 function togPts(b){gSP=!gSP;b.classList.toggle('active',gSP);gPg.visible=gSP;}
@@ -1656,18 +1755,38 @@ function animG(){requestAnimationFrame(animG);if(gAuto){gGb.rotation.y+=0.001;gP
 
 // ── THREATS ──
 function initThreats(){
-  Chart.defaults.color='#4a6080';Chart.defaults.borderColor='#1a2540';Chart.defaults.font.family="'Share Tech Mono',monospace";Chart.defaults.font.size=11;
-  const days=[],now=new Date();for(let i=13;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en',{month:'short',day:'numeric'}));}
-  new Chart(document.getElementById('aC'),{type:'line',data:{labels:days,datasets:[{label:'Attacks',data:[12400,14200,11800,16500,18200,15600,22100,19800,24500,21300,26800,23400,28100,31200],borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#00e5ff',pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{maxTicksLimit:7}},y:{grid:{color:'rgba(26,37,64,0.8)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k'}}}}});
-  new Chart(document.getElementById('tC'),{type:'doughnut',data:{labels:['DDoS','Malware','Phishing','Ransomware','AI-Powered','Other'],datasets:[{data:[28,20,16,12,16,8],backgroundColor:['#ff3b3b','#ff8c00','#ffd600','#ff0044','#cc44ff','#4a6080'],borderColor:'#05080f',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:9,boxWidth:7}}},cutout:'65%'}});
-  new Chart(document.getElementById('sC'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Critical',data:[18,22,15,28,19,12,24],backgroundColor:'rgba(255,23,68,0.7)',borderRadius:2},{label:'High',data:[45,52,38,61,44,30,58],backgroundColor:'rgba(255,59,59,0.5)',borderRadius:2},{label:'Medium',data:[82,95,71,110,88,62,104],backgroundColor:'rgba(255,140,0,0.5)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:7,padding:7}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(26,37,64,0.8)'}}}}});
-  const V=[{n:'DDoS',p:89,c:'#ff3b3b'},{n:'AI Phishing',p:82,c:'#cc44ff'},{n:'Malware',p:74,c:'#ff8c00'},{n:'Ransomware',p:65,c:'#ff0044'},{n:'Phishing',p:62,c:'#ffd600'},{n:'SQL Inject',p:41,c:'#aa44ff'},{n:'Brute Force',p:38,c:'#00e676'},{n:'Zero-day',p:27,c:'#00e5ff'}];
-  document.getElementById('aBars').innerHTML=V.map(v=>`<div class="bi"><div class="bl">${e(v.n)}</div><div class="bt"><div class="bf" style="width:${v.p}%;background:${v.c}"></div></div><div class="bv">${v.p}%</div></div>`).join('');
-  searchCVE();
-  renderNews();
-  function ac(el,tg){let c=0;const st=tg/60;const ti=setInterval(()=>{c=Math.min(c+st,tg);el.textContent=Math.floor(c).toLocaleString();if(c>=tg)clearInterval(ti);},16);}
-  setTimeout(()=>{ac(document.getElementById('sCves'),2847);ac(document.getElementById('sCrit'),143);ac(document.getElementById('sBreach'),38);ac(document.getElementById('sMit'),1204);},200);
+  if(typeof Chart!=='undefined'){
+    Chart.defaults.color='#4a6080';Chart.defaults.borderColor='#1a2540';Chart.defaults.font.family="'Share Tech Mono',monospace";Chart.defaults.font.size=11;
+  }
+  document.getElementById('cveSearch').addEventListener('input',searchCVE);
   document.getElementById('cveSearch').addEventListener('keydown',ev=>{if(ev.key==='Enter')searchCVE();});
+  loadRepositoryAggregate();
+  refreshKevFeed();
+  setInterval(()=>{
+    if(document.visibilityState==='visible'&&document.getElementById('page-threats').classList.contains('active'))refreshKevFeed();
+  },60*60*1000);
+}
+
+async function loadRepositoryAggregate(){
+  const status=document.getElementById('repoAggregateStatus');
+  try{
+    const {fetchCommunityAggregate}=await import('./repo-scan.mjs');
+    const aggregate=await fetchCommunityAggregate();
+    status.classList.remove('error');
+    if(aggregate.status!=='ready'){
+      status.textContent=`Insufficient cohort: ${aggregate.reportingRepositories} of ${aggregate.minimumRepositories} fresh, owner-authorized repositories are reporting. Vulnerability totals are hidden; this is not a zero-risk result.`;
+      return;
+    }
+
+    document.getElementById('repoPackages').textContent=aggregate.totals.packagesScanned.toLocaleString();
+    document.getElementById('repoAffected').textContent=aggregate.totals.affectedPackages.toLocaleString();
+    document.getElementById('repoMatches').textContent=aggregate.totals.vulnerabilityMatches.toLocaleString();
+    status.textContent=`Aggregate from ${aggregate.reportingRepositories.toLocaleString()} fresh, owner-authorized repositories. Updated ${new Date(aggregate.updatedAt).toLocaleString()}. These are dependency findings only; individual repositories and findings are not listed.`;
+  }catch(error){
+    console.error('Unable to load the opted-in repository aggregate:',error);
+    status.classList.add('error');
+    status.textContent='Community aggregate unavailable. No vulnerability totals are shown; this is not a zero-risk result.';
+  }
 }
 
 // ── AI ──
@@ -1693,7 +1812,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 <div class="footer">
   © 2026 ThreatScope — Arv1121. All rights reserved. |
   <a href="#" onclick="show('terms');return false">Terms & Privacy</a> |
-  Powered by VirusTotal · URLScan.io · Shodan · HaveIBeenPwned · Google DNS · NIST NVD
+  <a href="https://github.com/Arv1121/Threat-Model" target="_blank" rel="noopener noreferrer">GitHub repository</a> |
+  <a href="https://github.com/Arv1121/Threat-Model/issues/new/choose" target="_blank" rel="noopener noreferrer">Report an issue</a> |
+  Data: VirusTotal · URLScan.io · Shodan · HaveIBeenPwned · Google DNS · CISA KEV
   <!-- TS-WATERMARK:a7f3c9d2e1b4-threatscope-arv1121 -->
 </div>
 </body>

@@ -1,0 +1,35 @@
+name: Opt-in dependency scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/package-lock.json'
+      - '**/pnpm-lock.yaml'
+      - '**/yarn.lock'
+      - '**/Cargo.lock'
+      - '**/go.mod'
+      - '**/go.sum'
+      - '**/requirements*.txt'
+      - '**/Pipfile.lock'
+      - '**/poetry.lock'
+      - '**/Gemfile.lock'
+      - '**/composer.lock'
+      - '**/pom.xml'
+      - '**/gradle.lockfile'
+      - '**/packages.lock.json'
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    uses: Arv1121/Threat-Model/.github/workflows/opt-in-osv-scan.yml@main
+    with:
+      publish_summary: true
+      tools_ref: main
+    permissions:
+      contents: write
