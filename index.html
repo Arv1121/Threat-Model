@@ -564,6 +564,337 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 @media(max-width:600px){.nav{padding:0 10px}.logo-btn{margin-right:8px}.logo-btn svg{display:none}.tab{padding:0 9px;font-size:.72rem}.nav-r{display:flex;margin-left:4px}.nav-r .pl{display:none}.theme-toggle{min-height:34px;padding:0 8px;font-size:.68rem}.wrap{padding:24px 14px 52px}.repo-form{flex-direction:column}.repo-form .lookup-button{width:100%}.intel-grid{grid-template-columns:1fr;margin-bottom:26px;padding:8px 0}.intel-card{padding:14px 4px}.intel-card:not(:last-child)::after{top:auto;right:0;bottom:0;left:0;width:auto;height:1px}.guide-widget{right:12px;bottom:12px}.guide-toggle{min-height:44px;padding:0 13px}.health-actions{align-items:flex-start;flex-direction:column}}
 @media(max-width:600px){.nav{height:62px;padding:0 14px}.nav-inner{gap:7px}.page{padding-top:62px}.logo-btn{font-size:.88rem;margin-right:0}.nav-r{margin-left:0}.theme-toggle{padding:0 8px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Refined visual system */
+:root{
+  --bg:#0a101a;--bg2:#111a27;--surface:#141f2e;--border:#283749;--bb:#435970;
+  --cyan:#78ddbf;--cd:rgba(120,221,191,.11);--cg:rgba(120,221,191,.2);
+  --red:#f17c86;--rd:rgba(241,124,134,.11);--orange:#efb76f;--od:rgba(239,183,111,.11);
+  --green:#77d4a3;--gd:rgba(119,212,163,.11);--yellow:#e4cb79;--purple:#b7a7ef;--pd:rgba(183,167,239,.12);
+  --text:#d5e0eb;--td:#9aaabd;--tb:#f3f6fa
+}
+body{
+  background-color:var(--bg);color:var(--text);
+  background-image:radial-gradient(ellipse at 12% 0%,rgba(107,121,207,.12),transparent 34%),radial-gradient(ellipse at 92% 8%,rgba(87,204,171,.08),transparent 30%),linear-gradient(180deg,var(--bg),#0b121d 70%,var(--bg))
+}
+body[data-theme="light"]{
+  --bg:#f4f6fa;--bg2:#fff;--surface:#fff;--border:#e1e7ef;--bb:#cbd5e1;
+  --cyan:#147b69;--cd:rgba(20,123,105,.09);--cg:rgba(20,123,105,.16);
+  --red:#b6404c;--rd:rgba(182,64,76,.08);--orange:#90601c;--od:rgba(144,96,28,.09);
+  --green:#28794f;--gd:rgba(40,121,79,.09);--yellow:#806700;--purple:#7058ac;--pd:rgba(112,88,172,.09);
+  --text:#334155;--td:#64748b;--tb:#17243a;
+  background-color:var(--bg);
+  background-image:radial-gradient(ellipse at 10% 0%,rgba(107,121,207,.07),transparent 35%),radial-gradient(ellipse at 92% 8%,rgba(87,204,171,.06),transparent 30%),linear-gradient(180deg,var(--bg),#f8f9fc 70%,var(--bg))
+}
+html{scroll-padding-top:88px}
+body,button,input,select,textarea{font-family:var(--body)}
+.nav{background:rgba(10,16,26,.86);border-bottom-color:rgba(154,170,189,.16);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+body[data-theme="light"] .nav{background:rgba(248,250,253,.88);border-bottom-color:var(--border);box-shadow:0 12px 30px rgba(34,53,77,.08)}
+.nav-inner{max-width:1584px}
+.logo-btn{font-size:1.04rem}
+.tab{border-radius:11px}
+.tab.active{border-color:rgba(120,221,191,.22);background:var(--cd)}
+body[data-theme="light"] .tab.active{border-color:rgba(20,123,105,.2)}
+.page-intro{padding:46px 0 32px}
+.page-intro .pl2,.health-header .eyebrow,.th2 .pl2{font-family:var(--body);font-size:.72rem;font-weight:650;letter-spacing:.09em;margin-bottom:12px}
+.page-intro .pt,.th2 .pt{font-size:clamp(2.15rem,4.6vw,3.55rem);letter-spacing:-.06em;line-height:1.04}
+.page-intro .pt span,.th2 .pt span{color:var(--cyan);text-shadow:none}
+.page-intro .ps{font-size:.98rem;line-height:1.75;color:var(--td)}
+.dashboard-hero{padding-top:76px}
+.dashboard-title{letter-spacing:-.07em}
+.dashboard-title span{background-image:linear-gradient(90deg,var(--cyan),#a9b5ed)}
+.wrap{max-width:1660px}
+.panel,.stc,.sc2,.rc2,.ac,.fc,.contribute-panel,.health-card,.repo-card,.aggregate-state,.tsec,.toc{
+  border-radius:18px
+}
+.panel{background:linear-gradient(145deg,rgba(20,31,46,.92),rgba(17,26,39,.96));border-color:rgba(154,170,189,.16);box-shadow:0 18px 44px rgba(0,0,0,.11)}
+body[data-theme="light"] .panel{background:rgba(255,255,255,.92);border-color:var(--border);box-shadow:0 16px 38px rgba(34,53,77,.06)}
+.ph{padding:17px 21px}
+.pt2{font-family:var(--body);font-size:.88rem;font-weight:650;letter-spacing:0;text-transform:none;color:var(--tb)}
+.pb{padding:22px}
+.pl2,.sl,.sh2,.stl,.modal-label,.modal-section-title,.modal-example-label,.modal-impact-label,.modal-threat-label,.modal-example-text,.modal-impact-text,.modal-threat-text,.card-hint{
+  font-family:var(--body);letter-spacing:.04em
+}
+.pl2{font-size:.72rem;font-weight:650;letter-spacing:.09em;color:var(--cyan)}
+.sl{font-size:.72rem;font-weight:650;letter-spacing:.08em;color:var(--td);gap:14px}
+.sl::after{background:var(--border)}
+.badge{font-family:var(--body);font-size:.66rem;font-weight:700;letter-spacing:.035em;padding:5px 9px;border-radius:999px}
+.br{border-color:rgba(241,124,134,.25)}.bo{border-color:rgba(239,183,111,.25)}
+.bc{border-color:rgba(120,221,191,.24)}.bg2c{border-color:rgba(119,212,163,.24)}.bp{border-color:rgba(183,167,239,.25)}
+body[data-theme="light"] .br{border-color:rgba(182,64,76,.24)}
+body[data-theme="light"] .bo{border-color:rgba(144,96,28,.24)}
+body[data-theme="light"] .bc{border-color:rgba(20,123,105,.22)}
+body[data-theme="light"] .bg2c{border-color:rgba(40,121,79,.22)}
+body[data-theme="light"] .bp{border-color:rgba(112,88,172,.22)}
+.action-link,.lookup-button,.health-refresh,.theme-toggle,.repo-exact-date,.repo-chip,.guide-close,.modal-close{
+  border-radius:11px;transition:background-color .18s,border-color .18s,color .18s,transform .18s,box-shadow .18s
+}
+.action-link,.lookup-button{min-height:44px;padding:0 17px}
+.action-link.primary,.lookup-button,.health-refresh{background:var(--cyan);color:#08241e;box-shadow:0 7px 18px rgba(73,187,154,.13)}
+body[data-theme="light"] .action-link.primary,body[data-theme="light"] .lookup-button,body[data-theme="light"] .health-refresh{color:#fff}
+.action-link:not(.primary){background:rgba(255,255,255,.035);border-color:var(--border)}
+body[data-theme="light"] .action-link:not(.primary){background:#fff}
+.action-link:hover,.lookup-button:hover,.health-refresh:hover{filter:brightness(1.05);box-shadow:0 10px 24px rgba(73,187,154,.16)}
+.repo-form input,.feedback-form input,.feedback-form select,.feedback-form textarea,.guide-form input,#urlInput,.af input,.cvs-input input{
+  font-family:var(--body);border-radius:11px
+}
+.repo-form input,.feedback-form input,.feedback-form select,.feedback-form textarea,.guide-form input,.af input,.cvs-input input{
+  background:rgba(7,13,22,.38);border-color:var(--border);color:var(--tb)
+}
+body[data-theme="light"] .repo-form input,body[data-theme="light"] .feedback-form input,body[data-theme="light"] .feedback-form select,body[data-theme="light"] .feedback-form textarea,body[data-theme="light"] .guide-form input,body[data-theme="light"] .af input,body[data-theme="light"] .cvs-input input{background:#fff}
+.repo-form input:focus,.feedback-form input:focus,.feedback-form select:focus,.feedback-form textarea:focus,.guide-form input:focus,.af input:focus,.cvs-input input:focus{
+  outline:3px solid var(--cd);outline-offset:1px;border-color:var(--cyan)
+}
+.repo-card{background:rgba(12,19,30,.46);border-color:var(--border);padding:20px}
+.repo-card::before{display:none}
+body[data-theme="light"] .repo-card{background:#fff}
+.repo-card:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,0,0,.16)}
+body[data-theme="light"] .repo-card:hover{background:#fff;box-shadow:0 16px 34px rgba(34,53,77,.1)}
+.repo-quick-search{gap:9px}
+.repo-chip{padding:7px 12px;background:transparent}
+.repo-pagination .action-link{min-height:40px}
+.intel-grid{margin-bottom:38px;padding:20px 0}
+.intel-label{font-size:.77rem}
+.intel-value{font-variant-numeric:tabular-nums}
+.stc{background:linear-gradient(145deg,rgba(20,31,46,.92),rgba(17,26,39,.96));border:1px solid var(--border);box-shadow:0 12px 28px rgba(0,0,0,.08)}
+body[data-theme="light"] .stc{background:#fff}
+.notice,.feed-status,.health-summary,.ai-stat{border-radius:13px;background:rgba(17,26,39,.58);border-color:var(--border);line-height:1.65}
+body[data-theme="light"] .notice,body[data-theme="light"] .feed-status,body[data-theme="light"] .health-summary,body[data-theme="light"] .ai-stat{background:#fff;border-color:var(--border)}
+.feed-source{font-size:.78rem;line-height:1.65}
+.feed-source a,.repo-actions a,.feedback-source-link,.footer a{color:var(--cyan)}
+.health-card{background:linear-gradient(145deg,rgba(20,31,46,.92),rgba(17,26,39,.96))}
+body[data-theme="light"] .health-card{background:#fff}
+.health-header{padding-top:42px}
+.health-summary{padding:16px 18px}
+.health-note{border-radius:12px;border-left-width:0;background:var(--cd)}
+.theme-toggle{min-height:40px;background:rgba(20,31,46,.8);border-color:var(--border)}
+body[data-theme="light"] .theme-toggle{background:#fff}
+.guide-toggle{border-color:rgba(120,221,191,.32);background:var(--surface);color:var(--tb);box-shadow:0 12px 34px rgba(0,0,0,.2)}
+body[data-theme="light"] .guide-toggle{background:#fff;color:var(--tb);border-color:var(--border)}
+.guide-toggle-mark{background:var(--cd);color:var(--cyan)}
+.guide-panel,.modal-box{border-radius:20px;border-color:var(--border)}
+.modal-head{background:var(--surface)}
+.modal-title{font-family:var(--body);font-size:1.3rem;letter-spacing:-.035em;font-weight:700}
+.modal-close{padding:8px 13px;background:transparent}
+.modal-example,.modal-impact,.modal-threat{border-radius:12px}
+.feedback-step>span{border-color:rgba(120,221,191,.28)}
+.footer{font-family:var(--body);font-size:.72rem;letter-spacing:0}
+.tsec{padding:24px;border-color:var(--border)}
+.toc{border-color:var(--border)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--cyan);outline-offset:3px
+}
+@media(max-width:850px){.dashboard-hero{padding-top:52px}.page-intro{padding-top:34px}}
+@media(max-width:600px){.wrap{padding-top:26px}.page-intro{padding:30px 0 24px}.ph{padding:15px 17px}.pb{padding:18px}.intel-grid{margin-bottom:28px}.tsec{padding:18px}}
+.sbox{border-radius:15px;border-color:var(--border);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.sbox:focus-within{box-shadow:0 0 0 3px var(--cd)}
+.spfx{font-family:var(--body);font-size:.77rem;font-weight:700;letter-spacing:.04em}
+#urlInput{font-family:var(--body);font-size:.92rem}
+#scanBtn{padding:0 22px;font-family:var(--body);font-size:.84rem;font-weight:700;letter-spacing:0}
+#scanBtn:hover{background:var(--cyan);filter:brightness(1.05);box-shadow:none}
+.af label{font-family:var(--body);font-size:.76rem;font-weight:600;letter-spacing:0}
+.af input{font-family:var(--body);font-size:.82rem;border-radius:10px}
+.sn{font-family:var(--body);font-size:.76rem;letter-spacing:0;line-height:1.6;border-radius:12px}
+.sh2{font-size:.7rem;letter-spacing:.06em}
+.radar{width:72px;height:72px}
+.rr{border-color:var(--border);opacity:1}
+.rr:nth-child(2),.rr:nth-child(3){display:none}
+.rsw{inset:8px;border:3px solid transparent;border-top-color:var(--cyan);background:none;animation:sw 1s linear infinite}
+.rc{display:none}
+#ls p{font-family:var(--body);font-size:.88rem;letter-spacing:0;color:var(--tb);animation:none}
+#ll{font-family:var(--body);font-size:.76rem;letter-spacing:0}
+#ru{font-family:var(--body);font-size:.8rem}
+#nsb{padding:9px 14px;font-family:var(--body);font-size:.76rem;font-weight:650;letter-spacing:0;border-radius:10px}
+.stab{font-family:var(--body);font-size:.76rem;letter-spacing:0;border-radius:10px;padding:8px 13px}
+.cvs-input button{font-family:var(--body);font-size:.8rem;font-weight:700;letter-spacing:0;border-radius:10px;color:#08241e}
+body[data-theme="light"] .cvs-input button{color:#fff}
+.tinfot{font-family:var(--body);font-size:.74rem;font-weight:700;letter-spacing:.04em}
+
+/* Full product and landing-page redesign */
+.nav{height:78px;background:rgba(8,14,24,.82);border-bottom-color:rgba(164,181,201,.12);box-shadow:0 10px 40px rgba(0,0,0,.14)}
+.nav-inner{max-width:1720px;gap:clamp(14px,2vw,30px)}
+.logo-btn{gap:11px;font-size:1.08rem;letter-spacing:-.045em}
+.logo-btn svg{width:31px;height:31px}
+.nav-tabs{justify-content:center;gap:5px}
+.tab{height:42px;padding:0 13px;border-radius:12px;color:var(--td);font-size:.77rem;font-weight:550}
+.tab:hover{background:rgba(255,255,255,.045);color:var(--tb)}
+.tab.active{background:rgba(120,221,191,.12);border-color:rgba(120,221,191,.2);color:var(--tb);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+.nav-r{margin-left:auto}
+.page{padding-top:78px}
+.wrap{max-width:1720px;padding:0 clamp(22px,5vw,84px) 88px}
+.page-intro{max-width:1040px;padding:70px 0 38px}
+.page-intro .pt,.th2 .pt{font-size:clamp(2.6rem,5vw,4.4rem);line-height:1.02}
+.page-intro .ps{max-width:760px;font-size:1rem}
+.panel{border-radius:22px;background:linear-gradient(145deg,rgba(21,31,46,.92),rgba(14,22,34,.96));border-color:rgba(158,178,201,.15);box-shadow:0 24px 64px rgba(0,0,0,.16)}
+.ph{padding:20px 25px;border-color:rgba(158,178,201,.12)}
+.pt2{font-size:.94rem}
+.pb{padding:26px}
+.badge{font-size:.68rem}
+.action-link,.lookup-button,.health-refresh{min-height:48px;padding:0 20px;font-size:.84rem}
+.action-link.primary,.lookup-button,.health-refresh{background:linear-gradient(135deg,#83e4c4,#64cfb2);color:#08241e}
+.theme-toggle{min-height:42px;border-radius:12px}
+.dashboard-hero{
+  grid-template-columns:minmax(0,1.08fr) minmax(430px,.92fr);
+  align-items:center;gap:clamp(38px,6vw,100px);padding:clamp(64px,9vw,126px) 0 76px;min-height:620px
+}
+.dashboard-hero-copy{max-width:760px}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:.76rem;letter-spacing:.1em;margin-bottom:24px}
+.home-eyebrow-mark,.home-status-mark,.home-source-state span{display:inline-block;width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px rgba(120,221,191,.4)}
+.dashboard-title{max-width:780px;font-size:clamp(3.7rem,7.2vw,7.1rem);line-height:.98;letter-spacing:-.085em}
+.dashboard-title span{display:inline-block;padding:0 0 .08em;background-image:linear-gradient(100deg,#7fe3c3 2%,#9fb5f4 88%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dashboard-copy{max-width:650px;margin-top:24px;font-size:1.08rem;line-height:1.78;color:#aab8ca}
+.home-actions{gap:12px;margin-top:30px}
+.home-actions .action-link{min-height:52px;padding:0 21px}
+.home-actions .primary span{margin-left:8px;font-size:1.05rem;transition:transform .18s}
+.home-actions .primary:hover span{transform:translateX(3px)}
+.home-trust-line{display:flex;align-items:center;gap:10px;margin-top:27px;color:var(--td);font-size:.76rem;line-height:1.5}
+.home-trust-icon{display:grid;place-items:center;width:20px;height:20px;border:1px solid rgba(120,221,191,.28);border-radius:50%;color:var(--cyan);font-size:.68rem}
+.home-intel-panel{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:center;min-height:424px;
+  padding:clamp(24px,3vw,38px);overflow:hidden;border:1px solid rgba(161,187,209,.2);border-radius:30px;
+  background:radial-gradient(ellipse at 85% 4%,rgba(113,131,207,.2),transparent 40%),linear-gradient(145deg,rgba(26,39,57,.97),rgba(14,25,38,.98));
+  box-shadow:0 32px 84px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.06)
+}
+.home-intel-panel::before{content:"";position:absolute;z-index:-1;right:-110px;top:-150px;width:340px;height:340px;border:1px solid rgba(120,221,191,.12);border-radius:50%;box-shadow:0 0 0 35px rgba(120,221,191,.025),0 0 0 75px rgba(120,221,191,.018)}
+.home-intel-top{display:flex;align-items:center;gap:12px}
+.home-source-mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(120,221,191,.25);border-radius:14px;background:rgba(120,221,191,.09);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.04em}
+.home-source-copy{display:grid;gap:4px;min-width:0;flex:1}
+.home-source-copy strong{font-size:.86rem;color:var(--tb);font-weight:700}
+.home-source-copy small{color:var(--td);font-size:.71rem}
+.home-source-state{display:flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(120,221,191,.18);border-radius:999px;color:#b9d7cd;font-size:.66rem;font-weight:650;white-space:nowrap}
+.home-source-state span{width:6px;height:6px;flex-basis:6px;box-shadow:none}
+.home-kpi-lead{display:grid;gap:2px;margin:36px 0 25px;padding-bottom:24px;border-bottom:1px solid rgba(158,178,201,.16)}
+.home-kpi-value{color:#f5f8fc;font-size:clamp(4rem,7vw,6rem);font-weight:750;line-height:.96;letter-spacing:-.085em;font-variant-numeric:tabular-nums}
+.home-kpi-label{color:#b7c5d5;font-size:.93rem;font-weight:550}
+.home-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-kpi-item{display:grid;gap:7px;min-height:92px;padding:15px 16px;border:1px solid rgba(158,178,201,.13);border-radius:16px;background:rgba(255,255,255,.035)}
+.home-kpi-item strong{color:var(--tb);font-size:1.5rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.home-kpi-item span{color:var(--td);font-size:.71rem;line-height:1.4}
+.home-source-status{display:flex;align-items:center;gap:9px;margin-top:18px}
+.home-status-mark{width:6px;height:6px;flex-basis:6px;background:transparent;border:1px solid var(--bb);box-shadow:none}
+#dashboardStatus{margin:0;color:#a7b6c8;font-size:.7rem;line-height:1.5}
+#dashboardStatus.error{color:var(--orange)}
+.home-intel-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:17px;padding-top:15px;border-top:1px solid rgba(158,178,201,.12);color:#92a4b9;font-size:.68rem}
+.home-intel-foot a{color:var(--cyan);font-weight:650;text-decoration:none;white-space:nowrap}
+.home-intel-foot a:hover{text-decoration:underline}
+.home-content-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(330px,.75fr);gap:24px;align-items:start;padding-bottom:54px}
+.home-latest-panel{overflow:hidden}
+.home-section-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:25px 28px;border-bottom:1px solid var(--border)}
+.home-section-kicker{color:var(--cyan);font-size:.68rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+.home-section-header h2{margin-top:7px;color:var(--tb);font-size:1.5rem;letter-spacing:-.045em}
+.home-section-header p{margin-top:5px;color:var(--td);font-size:.77rem}
+.home-inline-link{display:inline-flex;align-items:center;gap:8px;padding:9px 0;border:0;background:transparent;color:var(--cyan);font:650 .76rem var(--body);cursor:pointer;white-space:nowrap}
+.home-inline-link:hover{color:var(--tb)}
+.home-latest-list{padding:5px 28px}
+.home-latest-list .latest-item{padding:19px 0}
+.home-latest-list .latest-item a{display:inline-block;max-width:100%;font-size:.88rem;line-height:1.5}
+.home-latest-list .latest-meta{font-size:.72rem}
+.home-latest-foot{padding:14px 28px;border-top:1px solid var(--border);color:var(--td);font-size:.68rem}
+.home-sidebar{display:grid;gap:18px}
+.home-context-card{padding:24px;border:1px solid rgba(158,178,201,.16);border-radius:22px;background:radial-gradient(ellipse at 100% 0%,rgba(113,131,207,.14),transparent 50%),linear-gradient(145deg,rgba(23,34,51,.94),rgba(15,23,36,.96));box-shadow:0 18px 48px rgba(0,0,0,.12)}
+.home-context-top{display:flex;align-items:center;gap:10px}
+.home-context-mark{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:rgba(183,167,239,.12);color:var(--purple);font-size:.69rem;font-weight:800}
+.home-context-card .home-section-kicker{color:#b9b0e8}
+.home-context-card h2{margin-top:19px;color:var(--tb);font-size:1.55rem;line-height:1.15;letter-spacing:-.05em}
+.home-context-card h2 span{color:#b9b0e8}
+.home-context-card p{margin-top:12px;color:var(--td);font-size:.78rem;line-height:1.7}
+.home-context-card .home-inline-link{margin-top:10px}
+.home-tools{padding:20px;border:1px solid var(--border);border-radius:22px;background:rgba(17,26,39,.62)}
+.home-tools-heading{display:flex;justify-content:space-between;gap:10px;margin:0 2px 8px;color:var(--tb);font-size:.79rem;font-weight:700}
+.home-tools-heading span+span{color:var(--td);font-size:.68rem;font-weight:500}
+.home-tool-card{display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:11px;width:100%;min-height:66px;padding:10px 2px;border:0;border-top:1px solid var(--border);background:transparent;color:var(--tb);text-align:left;cursor:pointer}
+.home-tool-icon{display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(120,221,191,.18);border-radius:10px;background:rgba(120,221,191,.07);color:var(--cyan);font-size:.63rem;font-weight:750;font-variant-numeric:tabular-nums}
+.home-tool-card>span:nth-child(2){display:grid;gap:4px}
+.home-tool-card strong{font-size:.77rem;font-weight:650}
+.home-tool-card small{color:var(--td);font-size:.68rem}
+.home-tool-arrow{color:var(--td);font-size:.84rem;transition:transform .18s,color .18s}
+.home-tool-card:hover strong,.home-tool-card:hover .home-tool-arrow{color:var(--cyan)}
+.home-tool-card:hover .home-tool-arrow{transform:translate(2px,-2px)}
+body[data-theme="light"] .home-intel-panel{background:radial-gradient(ellipse at 85% 4%,rgba(113,131,207,.12),transparent 40%),linear-gradient(145deg,#fff,#eef4f7);border-color:#dbe5e8;box-shadow:0 28px 68px rgba(36,61,79,.12),inset 0 1px #fff}
+body[data-theme="light"] .home-kpi-value{color:#15263a}
+body[data-theme="light"] .home-kpi-label,body[data-theme="light"] .home-source-copy strong,body[data-theme="light"] .home-kpi-item strong{color:#26364b}
+body[data-theme="light"] .home-source-copy small,body[data-theme="light"] .home-kpi-item span,body[data-theme="light"] .home-intel-foot{color:#687a8b}
+body[data-theme="light"] .home-source-state{color:#356b5c}
+body[data-theme="light"] .home-kpi-item{background:rgba(255,255,255,.72);border-color:#dce6ea}
+body[data-theme="light"] #dashboardStatus{color:#627489}
+body[data-theme="light"] .home-context-card{background:radial-gradient(ellipse at 100% 0%,rgba(113,131,207,.08),transparent 50%),linear-gradient(145deg,#fff,#f1f3fa);border-color:var(--border)}
+body[data-theme="light"] .home-context-card h2{color:#26364b}
+body[data-theme="light"] .home-context-card p{color:#64748b}
+body[data-theme="light"] .home-tools{background:#fff}
+body[data-theme="light"] .home-tool-card strong{color:#334155}
+.ac,.fc,.health-card,.repo-card,.cc,.sc2{border-radius:16px}
+.ac,.fc{border-color:var(--border);background:linear-gradient(145deg,rgba(22,33,49,.92),rgba(16,25,38,.96));box-shadow:0 14px 34px rgba(0,0,0,.1)}
+body[data-theme="light"] .ac,body[data-theme="light"] .fc,body[data-theme="light"] .cc,body[data-theme="light"] .sc2{background:#fff}
+.cc{padding:17px;background:rgba(15,24,37,.62);border-color:var(--border)}
+.cc:hover{transform:translateY(-2px);border-color:rgba(120,221,191,.42)}
+.cch{gap:12px}
+.cid{font-family:var(--body);font-weight:700}
+.ct{font-size:.87rem;font-weight:650}
+.cd2{font-size:.77rem;line-height:1.6}
+.cm{font-family:var(--body);font-size:.69rem}
+.stc{min-height:106px;padding:19px}
+.stl{font-size:.67rem;letter-spacing:.035em}
+.repo-cards{gap:18px}
+.repo-card{border-radius:18px;padding:21px}
+.repo-card-title{font-size:1.02rem}
+.health-card{padding:22px;border-radius:18px}
+.feedback-layout{gap:22px}
+.feedback-panel,.feedback-aside{border-radius:22px}
+.tsec{border-radius:20px}
+.footer{margin-top:56px;padding:28px 20px}
+@media(max-width:1100px){
+  .dashboard-hero{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:34px}
+  .dashboard-title{font-size:clamp(3.4rem,7vw,5.5rem)}
+  .wrap{padding-right:clamp(22px,4vw,48px);padding-left:clamp(22px,4vw,48px)}
+  .home-content-grid{grid-template-columns:minmax(0,1fr) minmax(300px,.78fr);gap:18px}
+  .nav-inner{gap:12px}.tab{padding:0 9px;font-size:.72rem}
+}
+@media(max-width:1000px){.dashboard-hero{grid-template-columns:1fr;min-height:auto;padding-top:62px}.dashboard-hero-copy{max-width:760px}.home-intel-panel{max-width:760px}}
+@media(max-width:850px){
+  .nav{height:70px}.page{padding-top:70px}
+  .nav-inner{gap:10px}.nav-tabs{justify-content:flex-start}
+  .dashboard-hero{grid-template-columns:1fr;gap:30px;min-height:auto;padding:62px 0 42px}
+  .dashboard-hero-copy{max-width:720px}
+  .dashboard-title{font-size:clamp(3.4rem,9vw,6rem)}
+  .home-intel-panel{min-height:0}
+  .home-content-grid{grid-template-columns:1fr}
+  .home-sidebar{grid-template-columns:1fr 1fr;align-items:start}
+  .home-tools{padding:17px}
+}
+@media(max-width:600px){
+  .nav{height:64px;padding:0 12px}.page{padding-top:64px}
+  .nav-inner{gap:7px}.logo-btn{font-size:.9rem;gap:7px}.logo-btn svg{width:26px;height:26px}
+  .tab{height:38px;padding:0 9px;font-size:.7rem}
+  .theme-toggle{min-height:36px;padding:0 9px}
+  .wrap{padding:0 16px 58px}
+  .dashboard-hero{padding:48px 0 30px}
+  .eyebrow{font-size:.68rem;line-height:1.5;margin-bottom:18px}
+  .dashboard-title{font-size:clamp(3rem,13vw,4.6rem)}
+  .dashboard-copy{font-size:.95rem;line-height:1.7;margin-top:17px}
+  .home-actions{align-items:stretch;flex-direction:column;margin-top:22px}
+  .home-actions .action-link{width:100%;min-height:49px}
+  .home-trust-line{align-items:flex-start;font-size:.7rem}
+  .home-intel-panel{padding:21px;border-radius:23px}
+  .home-source-state{padding:6px 8px;font-size:.6rem}
+  .home-source-copy strong{font-size:.77rem}
+  .home-kpi-lead{margin:27px 0 19px;padding-bottom:19px}
+  .home-kpi-value{font-size:clamp(3.7rem,18vw,5.3rem)}
+  .home-kpi-label{font-size:.82rem}
+  .home-kpi-item{min-height:84px;padding:13px;border-radius:13px}
+  .home-kpi-item strong{font-size:1.3rem}
+  .home-intel-foot{align-items:flex-start;flex-direction:column}
+  .home-content-grid{gap:16px;padding-bottom:24px}
+  .home-section-header{align-items:flex-start;padding:21px 19px}
+  .home-section-header h2{font-size:1.3rem}
+  .home-latest-list{padding:4px 19px}
+  .home-latest-foot{padding:13px 19px;line-height:1.5}
+  .home-sidebar{grid-template-columns:1fr}
+  .home-context-card{padding:21px}
+  .page-intro{padding:48px 0 28px}
+  .page-intro .pt,.th2 .pt{font-size:clamp(2.35rem,11vw,3.8rem)}
+  .page-intro .ps{font-size:.91rem}
+  .ph{padding:16px 18px}.pb{padding:19px}
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -586,7 +917,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
     <button class="logo-btn" type="button" onclick="show('dashboard')">
-      <svg width="24" height="24" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="21" cy="21" r="20" stroke="currentColor" stroke-width="1" opacity="0.4"/><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="1" opacity="0.6"/><circle cx="21" cy="21" r="6" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="21" r="2" fill="currentColor"/><line x1="21" y1="1" x2="21" y2="8" stroke="currentColor" stroke-width="1"/><line x1="21" y1="34" x2="21" y2="41" stroke="currentColor" stroke-width="1"/><line x1="1" y1="21" x2="8" y2="21" stroke="currentColor" stroke-width="1"/><line x1="34" y1="21" x2="41" y2="21" stroke="currentColor" stroke-width="1"/></svg>
+      <svg width="30" height="30" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 3.5 34 9v9.2c0 8.7-5.8 14.8-14 18.3C11.8 33 6 26.9 6 18.2V9l14-5.5Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="1.7"/><path d="m13.5 20.2 4.2 4.1 9-9.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       ThreatScope
     </button>
     <div class="nav-tabs" role="group" aria-label="Page navigation">
@@ -607,38 +938,62 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <!-- PAGE: OVERVIEW -->
 <div id="page-dashboard" class="page active">
   <div class="wrap">
-    <section class="dashboard-hero">
+    <section class="dashboard-hero" aria-labelledby="dashboardTitle">
       <div class="dashboard-hero-copy">
-        <div class="eyebrow">Security intelligence · grounded in public sources</div>
-        <h1 class="dashboard-title">Security signals,<br/><span>without the noise.</span></h1>
-        <p class="dashboard-copy">Explore CISA’s known-exploited vulnerabilities and public GitHub security projects. Every signal links back to its source.</p>
-        <div class="action-row">
-          <button class="action-link primary" onclick="show('threats')">Explore threat intel</button>
-          <button class="action-link" onclick="show('repositories')">Search GitHub</button>
+        <div class="eyebrow"><span class="home-eyebrow-mark" aria-hidden="true"></span>Defensive intelligence, grounded in public sources</div>
+        <h1 id="dashboardTitle" class="dashboard-title">See the signal.<br/><span>Know the source.</span></h1>
+        <p class="dashboard-copy">Explore CISA’s known-exploited vulnerabilities, discover public security projects, and find practical defensive resources — with every signal linked to its source.</p>
+        <div class="action-row home-actions">
+          <button class="action-link primary" onclick="show('threats')">Explore threat intelligence <span aria-hidden="true">→</span></button>
+          <button class="action-link" onclick="show('repositories')">Browse GitHub projects</button>
         </div>
+        <div class="home-trust-line"><span class="home-trust-icon" aria-hidden="true">✓</span>Public-source data · No simulated telemetry · Clear freshness limits</div>
       </div>
-      <nav class="dashboard-more" aria-label="More ThreatScope tools">
-        <div class="dashboard-more-label">More to explore</div>
-        <button class="dashboard-more-item" type="button" onclick="show('scanner')">
-          <span class="dashboard-more-index">01</span><span class="dashboard-more-copy"><strong>URL tools</strong><small>Checks for sites you are authorized to assess</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
-        </button>
-        <button class="dashboard-more-item" type="button" onclick="show('health')">
-          <span class="dashboard-more-index">02</span><span class="dashboard-more-copy"><strong>Site health</strong><small>Check the site and public data sources</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
-        </button>
-        <button class="dashboard-more-item" type="button" onclick="show('ai')">
-          <span class="dashboard-more-index">03</span><span class="dashboard-more-copy"><strong>Learning library</strong><small>Browse defensive reference material</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
-        </button>
-      </nav>
+      <aside class="home-intel-panel" aria-label="CISA Known Exploited Vulnerabilities catalog summary">
+        <div class="home-intel-top">
+          <span class="home-source-mark" aria-hidden="true">KEV</span>
+          <span class="home-source-copy"><strong>CISA vulnerability catalog</strong><small>Public source · daily mirror</small></span>
+          <span class="home-source-state">Daily mirror</span>
+        </div>
+        <div class="home-kpi-lead">
+          <span class="home-kpi-value" id="dashboardKevTotal">—</span>
+          <span class="home-kpi-label">known exploited vulnerabilities</span>
+        </div>
+        <div class="home-kpi-grid" aria-label="Additional CISA catalog statistics">
+          <div class="home-kpi-item"><strong id="dashboardRecent">—</strong><span>added in the last 30 days</span></div>
+          <div class="home-kpi-item"><strong id="dashboardRansomware">—</strong><span>entries marked as ransomware use</span></div>
+        </div>
+        <div class="home-source-status"><span class="home-status-mark" aria-hidden="true"></span><div id="dashboardStatus" class="feed-status" role="status" aria-live="polite">Loading the CISA KEV catalog…</div></div>
+        <div class="home-intel-foot">
+          <span>Catalog dates are not attack timestamps.</span>
+          <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Open CISA catalog <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
     </section>
-    <div id="dashboardStatus" class="feed-status" role="status" aria-live="polite">Loading the CISA KEV catalog…</div>
-    <div class="intel-grid" aria-label="CISA KEV catalog summary">
-      <div class="intel-card"><div class="intel-label">Known-exploited vulnerabilities</div><div class="intel-value" id="dashboardKevTotal">—</div><div class="intel-note">Entries in the current CISA KEV catalog</div></div>
-      <div class="intel-card"><div class="intel-label">Added in the last 30 days</div><div class="intel-value" id="dashboardRecent">—</div><div class="intel-note">Calculated from CISA catalog dates</div></div>
-      <div class="intel-card"><div class="intel-label">Ransomware use confirmed</div><div class="intel-value" id="dashboardRansomware">—</div><div class="intel-note">Catalog entries marked “Known”</div></div>
-    </div>
-    <section class="panel">
-      <div class="ph"><span class="pt2">Recently added to CISA KEV</span></div>
-      <div class="pb latest-list" id="dashboardKevList"><div class="es">Waiting for the live catalog…</div></div>
+    <section class="home-content-grid" aria-label="Recent intelligence and ThreatScope tools">
+      <section class="panel home-latest-panel">
+        <div class="home-section-header">
+          <div><div class="home-section-kicker">Source updates</div><h2>Recently added</h2><p>Latest entries from the CISA KEV catalog</p></div>
+          <button class="home-inline-link" type="button" onclick="show('threats')">View all <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="home-latest-list latest-list" id="dashboardKevList"><div class="es">Waiting for the CISA catalog…</div></div>
+        <div class="home-latest-foot">Catalog mirror refreshes daily <span aria-hidden="true">·</span> CVE details link to NVD</div>
+      </section>
+      <aside class="home-sidebar">
+        <section class="home-context-card">
+          <div class="home-context-top"><span class="home-context-mark" aria-hidden="true">TS</span><span class="home-section-kicker">Built for better context</span></div>
+          <h2>Useful intelligence.<br/><span>No invented signals.</span></h2>
+          <p>ThreatScope brings public vulnerability data and defensive tools together, while showing where the information comes from and what it can — and can’t — tell you.</p>
+          <button class="home-inline-link" type="button" onclick="show('about')">How ThreatScope works <span aria-hidden="true">→</span></button>
+        </section>
+        <nav class="home-tools" aria-label="Explore ThreatScope tools">
+          <div class="home-tools-heading"><span>Explore the platform</span><span>More tools</span></div>
+          <button class="home-tool-card" type="button" onclick="show('repositories')"><span class="home-tool-icon">01</span><span><strong>GitHub discovery</strong><small>Find public security projects</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
+          <button class="home-tool-card" type="button" onclick="show('scanner')"><span class="home-tool-icon">02</span><span><strong>Authorized URL tools</strong><small>Check sites you’re permitted to assess</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
+          <button class="home-tool-card" type="button" onclick="show('health')"><span class="home-tool-icon">03</span><span><strong>Source health</strong><small>Check public data availability</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
+          <button class="home-tool-card" type="button" onclick="show('ai')"><span class="home-tool-icon">04</span><span><strong>Defensive learning</strong><small>Browse practical references</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
+        </nav>
+      </aside>
     </section>
   </div>
 </div>
@@ -647,8 +1002,8 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <div id="page-repositories" class="page">
   <div class="wrap">
     <header class="page-intro">
-      <div class="pl2">// Public repository discovery</div>
-      <h1 class="pt">GITHUB <span>DISCOVERY</span></h1>
+      <div class="pl2">Public repository discovery</div>
+      <h1 class="pt">Explore <span>GitHub</span></h1>
       <p class="ps">Browse public GitHub projects as cards, with their last-push date and project website when listed. Search by name, language, or topic; request the exact latest commit date only for repositories you want to inspect.</p>
     </header>
     <section class="panel">
@@ -695,17 +1050,17 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <div id="page-scanner" class="page">
   <div class="wrap">
     <header class="hero page-intro">
-      <div class="pl2">// Authorized URL checks</div>
-      <h1 class="pt">CHECK A <span>URL</span></h1>
+      <div class="pl2">Authorized URL checks</div>
+      <h1 class="pt">Check a <span>URL</span></h1>
       <p class="ps">Use only for websites you own or are authorized to assess. Results depend on the selected providers; unsupported checks are shown as unavailable, never estimated.</p>
     </header>
     <div class="sb">
       <div class="sbox">
-        <div class="spfx">TARGET://</div>
-        <input type="text" id="urlInput" placeholder="enter domain or URL to scan..." autocomplete="off" spellcheck="false" maxlength="2048"/>
-        <button id="scanBtn" onclick="startScan()">SCAN</button>
+        <div class="spfx">URL</div>
+        <input type="text" id="urlInput" placeholder="Enter a domain or URL to check..." autocomplete="off" spellcheck="false" maxlength="2048"/>
+        <button id="scanBtn" onclick="startScan()">Check URL</button>
       </div>
-      <div class="sh2">// OPTIONAL PROVIDER LOOKUPS · BROWSER-BASED · AUTHORIZATION REQUIRED</div>
+      <div class="sh2">Optional provider lookups · browser-based · authorization required</div>
       <div class="ak">
         <div class="af"><label>VirusTotal API Key <span style="color:var(--green);font-size:0.52rem">FREE @ virustotal.com</span></label><input type="password" id="vtKey" placeholder="VirusTotal API key..." autocomplete="off"/></div>
         <div class="af"><label>URLScan.io API Key <span style="color:var(--green);font-size:0.52rem">FREE @ urlscan.io</span></label><input type="password" id="usKey" placeholder="URLScan.io API key..." autocomplete="off"/></div>
@@ -718,7 +1073,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
     </div>
     <div id="ls"><div class="radar"><div class="rr"></div><div class="rr"></div><div class="rr"></div><div class="rsw"></div><div class="rc"></div></div><p>Scanning Target...</p><div id="ll"></div></div>
     <div id="rs">
-      <div class="rh"><div><div id="ru"></div><div style="font-family:var(--disp);font-size:1.2rem;letter-spacing:3px;color:var(--tb)">SCAN RESULTS</div></div><button id="nsb" onclick="resetScan()">↩ NEW SCAN</button></div>
+      <div class="rh"><div><div id="ru"></div><div style="font-family:var(--body);font-size:1.15rem;font-weight:700;letter-spacing:-.03em;color:var(--tb)">Assessment results</div></div><button id="nsb" onclick="resetScan()">↩ New check</button></div>
       <div class="sg" id="sg"></div>
       <div class="stabs">
         <button class="stab active" onclick="switchStab(this,'stab-vt')">VirusTotal</button>
@@ -730,22 +1085,22 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
         <button class="stab" onclick="switchStab(this,'stab-ports')">Port Scan</button>
       </div>
       <div id="stab-vt" class="stab-content active"><div class="two" id="rg"></div></div>
-      <div id="stab-ssl" class="stab-content"><div class="panel" id="sslPanel"><div class="pb"><div class="es">// Run a scan to see SSL/TLS analysis</div></div></div></div>
-      <div id="stab-headers" class="stab-content"><div class="panel" id="headersPanel"><div class="pb"><div class="es">// Run a scan to see HTTP header audit</div></div></div></div>
-      <div id="stab-dns" class="stab-content"><div class="panel" id="dnsPanel"><div class="pb"><div class="es">// Run a scan to see DNS records</div></div></div></div>
-      <div id="stab-whois" class="stab-content"><div class="panel" id="whoisPanel"><div class="pb"><div class="es">// Run a scan to see domain information</div></div></div></div>
-      <div id="stab-breach" class="stab-content"><div class="panel" id="breachPanel"><div class="pb"><div class="es">// Add HaveIBeenPwned key to enable breach checking</div></div></div></div>
-      <div id="stab-ports" class="stab-content"><div class="panel" id="portsPanel"><div class="pb"><div class="es">// Add Shodan API key to enable port scanning</div></div></div></div>
+      <div id="stab-ssl" class="stab-content"><div class="panel" id="sslPanel"><div class="pb"><div class="es">Run a check to see SSL/TLS analysis</div></div></div></div>
+      <div id="stab-headers" class="stab-content"><div class="panel" id="headersPanel"><div class="pb"><div class="es">Run a check to see HTTP header analysis</div></div></div></div>
+      <div id="stab-dns" class="stab-content"><div class="panel" id="dnsPanel"><div class="pb"><div class="es">Run a check to see DNS records</div></div></div></div>
+      <div id="stab-whois" class="stab-content"><div class="panel" id="whoisPanel"><div class="pb"><div class="es">Run a check to see domain information</div></div></div></div>
+      <div id="stab-breach" class="stab-content"><div class="panel" id="breachPanel"><div class="pb"><div class="es">Add a Have I Been Pwned key to enable breach checking</div></div></div></div>
+      <div id="stab-ports" class="stab-content"><div class="panel" id="portsPanel"><div class="pb"><div class="es">Add a Shodan API key to enable port lookups</div></div></div></div>
     </div>
     <div style="margin-top:32px">
-      <div class="sl">// Recent Scans</div>
+      <div class="sl">Recent scans</div>
       <div class="panel">
-        <div class="ph"><span class="pt2">Scan History</span><span class="badge bc" id="histCount">0 scans</span><button onclick="clearHistory()" style="background:transparent;border:none;color:var(--td);font-family:var(--mono);font-size:0.58rem;cursor:pointer;margin-left:auto">CLEAR</button></div>
+        <div class="ph"><span class="pt2">Scan history</span><span class="badge bc" id="histCount">0 scans</span><button onclick="clearHistory()" style="background:transparent;border:none;color:var(--td);font-family:var(--body);font-size:0.7rem;cursor:pointer;margin-left:auto">Clear history</button></div>
         <div class="pb" id="histList"><div class="es" style="padding:16px">No scans yet.</div></div>
       </div>
     </div>
     <div style="margin-top:24px">
-      <div class="sl">// Compare Two URLs</div>
+      <div class="sl">Compare two URLs</div>
       <div class="panel">
         <div class="ph"><span class="pt2">Side-by-Side Comparison</span><span class="badge bo">TIER 2</span></div>
         <div class="pb">
@@ -753,7 +1108,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
             <div class="af"><label>URL 1</label><input type="text" id="cmpUrl1" placeholder="https://example.com" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:9px 12px;font-family:var(--mono);font-size:0.75rem;color:var(--text);outline:none"/></div>
             <div class="af"><label>URL 2</label><input type="text" id="cmpUrl2" placeholder="https://other.com" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:9px 12px;font-family:var(--mono);font-size:0.75rem;color:var(--text);outline:none"/></div>
           </div>
-          <button onclick="runComparison()" style="background:var(--surface);border:1px solid var(--bb);color:var(--cyan);padding:9px 20px;font-family:var(--mono);font-size:0.68rem;letter-spacing:2px;cursor:pointer;border-radius:3px">COMPARE BOTH</button>
+          <button onclick="runComparison()" style="background:var(--surface);border:1px solid var(--bb);color:var(--cyan);padding:10px 18px;font-family:var(--body);font-size:0.78rem;font-weight:650;cursor:pointer;border-radius:10px">Compare URLs</button>
           <div id="cmpResults" style="margin-top:16px"></div>
         </div>
       </div>
@@ -764,7 +1119,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <!-- PAGE: THREATS -->
 <div id="page-threats" class="page">
   <div class="wrap">
-    <header class="page-intro"><div class="pl2">// Public vulnerability intelligence</div><h1 class="pt">EXPLOITED <span>VULNERABILITIES</span></h1><p class="ps">Search the CISA Known Exploited Vulnerabilities (KEV) catalog. The upstream catalog is maintained by CISA and its public mirror refreshes daily; it is not a real-time attack stream.</p></header>
+    <header class="page-intro"><div class="pl2">Public vulnerability intelligence</div><h1 class="pt">Known exploited <span>vulnerabilities</span></h1><p class="ps">Search the CISA Known Exploited Vulnerabilities (KEV) catalog. The upstream catalog is maintained by CISA and its public mirror refreshes daily; it is not a real-time attack stream.</p></header>
     <div class="feed-status" id="kevStatus" role="status" aria-live="polite">Connecting to the CISA KEV catalog…</div>
     <div class="full">
       <div class="panel community-summary">
@@ -804,8 +1159,8 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
         <div class="pb">
           <div class="cvs-input">
             <input type="search" id="cveSearch" aria-label="Search CISA KEV vulnerabilities" placeholder="Search CVE, vendor, product, or vulnerability..."/>
-            <button onclick="searchCVE()">SEARCH</button>
-            <button id="kevRefresh" onclick="refreshKevFeed()">REFRESH</button>
+            <button onclick="searchCVE()">Search</button>
+            <button id="kevRefresh" onclick="refreshKevFeed()">Refresh data</button>
           </div>
           <div class="feed-source">Source: <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a>, delivered through the <a href="https://github.com/aboutcode-org/aboutcode-mirror-kev" target="_blank" rel="noopener noreferrer">AboutCode public mirror</a>. CVE details link to NVD. Catalog data is refreshed daily; results are not a real-time attack stream.</div>
           <div class="kev-count" id="kevResultCount" aria-live="polite"></div>
@@ -824,27 +1179,27 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <!-- PAGE: AI THREATS -->
 <div id="page-ai" class="page">
   <div class="wrap">
-    <header class="page-intro"><div class="pl2">// Evergreen defensive reference</div><h1 class="pt">THREAT <span>LEARNING</span></h1><p class="ps">Reference material and defensive guidance. This library is not a live incident feed; time-sensitive claims should be checked against the linked primary sources.</p></header>
+    <header class="page-intro"><div class="pl2">Evergreen defensive reference</div><h1 class="pt">Threat <span>learning</span></h1><p class="ps">Reference material and defensive guidance. This library is not a live incident feed; time-sensitive claims should be checked against the linked primary sources.</p></header>
     <div class="ai-stat">The examples below are educational context, not measurements of current attacker activity. ThreatScope does not infer attack volumes or locations.</div>
-    <div class="sl">// AI Attack Vectors — click any card</div>
+    <div class="sl">AI attack vectors — select a card to learn more</div>
     <div class="rg" id="aiGrid"></div>
-    <div style="margin-top:36px"><div class="sl">// Web vulnerability reference — educational material</div><div class="rg" id="refGrid"></div></div>
+    <div style="margin-top:36px"><div class="sl">Web vulnerability reference — educational material</div><div class="rg" id="refGrid"></div></div>
     <div class="full"><div class="panel"><div class="ph"><span class="pt2">Primary-source threat research</span><span class="badge bc">EXTERNAL SOURCES</span></div><div class="pb" id="aiInc"></div></div></div>
-    <div style="margin-top:16px"><div class="sl">// AI Defence Strategies — click any card for full guidance</div><div class="rg" id="aiDef"></div></div>
+    <div style="margin-top:16px"><div class="sl">AI defence strategies — select a card for guidance</div><div class="rg" id="aiDef"></div></div>
   </div>
 </div>
 
 <!-- PAGE: ABOUT -->
 <div id="page-about" class="page">
   <div class="wrap">
-    <header class="page-intro"><div class="pl2">// What is ThreatScope</div><h1 class="pt">BUILT FOR <span>DEFENDERS</span></h1><p class="ps">Free security intelligence dashboard for defenders. Click any feature card to learn more.</p></header>
-    <div class="asec"><div class="sl">// Features — click any card</div><div class="ast">What ThreatScope Does</div>
+    <header class="page-intro"><div class="pl2">About ThreatScope</div><h1 class="pt">Built for <span>defenders</span></h1><p class="ps">Free security intelligence dashboard for defenders. Select any feature card to learn more.</p></header>
+    <div class="asec"><div class="sl">Features — select any card</div><div class="ast">What ThreatScope Does</div>
       <div class="fg" id="featureGrid"></div>
     </div>
-    <div class="asec"><div class="sl">// Security Posture</div><div class="ast">How Secure Is ThreatScope?</div>
+    <div class="asec"><div class="sl">Security posture</div><div class="ast">How Secure Is ThreatScope?</div>
       <div class="notice">ThreatScope is a static client-side site with no server-side authentication, private workspace, or continuous server monitoring. The Health page runs on-demand checks from your browser. The Site Guide routes locally and does not send prompts to an AI service. Third-party providers receive requests directly from your browser; URL scanner submissions may be public depending on the provider.</div>
     </div>
-    <div class="asec"><div class="sl">// Powered By</div><div class="ast">Data Sources</div>
+    <div class="asec"><div class="sl">Powered by</div><div class="ast">Data Sources</div>
       <div class="ag">
         <div class="ac"><div class="an">VirusTotal API</div><div class="ad">Optional URL reputation lookup. Provider terms and limits apply.</div><a href="https://virustotal.com" target="_blank" rel="noopener noreferrer" class="al">↗ virustotal.com</a></div>
         <div class="ac"><div class="an">URLScan.io API</div><div class="ad">Optional URL submission; submissions may be public.</div><a href="https://urlscan.io" target="_blank" rel="noopener noreferrer" class="al">↗ urlscan.io</a></div>
@@ -857,7 +1212,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
         <div class="ac"><div class="an">NIST NVD</div><div class="ad">CVE detail pages linked from catalog results.</div><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" class="al">↗ nvd.nist.gov</a></div>
       </div>
     </div>
-    <div class="asec"><div class="sl">// Get involved</div><div class="ast">Help Improve ThreatScope</div>
+    <div class="asec"><div class="sl">Get involved</div><div class="ast">Help Improve ThreatScope</div>
       <div class="contribute-panel">
         <div class="atx">Found a bug, want a feature, or interested in contributing? Open an issue to start a conversation, or send a pull request with your improvement.</div>
         <div class="contribute-links">
@@ -922,7 +1277,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
     <header class="health-header">
       <div class="health-header-copy">
         <div class="eyebrow">On-demand source checks · browser-side</div>
-        <h1 class="dashboard-title">SITE <span>HEALTH</span></h1>
+        <h1 class="dashboard-title">Site <span>health</span></h1>
         <p class="dashboard-copy">Check whether ThreatScope’s public data sources respond and see their current freshness. These checks run in your browser when requested; this static site has no server-side monitoring.</p>
       </div>
       <div class="health-actions">
@@ -956,7 +1311,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
 <!-- PAGE: TERMS -->
 <div id="page-terms" class="page">
   <div class="wrap" style="max-width:1320px">
-    <div class="th2"><div class="pl2">// Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3rem)">TERMS & <span>PRIVACY</span></div><div class="tm">Last updated: November 2026 | Version 1.3 | © 2026 ThreatScope — Arv1121</div></div>
+    <div class="th2"><div class="pl2">Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3rem)">Terms & <span>privacy</span></div><div class="tm">Last updated: November 2026 | Version 1.3 | © 2026 ThreatScope — Arv1121</div></div>
     <div class="toc"><div class="toct">Table of Contents</div>
       <div class="toci" onclick="st('t1')"><span class="tocn">01</span>Acceptance of Terms</div>
       <div class="toci" onclick="st('t2')"><span class="tocn">02</span>Description of Service</div>
@@ -968,7 +1323,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
       <div class="toci" onclick="st('t8')"><span class="tocn">08</span>Intellectual Property & Licensing</div>
       <div class="toci" onclick="st('t9')"><span class="tocn">09</span>Changes & Contact</div>
     </div>
-    <div class="tsec" id="t1"><div class="tsh"><span class="tsn">01</span><span class="tst">Acceptance of Terms</span></div><div class="td2">By accessing ThreatScope you accept these terms. If you disagree, do not use this service.</div><div class="tinfo"><div class="tinfot">// Plain English</div><div class="tinfod">Use this tool responsibly. Only scan websites you own or have explicit permission to test. GitHub Discovery shows paginated public search results and offers exact lookups; it does not crawl the full GitHub catalog.</div></div></div>
+    <div class="tsec" id="t1"><div class="tsh"><span class="tsn">01</span><span class="tst">Acceptance of Terms</span></div><div class="td2">By accessing ThreatScope you accept these terms. If you disagree, do not use this service.</div><div class="tinfo"><div class="tinfot">In plain English</div><div class="tinfod">Use this tool responsibly. Only scan websites you own or have explicit permission to test. GitHub Discovery shows paginated public search results and offers exact lookups; it does not crawl the full GitHub catalog.</div></div></div>
     <div class="tsec" id="t2"><div class="tsh"><span class="tsn">02</span><span class="tst">Description of Service</span></div><div class="td2">ThreatScope is a <strong>defensive intelligence dashboard</strong>. It is a static website on GitHub Pages with no backend servers. API requests go directly from your browser to third-party services. The vulnerability catalog uses CISA data delivered by a daily public mirror. GitHub Discovery queries public repositories through GitHub’s search API and displays the repository’s last-push date; the exact default-branch commit date is requested only when you choose it for a card. Search does not enumerate every public repository or crawl repository contents.</div></div>
     <div class="tsec" id="t3"><div class="tsh"><span class="tsn">03</span><span class="tst">Acceptable Use Policy</span></div>
       <div class="clause"><div class="ctitle">Authorised Use</div><div class="ctxt">Only scan URLs and domains you own, control, or have explicit written permission from the owner to test.</div></div>
@@ -986,7 +1341,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
       <div class="clause"><div class="ctitle">Limitation of Liability</div><div class="ctxt">To the maximum extent permitted by law, ThreatScope contributors shall not be liable for any damages arising from use of this service.</div></div>
     </div>
     <div class="tsec" id="t7"><div class="tsh"><span class="tsn">07</span><span class="tst">Privacy Policy</span></div>
-      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">ThreatScope does not run analytics or persist feedback in this app. Theme selection and Site Guide messages stay in page memory; the guide is not generative AI and does not send prompts to an AI service. If you choose to submit a prepared issue, GitHub receives it and published issues are public. Third-party services may receive standard network metadata when your browser requests their content or scans.</div></div>
+      <div class="tinfo"><div class="tinfot">The short version</div><div class="tinfod">ThreatScope does not run analytics or persist feedback in this app. Theme selection and Site Guide messages stay in page memory; the guide is not generative AI and does not send prompts to an AI service. If you choose to submit a prepared issue, GitHub receives it and published issues are public. Third-party services may receive standard network metadata when your browser requests their content or scans.</div></div>
       <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">ThreatScope does not use cookies, local storage, tracking pixels, or fingerprinting. Feedback text, theme selection, and Site Guide messages are held only in the current page and are not sent to an AI provider. Feedback is sent to GitHub only if you open the prepared draft; nothing is submitted automatically, and issues are public if you submit them. Third-party services receive requests directly from your browser and may process standard connection metadata under their own privacy policies.</div></div>
       <div class="clause"><div class="ctitle">Hosting & Threat Feed</div><div class="ctxt">GitHub Pages hosts this website. The KEV feed is delivered by the AboutCode mirror hosted on GitHub. Repository search terms are sent to GitHub's public API, and exact repository metadata or commit lookups are requested when you choose them. GitHub and other service providers may collect standard server logs. Review each provider's privacy policy.</div></div>
     </div>
@@ -1788,7 +2143,7 @@ function openFeatureModal(i){
   }
   if(f.apiKey){
     body+=`<div class="modal-example" style="margin-top:14px">
-      <div class="modal-example-label">// API Key Requirement</div>
+      <div class="modal-example-label">API key requirement</div>
       <div class="modal-example-text">${e(f.apiKey)}</div>
     </div>`;
   }
@@ -2082,7 +2437,7 @@ async function runComparison(){
   if(!u1||!u2){alert('Please enter two valid URLs.');return;}
   const vk=document.getElementById('vtKey').value.trim();
   const el=document.getElementById('cmpResults');
-  el.innerHTML='<div style="font-family:var(--mono);font-size:0.7rem;color:var(--cyan);letter-spacing:2px;padding:8px 0">// Running comparison...</div>';
+  el.innerHTML='<div style="font-family:var(--body);font-size:0.78rem;color:var(--td);padding:8px 0">Comparing results…</div>';
   const [r1,r2]=await Promise.allSettled([
     Promise.all([vk?scanVT(u1,vk):null,scanSSL(gd(u1)),scanDNS(gd(u1)),scanDomain(gd(u1))]),
     Promise.all([vk?scanVT(u2,vk):null,scanSSL(gd(u2)),scanDNS(gd(u2)),scanDomain(gd(u2))]),
