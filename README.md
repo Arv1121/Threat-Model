@@ -1,20 +1,26 @@
 # ThreatScope
 
-ThreatScope is a browser-based security dashboard for defenders. It combines an authorized URL-scanning interface, practical security references, and a live view of CISA's Known Exploited Vulnerabilities (KEV) catalog.
+ThreatScope is a browser-based defensive intelligence dashboard. It combines a sourced CISA Known Exploited Vulnerabilities (KEV) view, paginated public GitHub repository discovery, exact repository metadata lookup, optional authorized URL lookups, and a clearly separated learning library.
 
 **Live site:** <https://arv1121.github.io/Threat-Model/>
 
 ## What it does
 
-- Searches the CISA KEV catalog by CVE, vendor, product, or vulnerability description.
-- Shows the catalog size, recent additions, known ransomware use, and charts derived from the catalog.
+- Shows the CISA KEV catalog size, recent additions, known ransomware use, recent entries, and charts derived from the catalog.
 - Links each live result to its NIST National Vulnerability Database record.
-- Offers optional VirusTotal, URLScan.io, Shodan, and Have I Been Pwned scanner integrations.
-- Includes security references and a clearly labeled simulated globe. The globe does not show real attacks or telemetry.
+- Searches public GitHub repositories and displays paginated cards with the last-push date and listed project website; the exact default-branch commit date is requested only when selected on a card.
+- Offers an exact repository lookup with direct links to that repository's security resources.
+- Offers optional VirusTotal, URLScan.io, Shodan, and Have I Been Pwned lookups for authorized targets.
+- Provides a feedback form that prepares a GitHub issue draft for review; it does not submit feedback automatically.
+- Keeps evergreen educational material separate from current threat intelligence.
 
 ## Data freshness and privacy
 
-The site remains a static GitHub Pages app; it has no application server or database. KEV data is fetched in the browser from the [AboutCode KEV mirror](https://github.com/aboutcode-org/aboutcode-mirror-kev), which refreshes daily from CISA. This is a periodically updated vulnerability catalog, not a real-time attack feed. Other scanner requests go directly from the browser to the selected third-party service. Review each provider's terms before submitting URLs; URLScan.io submissions may be public.
+The site remains a static GitHub Pages app; it has no application server or database. KEV data is fetched in the browser from the [AboutCode KEV mirror](https://github.com/aboutcode-org/aboutcode-mirror-kev), which refreshes daily from CISA. This is a periodically updated vulnerability catalog, not a real-time attack feed. Opening GitHub Discovery requests one page of up to 100 public repository results, sorted by recent update. Cards use GitHub's `pushed_at` timestamp, while an exact latest default-branch commit date is fetched only when requested on a card. Search results are cached briefly in the page to reduce API calls. GitHub exposes at most the first 1,000 matches per search, so this is not a complete listing of every public repository. Search terms and requested repository names go directly to GitHub's unauthenticated API and remain subject to its rate limits; the page respects rate-limit retry information when provided. The app does not enumerate the global repository catalog, crawl repository contents, or scan arbitrary repositories.
+
+Other URL lookup requests go directly from the browser to the selected third-party service. Review each provider's terms before submitting URLs; URLScan.io submissions may be public. Feedback remains in the page until you follow the prepared issue link; GitHub receives the draft and any issue you submit is public. Do not include secrets or sensitive information. TLS and HTTP-header grades are not estimated because this static browser app cannot produce reliable checks for arbitrary hosts. If data is unavailable, the dashboard shows that state instead of substituting a clean result or sample data.
+
+The learning library is static educational content, not a current incident feed. No globe, attack locations, or fabricated real-time activity is shown.
 
 Optional scanner API keys stay in browser memory for the current page session. Do not enter internal or sensitive URLs into public scanning services.
 
@@ -42,7 +48,7 @@ Serve the repository over HTTP so the browser can load the JavaScript module:
 python3 -m http.server 8000
 ```
 
-Open <http://localhost:8000/>. The page uses Three.js and Chart.js from pinned CDN URLs; no build or install step is needed.
+Open <http://localhost:8000/>. The page uses Chart.js from a CDN; no build or install step is needed.
 
 ## Tests
 

@@ -140,13 +140,16 @@ export function aggregateOptInSummaries(registry, summaries, now = new Date()) {
     throw new TypeError('Expected one summary result per opted-in repository');
   }
 
+  const summaryByRepository = new Map();
+  for (const summary of summaries) {
+    if (!summary || !summary.repository || !summary.branch) continue;
+    summaryByRepository.set(`${summary.repository.toLowerCase()}#${summary.branch}`, summary);
+  }
+
   const freshSummaries = [];
-  summaries.forEach((summary, index) => {
-    if (
-      validateRepositorySummary(summary, now) &&
-      summary.repository.toLowerCase() === repositories[index].repository.toLowerCase() &&
-      summary.branch === repositories[index].branch
-    ) {
+  repositories.forEach((entry) => {
+    const summary = summaryByRepository.get(`${entry.repository.toLowerCase()}#${entry.branch}`);
+    if (summary && validateRepositorySummary(summary, now)) {
       freshSummaries.push(summary);
     }
   });

@@ -120,6 +120,22 @@ test('hides totals below the cohort threshold and sums only fresh matching repor
   assert.equal(ready.excludedReports, 1);
 });
 
+test('accepts summaries in any order as long as they match the registry entries', () => {
+  const registry = makeRegistry(MINIMUM_PUBLIC_REPOSITORIES);
+  const summaries = [...registry.repositories]
+    .reverse()
+    .map((entry) => makeSummary(entry));
+
+  const aggregate = aggregateOptInSummaries(registry, summaries, now);
+  assert.equal(aggregate.status, 'ready');
+  assert.equal(aggregate.reportingRepositories, MINIMUM_PUBLIC_REPOSITORIES);
+  assert.deepEqual(aggregate.totals, {
+    packagesScanned: MINIMUM_PUBLIC_REPOSITORIES * 2,
+    affectedPackages: MINIMUM_PUBLIC_REPOSITORIES,
+    vulnerabilityMatches: MINIMUM_PUBLIC_REPOSITORIES
+  });
+});
+
 test('validates the public aggregate schema and rejects per-repository detail', () => {
   const registry = makeRegistry(MINIMUM_PUBLIC_REPOSITORIES);
   const ready = aggregateOptInSummaries(
