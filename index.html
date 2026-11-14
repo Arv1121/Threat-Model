@@ -355,17 +355,21 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 body{background:#0b1020;color:#dbe4f0;font-family:var(--body)}
 body::before,body::after{display:none}
 :root{--bg:#0b1020;--bg2:#10182a;--surface:#141e31;--border:#26344b;--bb:#405674;--cyan:#66d9c1;--cd:rgba(102,217,193,.12);--cg:rgba(102,217,193,.22);--red:#ff727a;--orange:#f4b76b;--green:#73d6a4;--yellow:#f2d27b;--purple:#b7a3ff;--text:#dbe4f0;--td:#96a7bf;--tb:#f4f7fb;--mono:'DM Sans',sans-serif;--disp:'DM Sans',sans-serif}
-.nav{padding:0 max(20px,calc((100vw - 1280px)/2));background:rgba(11,16,32,.88);height:68px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
-.logo-btn{font-family:var(--body);font-weight:700;font-size:1rem;letter-spacing:-.03em}
-.logo-btn svg{width:26px;height:26px}
-.nav-tabs{gap:4px}
-.tab{font-family:var(--body);font-size:.76rem;letter-spacing:0;text-transform:none;padding:0 12px}
-.tab.active{color:var(--tb);border-bottom-color:var(--cyan);background:linear-gradient(180deg,rgba(102,217,193,.08),transparent)}
+.nav{padding:0 clamp(20px,3vw,48px);background:rgba(11,16,32,.92);height:72px;box-shadow:0 10px 28px rgba(0,0,0,.16)}
+.nav-inner{display:flex;align-items:center;gap:16px;width:100%;max-width:1584px;height:100%;min-width:0;margin:0 auto}
+.logo-btn{gap:9px;margin-right:0;color:var(--tb);font-family:var(--body);font-weight:700;font-size:1rem;letter-spacing:-.03em}
+.logo-btn svg{width:25px;height:25px;flex-shrink:0;color:var(--cyan)}
+.nav-tabs{align-items:center;gap:4px;min-width:0;scrollbar-width:none}
+.tab{height:40px;flex-shrink:0;border:1px solid transparent;border-bottom:0;border-radius:10px;font-family:var(--body);font-size:.75rem;letter-spacing:0;text-transform:none;padding:0 11px}
+.tab .tdot{display:none!important}
+.tab.active{color:var(--tb);border:1px solid rgba(102,217,193,.2);background:rgba(102,217,193,.09)}
 .tab:focus-visible,.logo-btn:focus-visible,.action-link:focus-visible,.lookup-button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 .nav-r .pd{background:var(--green);box-shadow:none}
+.nav-r{margin-left:0}
+.nav-r .pl{display:none}
 .pl{font-family:var(--body);letter-spacing:0}
-.page{padding-top:68px}
-.wrap{max-width:1280px;padding:36px 24px 72px}
+.page{padding-top:72px}
+.wrap{width:100%;max-width:1680px;padding:36px clamp(20px,3vw,48px) 72px}
 .panel,.stc,.sc2,.rc2,.ac,.fc,.contribute-panel{border-radius:16px}
 .panel{background:linear-gradient(145deg,rgba(20,30,49,.96),rgba(15,24,40,.98));border-color:rgba(132,157,191,.18);box-shadow:0 18px 48px rgba(0,0,0,.12)}
 .ph{padding:14px 18px;background:transparent}
@@ -373,28 +377,27 @@ body::before,body::after{display:none}
 .pt,.tst,.ast,.stn,.ai-num,.sv{font-family:var(--body);letter-spacing:-.04em;font-weight:700}
 .pt{font-size:clamp(2rem,4vw,3.35rem)}
 .sl::after{background:var(--border)}
-.dashboard-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);align-items:center;gap:40px;padding:52px 0 34px}
+.dashboard-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);align-items:center;gap:clamp(32px,6vw,88px);padding:68px 0 42px}
 .dashboard-hero-copy{position:relative;z-index:1}
-.dashboard-title{font-size:clamp(2rem,4.4vw,3.5rem);line-height:1.04;letter-spacing:-.06em;color:var(--tb);font-weight:700}
+.dashboard-title{font-size:clamp(2.4rem,5vw,4.25rem);line-height:1.02;letter-spacing:-.065em;color:var(--tb);font-weight:700}
 .dashboard-title span{color:var(--cyan);background:linear-gradient(90deg,#66d9c1,#a5b9ff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.dashboard-copy{max-width:620px;color:var(--td);line-height:1.7;margin-top:12px}
+.dashboard-copy{max-width:590px;color:var(--td);font-size:.98rem;line-height:1.75;margin-top:16px}
 .eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
-.hero-live-panel{min-height:320px;padding:22px;border:1px solid rgba(102,217,193,.2);border-radius:22px;background:linear-gradient(145deg,rgba(19,34,53,.92),rgba(12,19,33,.96));box-shadow:inset 0 1px rgba(255,255,255,.04),0 28px 80px rgba(0,0,0,.22)}
-.hero-live-source{display:flex;align-items:center;gap:9px}
-.hero-live-title{margin-top:19px;color:var(--tb);font-size:1.12rem;font-weight:650;letter-spacing:-.03em}
-.hero-live-copy{margin-top:5px;color:var(--td);font-size:.75rem;line-height:1.55}
-.hero-live-bars{display:grid;gap:7px;margin:17px 0}
-.hero-live-row{display:grid;grid-template-columns:56px minmax(0,1fr) 34px;align-items:center;gap:9px;color:var(--td);font-size:.66rem;font-variant-numeric:tabular-nums}
-.hero-live-month{white-space:nowrap}
-.hero-live-track{height:7px;overflow:hidden;border-radius:8px;background:rgba(150,167,191,.12)}
-.hero-live-bar{display:block;height:100%;min-width:0;border-radius:8px;background:linear-gradient(90deg,#66d9c1,#a5b9ff)}
-.hero-live-count{color:var(--tb);text-align:right}
-.hero-live-footer{display:flex;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--border);color:var(--td);font-size:.7rem}
-.hero-live-footer time{color:var(--tb);font-variant-numeric:tabular-nums}
-.hero-live-link{display:inline-block;margin-top:12px;color:var(--cyan);font-size:.74rem;text-decoration:none}
-.hero-live-link:hover{text-decoration:underline}
-.hero-live-empty{grid-column:1/-1;color:var(--td);font-size:.75rem;line-height:1.5}
-.feedback-wrap{max-width:1120px}
+.dashboard-source-card{padding:clamp(22px,3vw,34px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,var(--surface),var(--bg2))}
+.dashboard-source-label{color:var(--cyan);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.dashboard-source-title{margin-top:22px;color:var(--tb);font-size:clamp(1.2rem,2vw,1.55rem);font-weight:650;letter-spacing:-.04em;line-height:1.25}
+.dashboard-source-copy{margin-top:9px;color:var(--td);font-size:.82rem;line-height:1.65}
+.dashboard-source-meta{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid var(--border);color:var(--td);font-size:.72rem}
+.dashboard-source-meta time{color:var(--tb);font-variant-numeric:tabular-nums}
+.dashboard-source-link{display:inline-flex;margin-top:18px;color:var(--cyan);font-size:.78rem;text-decoration:none}
+.dashboard-source-link:hover{text-decoration:underline}
+.page-intro{max-width:900px;padding:38px 0 28px;text-align:left}
+.page-intro .pt,.page-intro .dashboard-title{margin-bottom:12px;font-family:var(--body);font-size:clamp(2rem,4vw,3.25rem);letter-spacing:-.055em;line-height:1.05}
+.page-intro .ps{max-width:780px;font-size:.94rem;font-weight:400}
+.feedback-hero.page-intro{padding:34px 0 24px}
+#dashboardStatus{padding:0;margin:0 0 14px;border:0;background:transparent;color:var(--td);font:400 .72rem var(--body)}
+#dashboardStatus.error{color:var(--orange)}
+.feedback-wrap{max-width:1480px}
 .feedback-hero{padding:42px 0 26px}
 .feedback-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:18px;align-items:start}
 .feedback-panel,.feedback-aside{min-width:0}
@@ -423,12 +426,12 @@ body::before,body::after{display:none}
 .action-link,.lookup-button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border:1px solid var(--border);border-radius:10px;background:rgba(20,30,49,.8);color:var(--tb);text-decoration:none;font:600 .82rem var(--body);cursor:pointer;transition:transform .18s,border-color .18s,filter .18s}
 .action-link.primary,.lookup-button{border-color:transparent;background:var(--cyan);color:#08211d}
 .action-link:hover,.lookup-button:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:12px 0 22px}
-.intel-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
-.intel-label{font-size:.76rem;color:var(--td);margin-bottom:12px}
+.intel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:8px 0 34px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.intel-card{position:relative;min-width:0;padding:8px 24px;background:transparent;border:0;border-radius:0}
+.intel-card:not(:last-child)::after{content:"";position:absolute;top:8px;right:0;bottom:8px;width:1px;background:var(--border)}
+.intel-label{font-size:.74rem;color:var(--td);margin-bottom:9px}
 .intel-value{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.05em;color:var(--tb)}
 .intel-note{font-size:.72rem;color:var(--td);margin-top:7px;line-height:1.5}
-.overview-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px}
 .latest-list{display:flex;flex-direction:column}
 .latest-item{padding:14px 0;border-bottom:1px solid var(--border)}
 .latest-item:last-child{border-bottom:0}
@@ -436,6 +439,7 @@ body::before,body::after{display:none}
 .latest-item a:hover{color:var(--cyan)}
 .latest-meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--td);font-size:.74rem;margin-top:6px}
 .latest-description{font-size:.82rem;color:var(--td);line-height:1.55;margin-top:7px}
+.latest-item .latest-description{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 .source-list{display:grid;gap:12px}
 .source-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .source-row:last-child{padding-bottom:0;border-bottom:0}
@@ -493,12 +497,73 @@ body::before,body::after{display:none}
 .repo-pagination[hidden]{display:none}
 .repo-pagination .action-link{min-height:36px;padding:0 12px}
 .repo-pagination button:disabled{opacity:.5;cursor:not-allowed}
-@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:34px}.hero-live-panel{min-height:0}.feedback-layout{grid-template-columns:1fr}.intel-grid,.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-layout{grid-template-columns:1fr}}
-@media(max-width:600px){.nav{padding:0 10px}.logo-btn{margin-right:8px}.logo-btn svg{display:none}.tab{padding:0 9px;font-size:.72rem}.nav-r{display:none}.wrap{padding:24px 14px 52px}.repo-form{flex-direction:column}.repo-form .lookup-button{width:100%}.intel-grid{gap:8px}.intel-card{padding:13px}}
+.theme-toggle{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;border:1px solid var(--border);border-radius:9px;background:rgba(20,30,49,.7);color:var(--tb);font:600 .74rem var(--body);cursor:pointer;white-space:nowrap}
+.theme-toggle:hover{border-color:var(--cyan)}
+.theme-toggle:focus-visible,.guide-toggle:focus-visible,.guide-close:focus-visible,.guide-form button:focus-visible,.health-refresh:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.health-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:28px 0 22px}
+.health-header-copy{max-width:760px}
+.health-header .dashboard-title{font-size:clamp(2rem,4vw,3.2rem)}
+.health-actions{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.health-checked-at{color:var(--td);font-size:.72rem}
+.health-refresh{min-height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--cyan);color:#08211d;font:600 .78rem var(--body);cursor:pointer}
+.health-refresh:disabled{opacity:.6;cursor:wait}
+.health-summary{padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--tb);font-size:.85rem;margin-bottom:16px}
+.health-summary[data-state="warning"]{border-color:rgba(244,183,107,.45)}
+.health-summary[data-state="error"]{border-color:rgba(255,114,122,.45)}
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.health-card{min-width:0;padding:19px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(145deg,var(--surface),var(--bg2))}
+.health-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.health-card h2{color:var(--tb);font-size:.95rem;font-weight:650}
+.health-badge{padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--td);font-size:.64rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.health-card[data-state="healthy"] .health-badge{color:var(--green);border-color:rgba(115,214,164,.35);background:var(--gd)}
+.health-card[data-state="warning"] .health-badge{color:var(--orange);border-color:rgba(244,183,107,.35);background:var(--od)}
+.health-card[data-state="error"] .health-badge{color:var(--red);border-color:rgba(255,114,122,.35);background:var(--rd)}
+.health-card p{margin-top:11px;color:var(--td);font-size:.78rem;line-height:1.6;overflow-wrap:anywhere}
+.health-note{margin-top:17px;padding:14px 16px;border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;background:var(--cd);color:var(--td);font-size:.76rem;line-height:1.65}
+.guide-widget{position:fixed;right:24px;bottom:22px;z-index:700;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.guide-toggle{display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid rgba(102,217,193,.45);border-radius:999px;background:#102b2b;color:#eafffa;box-shadow:0 12px 34px rgba(0,0,0,.28);font:650 .82rem var(--body);cursor:pointer}
+.guide-toggle-mark{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(102,217,193,.18);color:#66d9c1;font-size:.95rem}
+.guide-panel{display:flex;flex-direction:column;width:min(380px,calc(100vw - 28px));max-height:min(600px,75vh);overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.guide-panel[hidden]{display:none}
+.guide-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.guide-head strong{display:block;color:var(--tb);font-size:.88rem}
+.guide-head small{display:block;margin-top:3px;color:var(--td);font-size:.68rem}
+.guide-close{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--td);font-size:1rem;cursor:pointer}
+.guide-messages{display:flex;flex-direction:column;gap:9px;min-height:140px;padding:14px;overflow-y:auto}
+.guide-message{max-width:92%;padding:10px 12px;border-radius:12px;color:var(--text);font-size:.77rem;line-height:1.55;overflow-wrap:anywhere}
+.guide-message.assistant{align-self:flex-start;border:1px solid var(--border);background:var(--bg2)}
+.guide-message.user{align-self:flex-end;background:var(--cd);color:var(--tb)}
+.guide-quick-actions{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}
+.guide-quick-actions button{padding:6px 9px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--cyan);font:500 .68rem var(--body);cursor:pointer}
+.guide-quick-actions button:hover{border-color:var(--cyan)}
+.guide-form{display:flex;gap:8px;padding:0 14px 12px}
+.guide-form input{flex:1;min-width:0;height:40px;padding:0 11px;border:1px solid var(--border);border-radius:9px;background:var(--bg2);color:var(--tb);font:400 .78rem var(--body)}
+.guide-form input:focus{outline:2px solid var(--cyan);outline-offset:1px}
+.guide-form button{padding:0 12px;border:0;border-radius:9px;background:var(--cyan);color:#08211d;font:600 .75rem var(--body);cursor:pointer}
+.guide-privacy{padding:9px 14px;border-top:1px solid var(--border);color:var(--td);font-size:.64rem;line-height:1.45}
+body[data-theme="light"]{background:#f3f6fb;color:#334155;--bg:#f3f6fb;--bg2:#ffffff;--surface:#ffffff;--border:#d9e2ec;--bb:#9bacc0;--cyan:#087f72;--cd:rgba(8,127,114,.1);--cg:rgba(8,127,114,.18);--red:#ba3544;--rd:rgba(186,53,68,.09);--orange:#946000;--od:rgba(148,96,0,.1);--green:#24744a;--gd:rgba(36,116,74,.1);--yellow:#8a6900;--purple:#7052b5;--pd:rgba(112,82,181,.1);--text:#344256;--td:#5a6b80;--tb:#15243a}
+body[data-theme="light"] .nav{background:rgba(248,250,253,.94);box-shadow:0 10px 28px rgba(34,53,77,.1)}
+body[data-theme="light"] .panel{background:linear-gradient(145deg,#fff,#f8fbff);border-color:var(--border);box-shadow:0 16px 38px rgba(34,53,77,.07)}
+body[data-theme="light"] .dashboard-source-card{background:linear-gradient(145deg,#fff,#f3f8fc);border-color:rgba(8,127,114,.22)}
+body[data-theme="light"] .intel-card{background:transparent}
+body[data-theme="light"] .health-card{background:linear-gradient(145deg,#fff,#f7faff)}
+body[data-theme="light"] .feed-status,body[data-theme="light"] .notice,body[data-theme="light"] .health-summary{background:#fff}
+body[data-theme="light"] .repo-card,body[data-theme="light"] .repo-metric,body[data-theme="light"] .repo-chip{background:#fff}
+body[data-theme="light"] .repo-card:hover{background:#f8fbff;box-shadow:0 14px 32px rgba(34,53,77,.11)}
+body[data-theme="light"] .aggregate-state{background:linear-gradient(145deg,#fff,#f6f9fc)}
+body[data-theme="light"] .feedback-form input,body[data-theme="light"] .feedback-form select,body[data-theme="light"] .feedback-form textarea{background:#fff}
+body[data-theme="light"] .theme-toggle{background:#fff}
+body[data-theme="light"] .guide-toggle{background:#e8f6f2;color:#123b35;box-shadow:0 12px 30px rgba(34,53,77,.15)}
+body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
+@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:42px}.feedback-layout{grid-template-columns:1fr}.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.health-header{align-items:flex-start;flex-direction:column}.health-actions{width:100%;justify-content:space-between}}
+@media(max-width:950px){.nav-inner{gap:8px}.nav-tabs{gap:2px}.tab{padding:0 9px;font-size:.72rem}}
+@media(max-width:600px){.nav{padding:0 10px}.logo-btn{margin-right:8px}.logo-btn svg{display:none}.tab{padding:0 9px;font-size:.72rem}.nav-r{display:flex;margin-left:4px}.nav-r .pl{display:none}.theme-toggle{min-height:34px;padding:0 8px;font-size:.68rem}.wrap{padding:24px 14px 52px}.repo-form{flex-direction:column}.repo-form .lookup-button{width:100%}.intel-grid{grid-template-columns:1fr;margin-bottom:26px;padding:8px 0}.intel-card{padding:14px 4px}.intel-card:not(:last-child)::after{top:auto;right:0;bottom:0;left:0;width:auto;height:1px}.guide-widget{right:12px;bottom:12px}.guide-toggle{min-height:44px;padding:0 13px}.health-actions{align-items:flex-start;flex-direction:column}}
+@media(max-width:600px){.nav{height:62px;padding:0 14px}.nav-inner{gap:7px}.page{padding-top:62px}.logo-btn{font-size:.88rem;margin-right:0}.nav-r{margin-left:0}.theme-toggle{padding:0 8px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <!-- UNIVERSAL MODAL -->
 <div id="uModal" class="modal-overlay" onclick="modalOverlayClick(event)">
@@ -516,21 +581,24 @@ body::before,body::after{display:none}
 
 <!-- NAV -->
 <nav class="nav" aria-label="Main navigation">
-  <button class="logo-btn" onclick="show('dashboard')">
-    <svg width="24" height="24" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="20" stroke="#00e5ff" stroke-width="1" opacity="0.4"/><circle cx="21" cy="21" r="13" stroke="#00e5ff" stroke-width="1" opacity="0.6"/><circle cx="21" cy="21" r="6" stroke="#00e5ff" stroke-width="1"/><circle cx="21" cy="21" r="2" fill="#00e5ff"/><line x1="21" y1="1" x2="21" y2="8" stroke="#00e5ff" stroke-width="1"/><line x1="21" y1="34" x2="21" y2="41" stroke="#00e5ff" stroke-width="1"/><line x1="1" y1="21" x2="8" y2="21" stroke="#00e5ff" stroke-width="1"/><line x1="34" y1="21" x2="41" y2="21" stroke="#00e5ff" stroke-width="1"/></svg>
-    ThreatScope
-  </button>
-  <div class="nav-tabs" aria-label="ThreatScope pages">
-    <button class="tab active" onclick="show('dashboard')" data-p="dashboard" aria-current="page"><div class="tdot"></div>Overview</button>
-    <button class="tab" onclick="show('threats')" data-p="threats"><div class="tdot"></div>Threat Intel</button>
-    <button class="tab" onclick="show('repositories')" data-p="repositories"><div class="tdot"></div>GitHub Search</button>
-    <button class="tab" onclick="show('scanner')" data-p="scanner"><div class="tdot"></div>URL Tools</button>
-    <button class="tab" onclick="show('ai')" data-p="ai"><div class="tdot"></div>Learn</button>
-    <button class="tab" onclick="show('about')" data-p="about"><div class="tdot"></div>About</button>
-    <button class="tab" onclick="show('terms')" data-p="terms"><div class="tdot"></div>Terms</button>
-    <button class="tab" onclick="show('feedback')" data-p="feedback"><div class="tdot"></div>Feedback</button>
+  <div class="nav-inner">
+    <button class="logo-btn" type="button" onclick="show('dashboard')">
+      <svg width="24" height="24" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="21" cy="21" r="20" stroke="currentColor" stroke-width="1" opacity="0.4"/><circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="1" opacity="0.6"/><circle cx="21" cy="21" r="6" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="21" r="2" fill="currentColor"/><line x1="21" y1="1" x2="21" y2="8" stroke="currentColor" stroke-width="1"/><line x1="21" y1="34" x2="21" y2="41" stroke="currentColor" stroke-width="1"/><line x1="1" y1="21" x2="8" y2="21" stroke="currentColor" stroke-width="1"/><line x1="34" y1="21" x2="41" y2="21" stroke="currentColor" stroke-width="1"/></svg>
+      ThreatScope
+    </button>
+    <div class="nav-tabs" role="group" aria-label="Page navigation">
+      <button class="tab active" onclick="show('dashboard')" data-p="dashboard" aria-current="page"><div class="tdot"></div>Overview</button>
+      <button class="tab" onclick="show('threats')" data-p="threats"><div class="tdot"></div>Threat Intel</button>
+      <button class="tab" onclick="show('repositories')" data-p="repositories"><div class="tdot"></div>GitHub Search</button>
+      <button class="tab" onclick="show('scanner')" data-p="scanner"><div class="tdot"></div>URL Tools</button>
+      <button class="tab" onclick="show('health')" data-p="health"><div class="tdot"></div>Health</button>
+      <button class="tab" onclick="show('ai')" data-p="ai"><div class="tdot"></div>Learn</button>
+      <button class="tab" onclick="show('about')" data-p="about"><div class="tdot"></div>About</button>
+      <button class="tab" onclick="show('terms')" data-p="terms"><div class="tdot"></div>Terms</button>
+      <button class="tab" onclick="show('feedback')" data-p="feedback"><div class="tdot"></div>Feedback</button>
+    </div>
+    <div class="nav-r"><button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false" onclick="toggleTheme()"><span id="themeToggleIcon" aria-hidden="true">☼</span><span id="themeToggleLabel">Light</span></button></div>
   </div>
-  <div class="nav-r"><span class="pl">PUBLIC SOURCES</span></div>
 </nav>
 
 <!-- PAGE: OVERVIEW -->
@@ -538,58 +606,43 @@ body::before,body::after{display:none}
   <div class="wrap">
     <section class="dashboard-hero">
       <div class="dashboard-hero-copy">
-        <div class="eyebrow">Defensive intelligence · sourced data</div>
-        <h1 class="dashboard-title">Clarity for the<br/><span>security-minded.</span></h1>
-        <p class="dashboard-copy">Explore CISA’s known-exploited vulnerability catalog, discover public GitHub projects, and follow every signal back to its source. No fabricated threat telemetry.</p>
+        <div class="eyebrow">Security intelligence · grounded in public sources</div>
+        <h1 class="dashboard-title">Security signals,<br/><span>without the noise.</span></h1>
+        <p class="dashboard-copy">Explore CISA’s known-exploited vulnerabilities and public GitHub security projects. Every signal links back to its source.</p>
         <div class="action-row">
-          <button class="action-link primary" onclick="show('threats')">Explore exploited vulnerabilities</button>
-          <button class="action-link" onclick="show('repositories')">Browse GitHub projects</button>
+          <button class="action-link primary" onclick="show('threats')">Explore threat intel</button>
+          <button class="action-link" onclick="show('repositories')">Search GitHub</button>
         </div>
       </div>
-      <div class="hero-live-panel" aria-labelledby="dashboardKevTrendTitle">
-        <div class="hero-live-source"><span class="badge bc">SOURCE: CISA KEV</span><span class="badge bg2c">CATALOG DATA</span></div>
-        <h2 class="hero-live-title" id="dashboardKevTrendTitle">Vulnerabilities added to the catalog</h2>
-        <p class="hero-live-copy">Actual catalog additions by month over the past year. These dates show when CISA added an entry, not when an attack occurred.</p>
-        <div id="dashboardKevTrend" class="hero-live-bars" role="list" aria-label="Monthly additions from the CISA Known Exploited Vulnerabilities catalog">
-          <div class="hero-live-empty">Waiting for the CISA catalog. No sample data is displayed.</div>
-        </div>
-        <div class="hero-live-footer"><span>Catalog released</span><time id="dashboardTrendDate">Waiting for source data</time></div>
-        <a class="hero-live-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Verify against the official CISA catalog ↗</a>
-      </div>
+      <aside class="dashboard-source-card" aria-labelledby="dashboardSourceTitle">
+        <div class="dashboard-source-label">Primary live source</div>
+        <h2 id="dashboardSourceTitle" class="dashboard-source-title">CISA Known Exploited Vulnerabilities</h2>
+        <p class="dashboard-source-copy">A public catalog of vulnerabilities CISA confirms are being actively exploited. The mirror refreshes daily; it is not live attack telemetry.</p>
+        <div class="dashboard-source-meta"><span>Catalog release</span><time id="dashboardTrendDate">Waiting for source data</time></div>
+        <a class="dashboard-source-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Verify at CISA ↗</a>
+      </aside>
     </section>
     <div id="dashboardStatus" class="feed-status" role="status" aria-live="polite">Loading the CISA KEV catalog…</div>
     <div class="intel-grid" aria-label="CISA KEV catalog summary">
       <div class="intel-card"><div class="intel-label">Known-exploited vulnerabilities</div><div class="intel-value" id="dashboardKevTotal">—</div><div class="intel-note">Entries in the current CISA KEV catalog</div></div>
       <div class="intel-card"><div class="intel-label">Added in the last 30 days</div><div class="intel-value" id="dashboardRecent">—</div><div class="intel-note">Calculated from CISA catalog dates</div></div>
       <div class="intel-card"><div class="intel-label">Ransomware use confirmed</div><div class="intel-value" id="dashboardRansomware">—</div><div class="intel-note">Catalog entries marked “Known”</div></div>
-      <div class="intel-card"><div class="intel-label">Catalog release</div><div class="intel-value" id="dashboardCatalogDate">—</div><div class="intel-note">Upstream release date, not attack time</div></div>
     </div>
-    <div class="overview-layout">
-      <section class="panel">
-        <div class="ph"><span class="pt2">Recently added to CISA KEV</span><span class="badge bc">SOURCE: CISA</span></div>
-        <div class="pb latest-list" id="dashboardKevList"><div class="es">Waiting for the live catalog…</div></div>
-      </section>
-      <aside class="panel">
-        <div class="ph"><span class="pt2">Data and update cadence</span></div>
-        <div class="pb source-list">
-          <div class="source-row"><div><div class="source-name">CISA KEV</div><div class="source-detail">Confirmed known-exploited vulnerabilities. Public mirror refreshes daily; this is not a real-time attack feed.</div></div><span class="badge bg2c">DAILY MIRROR</span></div>
-          <div class="source-row"><div><div class="source-name">GitHub REST API</div><div class="source-detail">Public repository search results and metadata for repositories you select.</div></div><span class="badge bc">ON DEMAND</span></div>
-          <div class="source-row"><div><div class="source-name">Community dependency data</div><div class="source-detail">Owner-authorized aggregate. Totals remain hidden until the minimum fresh-report cohort is met.</div></div><span class="badge bo">OPT IN</span></div>
-          <a class="action-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Open CISA source ↗</a>
-        </div>
-      </aside>
-    </div>
+    <section class="panel">
+      <div class="ph"><span class="pt2">Recently added to CISA KEV</span></div>
+      <div class="pb latest-list" id="dashboardKevList"><div class="es">Waiting for the live catalog…</div></div>
+    </section>
   </div>
 </div>
 
 <!-- PAGE: REPOSITORY LOOKUP -->
 <div id="page-repositories" class="page">
   <div class="wrap">
-    <div style="padding:32px 0 24px">
+    <header class="page-intro">
       <div class="pl2">// Public repository discovery</div>
       <h1 class="pt">GITHUB <span>DISCOVERY</span></h1>
       <p class="ps">Browse public GitHub projects as cards, with their last-push date and project website when listed. Search by name, language, or topic; request the exact latest commit date only for repositories you want to inspect.</p>
-    </div>
+    </header>
     <section class="panel">
       <div class="ph"><span class="pt2">Search public repositories</span><span class="badge bc">PUBLIC API</span></div>
       <div class="pb">
@@ -633,11 +686,11 @@ body::before,body::after{display:none}
 <!-- PAGE: SCANNER -->
 <div id="page-scanner" class="page">
   <div class="wrap">
-    <div class="hero">
+    <header class="hero page-intro">
       <div class="pl2">// Authorized URL checks</div>
-      <div class="pt">CHECK A <span>URL</span></div>
-      <p class="ps" style="margin:0 auto">Use only for websites you own or are authorized to assess. Results depend on the selected providers; unsupported checks are shown as unavailable, never estimated.</p>
-    </div>
+      <h1 class="pt">CHECK A <span>URL</span></h1>
+      <p class="ps">Use only for websites you own or are authorized to assess. Results depend on the selected providers; unsupported checks are shown as unavailable, never estimated.</p>
+    </header>
     <div class="sb">
       <div class="sbox">
         <div class="spfx">TARGET://</div>
@@ -703,7 +756,7 @@ body::before,body::after{display:none}
 <!-- PAGE: THREATS -->
 <div id="page-threats" class="page">
   <div class="wrap">
-    <div style="padding:32px 0 24px"><div class="pl2">// Public vulnerability intelligence</div><div class="pt">EXPLOITED <span>VULNERABILITIES</span></div><p class="ps">Search the CISA Known Exploited Vulnerabilities (KEV) catalog. The upstream catalog is maintained by CISA and its public mirror refreshes daily; it is not a real-time attack stream.</p></div>
+    <header class="page-intro"><div class="pl2">// Public vulnerability intelligence</div><h1 class="pt">EXPLOITED <span>VULNERABILITIES</span></h1><p class="ps">Search the CISA Known Exploited Vulnerabilities (KEV) catalog. The upstream catalog is maintained by CISA and its public mirror refreshes daily; it is not a real-time attack stream.</p></header>
     <div class="feed-status" id="kevStatus" role="status" aria-live="polite">Connecting to the CISA KEV catalog…</div>
     <div class="full">
       <div class="panel community-summary">
@@ -763,7 +816,7 @@ body::before,body::after{display:none}
 <!-- PAGE: AI THREATS -->
 <div id="page-ai" class="page">
   <div class="wrap">
-    <div style="padding:32px 0 24px"><div class="pl2">// Evergreen defensive reference</div><div class="pt">THREAT <span>LEARNING</span></div><p class="ps">Reference material and defensive guidance. This library is not a live incident feed; time-sensitive claims should be checked against the linked primary sources.</p></div>
+    <header class="page-intro"><div class="pl2">// Evergreen defensive reference</div><h1 class="pt">THREAT <span>LEARNING</span></h1><p class="ps">Reference material and defensive guidance. This library is not a live incident feed; time-sensitive claims should be checked against the linked primary sources.</p></header>
     <div class="ai-stat">The examples below are educational context, not measurements of current attacker activity. ThreatScope does not infer attack volumes or locations.</div>
     <div class="sl">// AI Attack Vectors — click any card</div>
     <div class="rg" id="aiGrid"></div>
@@ -775,13 +828,13 @@ body::before,body::after{display:none}
 
 <!-- PAGE: ABOUT -->
 <div id="page-about" class="page">
-  <div class="wrap" style="max-width:900px">
-    <div style="text-align:center;padding:40px 0 48px"><div class="pl2">// What is ThreatScope</div><div class="pt">BUILT FOR <span>DEFENDERS</span></div><p class="ps" style="margin:0 auto">Free security intelligence dashboard for defenders. Click any feature card to learn more.</p></div>
+  <div class="wrap">
+    <header class="page-intro"><div class="pl2">// What is ThreatScope</div><h1 class="pt">BUILT FOR <span>DEFENDERS</span></h1><p class="ps">Free security intelligence dashboard for defenders. Click any feature card to learn more.</p></header>
     <div class="asec"><div class="sl">// Features — click any card</div><div class="ast">What ThreatScope Does</div>
       <div class="fg" id="featureGrid"></div>
     </div>
     <div class="asec"><div class="sl">// Security Posture</div><div class="ast">How Secure Is ThreatScope?</div>
-      <div class="notice">ThreatScope is a static client-side site. It has no server-side authentication or private workspace. Third-party providers receive requests directly from your browser. GitHub Search displays paginated public results and exact lookups request one public repository; URL scanner submissions remain your responsibility and may be public depending on the provider.</div>
+      <div class="notice">ThreatScope is a static client-side site with no server-side authentication, private workspace, or continuous server monitoring. The Health page runs on-demand checks from your browser. The Site Guide routes locally and does not send prompts to an AI service. Third-party providers receive requests directly from your browser; URL scanner submissions may be public depending on the provider.</div>
     </div>
     <div class="asec"><div class="sl">// Powered By</div><div class="ast">Data Sources</div>
       <div class="ag">
@@ -813,7 +866,7 @@ body::before,body::after{display:none}
 <!-- PAGE: FEEDBACK -->
 <div id="page-feedback" class="page">
   <div class="wrap feedback-wrap">
-    <header class="feedback-hero">
+    <header class="feedback-hero page-intro">
       <div class="eyebrow">Help shape the next release</div>
       <h1 class="dashboard-title">Better tools start<br/><span>with your signal.</span></h1>
       <p class="dashboard-copy">Share a bug, idea, source correction, or accessibility note. Your feedback is prepared as a GitHub issue draft; nothing is sent or published automatically.</p>
@@ -855,9 +908,46 @@ body::before,body::after{display:none}
   </div>
 </div>
 
+<!-- PAGE: SITE HEALTH -->
+<div id="page-health" class="page">
+  <div class="wrap">
+    <header class="health-header">
+      <div class="health-header-copy">
+        <div class="eyebrow">On-demand source checks · browser-side</div>
+        <h1 class="dashboard-title">SITE <span>HEALTH</span></h1>
+        <p class="dashboard-copy">Check whether ThreatScope’s public data sources respond and see their current freshness. These checks run in your browser when requested; this static site has no server-side monitoring.</p>
+      </div>
+      <div class="health-actions">
+        <span id="healthCheckedAt" class="health-checked-at">Not checked yet</span>
+        <button id="healthRefresh" class="health-refresh" type="button" onclick="runHealthChecks()">Run health checks</button>
+      </div>
+    </header>
+    <div id="healthSummary" class="health-summary" data-state="idle" role="status" aria-live="polite">Open this page to check the hosted site, CISA, GitHub, and the community aggregate.</div>
+    <div class="health-grid">
+      <article id="healthCardSite" class="health-card" data-state="idle">
+        <div class="health-card-head"><h2>ThreatScope website</h2><span id="healthBadgeSite" class="health-badge">Not checked</span></div>
+        <p id="healthDetailSite">The hosted page has not been checked yet.</p>
+      </article>
+      <article id="healthCardCisa" class="health-card" data-state="idle">
+        <div class="health-card-head"><h2>CISA KEV catalog</h2><span id="healthBadgeCisa" class="health-badge">Not checked</span></div>
+        <p id="healthDetailCisa">The daily public catalog has not been checked yet.</p>
+      </article>
+      <article id="healthCardGitHub" class="health-card" data-state="idle">
+        <div class="health-card-head"><h2>GitHub REST API</h2><span id="healthBadgeGitHub" class="health-badge">Not checked</span></div>
+        <p id="healthDetailGitHub">Public API availability and unauthenticated rate limit have not been checked.</p>
+      </article>
+      <article id="healthCardAggregate" class="health-card" data-state="idle">
+        <div class="health-card-head"><h2>Community aggregate</h2><span id="healthBadgeAggregate" class="health-badge">Not checked</span></div>
+        <p id="healthDetailAggregate">The published owner-opt-in summary has not been checked yet.</p>
+      </article>
+    </div>
+    <div class="health-note">A reachable source does not guarantee fresh upstream data. CISA’s catalog mirror refreshes daily; GitHub search is rate-limited; community totals require at least 10 fresh owner-authorized reports. No data is simulated.</div>
+  </div>
+</div>
+
 <!-- PAGE: TERMS -->
 <div id="page-terms" class="page">
-  <div class="wrap" style="max-width:840px">
+  <div class="wrap" style="max-width:1320px">
     <div class="th2"><div class="pl2">// Legal</div><div class="pt" style="font-size:clamp(1.8rem,5vw,3rem)">TERMS & <span>PRIVACY</span></div><div class="tm">Last updated: November 2026 | Version 1.3 | © 2026 ThreatScope — Arv1121</div></div>
     <div class="toc"><div class="toct">Table of Contents</div>
       <div class="toci" onclick="st('t1')"><span class="tocn">01</span>Acceptance of Terms</div>
@@ -888,8 +978,8 @@ body::before,body::after{display:none}
       <div class="clause"><div class="ctitle">Limitation of Liability</div><div class="ctxt">To the maximum extent permitted by law, ThreatScope contributors shall not be liable for any damages arising from use of this service.</div></div>
     </div>
     <div class="tsec" id="t7"><div class="tsh"><span class="tsn">07</span><span class="tst">Privacy Policy</span></div>
-      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">ThreatScope does not run analytics or persist feedback in this app. If you choose to submit a prepared issue, GitHub receives it and published issues are public. Third-party services may receive standard network metadata when your browser requests their content or scans.</div></div>
-      <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">ThreatScope does not use cookies, local storage, tracking pixels, or fingerprinting. Feedback text is held only in the page until you choose to open a pre-filled GitHub issue draft. Nothing is submitted automatically; issues are public if you submit them. Third-party services receive requests directly from your browser and may process standard connection metadata under their own privacy policies.</div></div>
+      <div class="tinfo"><div class="tinfot">// The Short Version</div><div class="tinfod">ThreatScope does not run analytics or persist feedback in this app. Theme selection and Site Guide messages stay in page memory; the guide is not generative AI and does not send prompts to an AI service. If you choose to submit a prepared issue, GitHub receives it and published issues are public. Third-party services may receive standard network metadata when your browser requests their content or scans.</div></div>
+      <div class="clause"><div class="ctitle">Data Collection</div><div class="ctxt">ThreatScope does not use cookies, local storage, tracking pixels, or fingerprinting. Feedback text, theme selection, and Site Guide messages are held only in the current page and are not sent to an AI provider. Feedback is sent to GitHub only if you open the prepared draft; nothing is submitted automatically, and issues are public if you submit them. Third-party services receive requests directly from your browser and may process standard connection metadata under their own privacy policies.</div></div>
       <div class="clause"><div class="ctitle">Hosting & Threat Feed</div><div class="ctxt">GitHub Pages hosts this website. The KEV feed is delivered by the AboutCode mirror hosted on GitHub. Repository search terms are sent to GitHub's public API, and exact repository metadata or commit lookups are requested when you choose them. GitHub and other service providers may collect standard server logs. Review each provider's privacy policy.</div></div>
     </div>
     <div class="tsec" id="t8"><div class="tsh"><span class="tsn">08</span><span class="tst">Intellectual Property & Licensing</span></div>
@@ -924,7 +1014,12 @@ function closeModal(){
 function modalOverlayClick(ev){
   if(ev.target===document.getElementById('uModal'))closeModal();
 }
-document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closeModal();});
+document.addEventListener('keydown',ev=>{
+  if(ev.key!=='Escape')return;
+  const guidePanel=document.getElementById('guidePanel');
+  if(guidePanel&&!guidePanel.hidden)toggleGuide(false);
+  closeModal();
+});
 
 function buildModalBody({desc,impact,steps,tools,cves,example,exampleLabel,threat,color}){
   color=color||'var(--cyan)';
@@ -955,6 +1050,7 @@ function buildModalBody({desc,impact,steps,tools,cves,example,exampleLabel,threa
 
 // ── ROUTING ──
 let tI=false,aI=false,repoSearchLoaded=false;
+let healthCheckPending=false;
 function show(n){
   document.querySelectorAll('.page').forEach(p=>{
     const active=p.id==='page-'+n;
@@ -970,9 +1066,182 @@ function show(n){
   if(n==='threats'&&!tI){initThreats();tI=true;}
   if(n==='ai'&&!aI){initAI();aI=true;}
   if(n==='repositories'&&!repoSearchLoaded){repoSearchLoaded=true;searchPublicRepositories();}
+  if(n==='health')runHealthChecks();
   window.scrollTo(0,0);
 }
 function st(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+
+function toggleTheme(){
+  const light=document.body.dataset.theme!=='light';
+  document.body.dataset.theme=light?'light':'dark';
+  const button=document.getElementById('themeToggle');
+  document.getElementById('themeToggleIcon').textContent=light?'☾':'☼';
+  document.getElementById('themeToggleLabel').textContent=light?'Dark':'Light';
+  button.setAttribute('aria-label',`Switch to ${light?'dark':'light'} theme`);
+  button.setAttribute('aria-pressed',String(light));
+}
+
+function toggleGuide(force){
+  const panel=document.getElementById('guidePanel');
+  const button=document.getElementById('guideToggle');
+  const open=typeof force==='boolean'?force:panel.hidden;
+  panel.hidden=!open;
+  button.setAttribute('aria-expanded',String(open));
+  if(open)document.getElementById('guideInput').focus();
+  else button.focus();
+}
+
+function appendGuideMessage(role,message){
+  const item=document.createElement('div');
+  item.className=`guide-message ${role}`;
+  item.textContent=message;
+  const messages=document.getElementById('guideMessages');
+  messages.append(item);
+  messages.scrollTop=messages.scrollHeight;
+}
+
+function sendGuideMessage(event){
+  event.preventDefault();
+  const input=document.getElementById('guideInput');
+  const message=input.value.trim();
+  if(!message)return;
+  appendGuideMessage('user',message);
+  input.value='';
+  const query=message.toLocaleLowerCase();
+  const routes=[
+    {pattern:/\b(health|status|source check|service check|api status)\b/,page:'health',name:'Site Health'},
+    {pattern:/\b(github|repositories|repository|repos|projects)\b/,page:'repositories',name:'GitHub Search'},
+    {pattern:/\b(cisa|kev|cve|vulnerabilit|exploited|threat intel)\b/,page:'threats',name:'Threat Intel'},
+    {pattern:/\b(scan|url|domain|dns|virustotal|shodan)\b/,page:'scanner',name:'URL Tools'},
+    {pattern:/\b(ai|learn|learning|education|training|ai threat)\b/,page:'ai',name:'Learn'},
+    {pattern:/\b(feedback|bug report|feature idea)\b/,page:'feedback',name:'Feedback'},
+    {pattern:/\b(terms|privacy|license)\b/,page:'terms',name:'Terms & Privacy'},
+    {pattern:/\b(about|who are you|what is threatsco\w*)\b/,page:'about',name:'About'},
+    {pattern:/\b(home|overview|dashboard|start)\b/,page:'dashboard',name:'Overview'}
+  ];
+  const route=routes.find((item)=>item.pattern.test(query));
+  if(route){
+    show(route.page);
+    appendGuideMessage('assistant',`Opening ${route.name}. I can also help you find another ThreatScope page.`);
+  }else{
+    appendGuideMessage('assistant','I can open Overview, Threat Intel, GitHub Search, URL Tools, Site Health, Learn, About, Terms, or Feedback. Tell me which one you need.');
+  }
+}
+
+function suggestGuide(message){
+  const input=document.getElementById('guideInput');
+  input.value=message;
+  document.getElementById('guideForm').requestSubmit();
+}
+
+function setHealthCard(name,state,label,detail){
+  const card=document.getElementById(`healthCard${name}`);
+  card.dataset.state=state;
+  document.getElementById(`healthBadge${name}`).textContent=label;
+  document.getElementById(`healthDetail${name}`).textContent=detail;
+}
+
+async function runHealthChecks(){
+  if(healthCheckPending)return;
+  healthCheckPending=true;
+  const button=document.getElementById('healthRefresh');
+  const summary=document.getElementById('healthSummary');
+  const checkedAt=document.getElementById('healthCheckedAt');
+  button.disabled=true;
+  button.textContent='Checking sources…';
+  summary.dataset.state='checking';
+  summary.textContent='Checking public sources from this browser…';
+  checkedAt.textContent='Check in progress';
+  for(const name of ['Site','Cisa','GitHub','Aggregate']){
+    setHealthCard(name,'checking','Checking','Request in progress…');
+  }
+
+  const checks=[
+    ['Site',async()=>{
+      const response=await fetch(window.location.href,{
+        headers:{Accept:'text/html'},
+        cache:'no-store'
+      });
+      if(!response.ok)throw new Error(`ThreatScope page returned HTTP ${response.status}`);
+      return{
+        state:'healthy',
+        label:'Reachable',
+        detail:`Hosted page responded with HTTP ${response.status}.`
+      };
+    }],
+    ['Cisa',async()=>{
+      const {fetchKevCatalog}=await import('./threat-feed.mjs');
+      const catalog=await fetchKevCatalog();
+      return{
+        state:'healthy',
+        label:'Reachable',
+        detail:`Catalog returned ${catalog.count.toLocaleString()} entries. Release date: ${new Date(catalog.dateReleased).toLocaleString()}. The mirror refreshes daily.`
+      };
+    }],
+    ['GitHub',async()=>{
+      const response=await fetch('https://api.github.com/rate_limit',{
+        headers:{Accept:'application/vnd.github+json'},
+        cache:'no-store'
+      });
+      if(!response.ok)throw new Error(`GitHub API returned HTTP ${response.status}`);
+      const data=await response.json();
+      const core=data.resources?.core;
+      if(!Number.isInteger(core?.remaining)||!Number.isInteger(core?.limit)||!Number.isFinite(core?.reset)){
+        throw new Error('GitHub API returned an invalid rate-limit response');
+      }
+      const state=core.remaining===0?'warning':'healthy';
+      return{
+        state,
+        label:state==='healthy'?'Reachable':'Rate limited',
+        detail:`Public REST API responded. Core quota: ${core.remaining.toLocaleString()} of ${core.limit.toLocaleString()} remaining; reset ${new Date(core.reset*1000).toLocaleTimeString()}.`
+      };
+    }],
+    ['Aggregate',async()=>{
+      const {fetchCommunityAggregate}=await import('./repo-scan.mjs');
+      const aggregate=await fetchCommunityAggregate();
+      if(aggregate.status==='ready'){
+        return{
+          state:'healthy',
+          label:'Available',
+          detail:`Aggregate loaded from ${aggregate.reportingRepositories} fresh reports. Updated ${new Date(aggregate.updatedAt).toLocaleString()}.`
+        };
+      }
+      const registered=aggregate.reportingRepositories+aggregate.excludedReports;
+      return{
+        state:'warning',
+        label:registered===0?'No opt-ins':'Below threshold',
+        detail:registered===0
+          ?`Aggregate file is reachable, but no repositories are enrolled. At least ${aggregate.minimumRepositories} fresh reports are required before totals appear.`
+          :`${aggregate.reportingRepositories} of ${aggregate.minimumRepositories} required reports are fresh; ${aggregate.excludedReports} enrolled reports are missing, stale, or invalid. Totals remain hidden.`
+      };
+    }]
+  ];
+
+  const outcomes=await Promise.all(checks.map(async([name,check])=>{
+    try{
+      const result=await check();
+      setHealthCard(name,result.state,result.label,result.detail);
+      return result.state;
+    }catch(error){
+      console.error(`Health check failed for ${name}:`,error);
+      const detail=error instanceof Error?error.message:'Unexpected check failure.';
+      setHealthCard(name,'error','Unavailable',`${detail}. Check your connection and retry.`);
+      return'error';
+    }
+  }));
+  const errors=outcomes.filter((state)=>state==='error').length;
+  const warnings=outcomes.filter((state)=>state==='warning').length;
+  summary.dataset.state=errors?'error':warnings?'warning':'healthy';
+  summary.textContent=errors
+    ?`${errors} source check${errors===1?'':'s'} failed. See each card for details.`
+    :warnings
+      ?'Sources responded, but one or more data feeds have limited availability or an insufficient reporting cohort.'
+      :'All checked sources responded successfully.';
+  checkedAt.textContent=`Last checked ${new Date().toLocaleTimeString()}`;
+  button.disabled=false;
+  button.textContent='Run checks again';
+  healthCheckPending=false;
+}
 
 const feedbackMessageField=document.getElementById('feedbackMessage');
 feedbackMessageField?.addEventListener('input',()=>{
@@ -1898,40 +2167,27 @@ async function loadRepositoryAggregate(){
 async function loadDashboardData(){
   const status=document.getElementById('dashboardStatus');
   try{
-    const {fetchKevCatalog,getKevStats,filterKevVulnerabilities,getKevMonthlyAdditions}=await import('./threat-feed.mjs');
+    const {fetchKevCatalog,getKevStats,filterKevVulnerabilities}=await import('./threat-feed.mjs');
     const catalog=await fetchKevCatalog();
     const stats=getKevStats(catalog);
     document.getElementById('dashboardKevTotal').textContent=stats.total.toLocaleString();
     document.getElementById('dashboardRecent').textContent=stats.addedInLast30Days.toLocaleString();
     document.getElementById('dashboardRansomware').textContent=stats.ransomwareKnown.toLocaleString();
-    document.getElementById('dashboardCatalogDate').textContent=new Date(stats.catalogDate).toLocaleDateString();
-    const monthly=getKevMonthlyAdditions(catalog.vulnerabilities);
-    const peak=Math.max(0,...monthly.map((month)=>month.count));
-    document.getElementById('dashboardKevTrend').innerHTML=monthly.map((month)=>{
-      const width=peak?Math.round(month.count/peak*100):0;
-      return`<div class="hero-live-row" role="listitem" aria-label="${e(month.label)}: ${month.count.toLocaleString()} catalog additions">
-        <span class="hero-live-month">${e(month.label)}</span>
-        <span class="hero-live-track" aria-hidden="true"><span class="hero-live-bar" style="width:${width}%"></span></span>
-        <strong class="hero-live-count">${month.count.toLocaleString()}</strong>
-      </div>`;
-    }).join('');
     const releaseDate=document.getElementById('dashboardTrendDate');
     releaseDate.dateTime=stats.catalogDate;
     releaseDate.textContent=new Date(stats.catalogDate).toLocaleDateString();
-    const latest=filterKevVulnerabilities(catalog.vulnerabilities).slice(0,6);
+    const latest=filterKevVulnerabilities(catalog.vulnerabilities).slice(0,3);
     document.getElementById('dashboardKevList').innerHTML=latest.length?latest.map((item)=>`
       <article class="latest-item">
         <a href="https://nvd.nist.gov/vuln/detail/${encodeURIComponent(item.cveID)}" target="_blank" rel="noopener noreferrer">${e(item.cveID)} · ${e(item.vulnerabilityName||'Known exploited vulnerability')} ↗</a>
-        <div class="latest-meta"><span>Added ${e(item.dateAdded||'Date not provided')}</span><span>${e(item.vendorProject||'Vendor not provided')}</span><span>${e(item.product||'Product not provided')}</span></div>
-        <div class="latest-description">${e(item.shortDescription||'No description supplied by the catalog.')}</div>
+        <div class="latest-meta"><span>Added ${e(item.dateAdded||'Date not provided')}</span><span>${e(item.vendorProject||'Vendor not provided')}</span></div>
       </article>`).join(''):'<div class="es">The catalog returned no vulnerability entries.</div>';
     status.classList.remove('error');
-    status.textContent=`CISA KEV catalog released ${new Date(stats.catalogDate).toLocaleString()}. Retrieved ${new Date().toLocaleTimeString()}; the public mirror refreshes daily.`;
+    status.textContent=`CISA catalog released ${new Date(stats.catalogDate).toLocaleDateString()} · retrieved ${new Date().toLocaleTimeString()} · daily mirror`;
   }catch(error){
     console.error('Unable to load the dashboard KEV data:',error);
     status.classList.add('error');
     status.textContent='CISA KEV data is unavailable. No sample values are shown; retry from Threat Intel or visit the official source.';
-    document.getElementById('dashboardKevTrend').innerHTML='<div class="hero-live-empty">CISA catalog data is unavailable. No sample chart is substituted.</div>';
     document.getElementById('dashboardTrendDate').textContent='Unavailable';
     document.getElementById('dashboardKevList').innerHTML='<div class="es">Live catalog unavailable. No sample entries are substituted.</div>';
   }
@@ -2196,6 +2452,32 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadDashboardData();
 });
 </script>
+
+<div class="guide-widget">
+  <section id="guidePanel" class="guide-panel" role="dialog" aria-labelledby="guideTitle" hidden>
+    <header class="guide-head">
+      <div><strong id="guideTitle">ThreatScope Guide</strong><small>Local navigation assistant</small></div>
+      <button class="guide-close" type="button" aria-label="Close guide" onclick="toggleGuide(false)">×</button>
+    </header>
+    <div id="guideMessages" class="guide-messages" aria-live="polite" aria-relevant="additions">
+      <div class="guide-message assistant">Tell me what you are looking for and I can open the right page. Try “search GitHub”, “check site health”, or “find a CVE”.</div>
+    </div>
+    <div class="guide-quick-actions" aria-label="Suggested questions">
+      <button type="button" onclick="suggestGuide('Search GitHub repositories')">GitHub search</button>
+      <button type="button" onclick="suggestGuide('Check site health')">Site health</button>
+      <button type="button" onclick="suggestGuide('Find a CISA vulnerability')">CISA KEV</button>
+    </div>
+    <form id="guideForm" class="guide-form" onsubmit="sendGuideMessage(event)">
+      <label class="sr-only" for="guideInput">Ask how to navigate ThreatScope</label>
+      <input id="guideInput" type="text" maxlength="240" autocomplete="off" placeholder="Where do I find…?"/>
+      <button type="submit">Send</button>
+    </form>
+    <p class="guide-privacy">Local page navigation only. No prompts are sent to an AI service.</p>
+  </section>
+  <button id="guideToggle" class="guide-toggle" type="button" aria-controls="guidePanel" aria-expanded="false" onclick="toggleGuide()">
+    <span class="guide-toggle-mark" aria-hidden="true">?</span><span>Site guide</span>
+  </button>
+</div>
 
 <!-- Footer -->
 <div class="footer">
