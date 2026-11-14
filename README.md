@@ -64,4 +64,10 @@ The same tests run in GitHub Actions for pushes and pull requests.
 
 Bug reports and feature requests are welcome via [GitHub Issues](https://github.com/Arv1121/Threat-Model/issues/new/choose). Pull requests are welcome; run the tests before submitting.
 
-There is no separate `LICENSE` file in the repository. Review the in-app Terms & Privacy page before reusing or redistributing the project.
+## License
+
+The original project files are distributed under the [MIT License](./LICENSE). The license notice must accompany copies or substantial portions of the software. The ThreatScope name, logo, and trademarks are not granted by the MIT License. Third-party data and services remain subject to their own terms.
+
+## Releases
+
+The initial release is available as a [GitHub source archive](https://github.com/Arv1121/Threat-Model/releases/latest). This is a static website with no compiled binary or package-registry artifact; GitHub's source archives include the `LICENSE` file.
