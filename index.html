@@ -383,14 +383,18 @@ body::before,body::after{display:none}
 .dashboard-title span{color:var(--cyan);background:linear-gradient(90deg,#66d9c1,#a5b9ff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .dashboard-copy{max-width:590px;color:var(--td);font-size:.98rem;line-height:1.75;margin-top:16px}
 .eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
-.dashboard-source-card{padding:clamp(22px,3vw,34px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,var(--surface),var(--bg2))}
-.dashboard-source-label{color:var(--cyan);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.dashboard-source-title{margin-top:22px;color:var(--tb);font-size:clamp(1.2rem,2vw,1.55rem);font-weight:650;letter-spacing:-.04em;line-height:1.25}
-.dashboard-source-copy{margin-top:9px;color:var(--td);font-size:.82rem;line-height:1.65}
-.dashboard-source-meta{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid var(--border);color:var(--td);font-size:.72rem}
-.dashboard-source-meta time{color:var(--tb);font-variant-numeric:tabular-nums}
-.dashboard-source-link{display:inline-flex;margin-top:18px;color:var(--cyan);font-size:.78rem;text-decoration:none}
-.dashboard-source-link:hover{text-decoration:underline}
+.dashboard-more{padding-left:clamp(12px,2vw,28px)}
+.dashboard-more-label{margin-bottom:8px;color:var(--td);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.dashboard-more-item{display:flex;align-items:center;gap:14px;width:100%;padding:15px 0;border:0;border-top:1px solid var(--border);background:transparent;color:var(--tb);text-align:left;cursor:pointer}
+.dashboard-more-index{color:var(--cyan);font-size:.68rem;font-variant-numeric:tabular-nums}
+.dashboard-more-copy{display:grid;gap:4px;flex:1}
+.dashboard-more-copy strong{font-size:.86rem;font-weight:650}
+.dashboard-more-copy small{color:var(--td);font-size:.73rem}
+.dashboard-more-arrow{color:var(--td);transition:transform .18s,color .18s}
+.dashboard-more-item:hover .dashboard-more-copy strong,.dashboard-more-item:hover .dashboard-more-arrow{color:var(--cyan)}
+.dashboard-more-item:hover .dashboard-more-arrow{transform:translateX(3px)}
+.about-source-release{display:flex;justify-content:space-between;gap:12px;margin:12px 0;color:var(--td);font-size:.72rem}
+.about-source-release time{color:var(--tb);font-variant-numeric:tabular-nums}
 .page-intro{max-width:900px;padding:38px 0 28px;text-align:left}
 .page-intro .pt,.page-intro .dashboard-title{margin-bottom:12px;font-family:var(--body);font-size:clamp(2rem,4vw,3.25rem);letter-spacing:-.055em;line-height:1.05}
 .page-intro .ps{max-width:780px;font-size:.94rem;font-weight:400}
@@ -544,7 +548,6 @@ body::before,body::after{display:none}
 body[data-theme="light"]{background:#f3f6fb;color:#334155;--bg:#f3f6fb;--bg2:#ffffff;--surface:#ffffff;--border:#d9e2ec;--bb:#9bacc0;--cyan:#087f72;--cd:rgba(8,127,114,.1);--cg:rgba(8,127,114,.18);--red:#ba3544;--rd:rgba(186,53,68,.09);--orange:#946000;--od:rgba(148,96,0,.1);--green:#24744a;--gd:rgba(36,116,74,.1);--yellow:#8a6900;--purple:#7052b5;--pd:rgba(112,82,181,.1);--text:#344256;--td:#5a6b80;--tb:#15243a}
 body[data-theme="light"] .nav{background:rgba(248,250,253,.94);box-shadow:0 10px 28px rgba(34,53,77,.1)}
 body[data-theme="light"] .panel{background:linear-gradient(145deg,#fff,#f8fbff);border-color:var(--border);box-shadow:0 16px 38px rgba(34,53,77,.07)}
-body[data-theme="light"] .dashboard-source-card{background:linear-gradient(145deg,#fff,#f3f8fc);border-color:rgba(8,127,114,.22)}
 body[data-theme="light"] .intel-card{background:transparent}
 body[data-theme="light"] .health-card{background:linear-gradient(145deg,#fff,#f7faff)}
 body[data-theme="light"] .feed-status,body[data-theme="light"] .notice,body[data-theme="light"] .health-summary{background:#fff}
@@ -555,7 +558,7 @@ body[data-theme="light"] .feedback-form input,body[data-theme="light"] .feedback
 body[data-theme="light"] .theme-toggle{background:#fff}
 body[data-theme="light"] .guide-toggle{background:#e8f6f2;color:#123b35;box-shadow:0 12px 30px rgba(34,53,77,.15)}
 body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
-@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:42px}.feedback-layout{grid-template-columns:1fr}.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.dashboard-hero{grid-template-columns:1fr;gap:24px;padding-top:42px}.dashboard-more{padding-left:0}.feedback-layout{grid-template-columns:1fr}.repo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){.health-header{align-items:flex-start;flex-direction:column}.health-actions{width:100%;justify-content:space-between}}
 @media(max-width:950px){.nav-inner{gap:8px}.nav-tabs{gap:2px}.tab{padding:0 9px;font-size:.72rem}}
 @media(max-width:600px){.nav{padding:0 10px}.logo-btn{margin-right:8px}.logo-btn svg{display:none}.tab{padding:0 9px;font-size:.72rem}.nav-r{display:flex;margin-left:4px}.nav-r .pl{display:none}.theme-toggle{min-height:34px;padding:0 8px;font-size:.68rem}.wrap{padding:24px 14px 52px}.repo-form{flex-direction:column}.repo-form .lookup-button{width:100%}.intel-grid{grid-template-columns:1fr;margin-bottom:26px;padding:8px 0}.intel-card{padding:14px 4px}.intel-card:not(:last-child)::after{top:auto;right:0;bottom:0;left:0;width:auto;height:1px}.guide-widget{right:12px;bottom:12px}.guide-toggle{min-height:44px;padding:0 13px}.health-actions{align-items:flex-start;flex-direction:column}}
@@ -614,13 +617,18 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
           <button class="action-link" onclick="show('repositories')">Search GitHub</button>
         </div>
       </div>
-      <aside class="dashboard-source-card" aria-labelledby="dashboardSourceTitle">
-        <div class="dashboard-source-label">Primary live source</div>
-        <h2 id="dashboardSourceTitle" class="dashboard-source-title">CISA Known Exploited Vulnerabilities</h2>
-        <p class="dashboard-source-copy">A public catalog of vulnerabilities CISA confirms are being actively exploited. The mirror refreshes daily; it is not live attack telemetry.</p>
-        <div class="dashboard-source-meta"><span>Catalog release</span><time id="dashboardTrendDate">Waiting for source data</time></div>
-        <a class="dashboard-source-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Verify at CISA ↗</a>
-      </aside>
+      <nav class="dashboard-more" aria-label="More ThreatScope tools">
+        <div class="dashboard-more-label">More to explore</div>
+        <button class="dashboard-more-item" type="button" onclick="show('scanner')">
+          <span class="dashboard-more-index">01</span><span class="dashboard-more-copy"><strong>URL tools</strong><small>Checks for sites you are authorized to assess</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="dashboard-more-item" type="button" onclick="show('health')">
+          <span class="dashboard-more-index">02</span><span class="dashboard-more-copy"><strong>Site health</strong><small>Check the site and public data sources</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="dashboard-more-item" type="button" onclick="show('ai')">
+          <span class="dashboard-more-index">03</span><span class="dashboard-more-copy"><strong>Learning library</strong><small>Browse defensive reference material</small></span><span class="dashboard-more-arrow" aria-hidden="true">→</span>
+        </button>
+      </nav>
     </section>
     <div id="dashboardStatus" class="feed-status" role="status" aria-live="polite">Loading the CISA KEV catalog…</div>
     <div class="intel-grid" aria-label="CISA KEV catalog summary">
@@ -843,7 +851,7 @@ body[data-theme="light"] .guide-panel{box-shadow:0 24px 60px rgba(34,53,77,.2)}
         <div class="ac"><div class="an">HaveIBeenPwned</div><div class="ad">Breach database lookup.</div><a href="https://haveibeenpwned.com" target="_blank" rel="noopener noreferrer" class="al">↗ haveibeenpwned.com</a></div>
         <div class="ac"><div class="an">Shodan API</div><div class="ad">Port scanning and host info.</div><a href="https://shodan.io" target="_blank" rel="noopener noreferrer" class="al">↗ shodan.io</a></div>
         <div class="ac"><div class="an">Google DNS API</div><div class="ad">DNS record lookups. No key needed.</div><a href="https://dns.google" target="_blank" rel="noopener noreferrer" class="al">↗ dns.google</a></div>
-        <div class="ac"><div class="an">CISA KEV Catalog</div><div class="ad">Public catalog of vulnerabilities known to be exploited in the wild; mirrored daily for browser access.</div><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer" class="al">↗ cisa.gov</a></div>
+        <div class="ac"><div class="an">CISA KEV Catalog</div><div class="ad">CISA’s public catalog of known-exploited vulnerabilities. The mirror refreshes daily; catalog dates show when entries were added, not attack timing.</div><div class="about-source-release"><span>Latest catalog release</span><time id="aboutKevReleaseDate">Loading…</time></div><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer" class="al">↗ Official CISA catalog</a></div>
         <div class="ac"><div class="an">GitHub REST API</div><div class="ad">Public repository search, commit dates, and exact repository metadata; subject to GitHub API rate limits.</div><a href="https://docs.github.com/en/rest/search/search#search-repositories" target="_blank" rel="noopener noreferrer" class="al">↗ GitHub API docs</a></div>
         <div class="ac"><div class="an">GitHub Security Advisories</div><div class="ad">Browse public advisories on GitHub; links are provided from repository lookup.</div><a href="https://github.com/advisories" target="_blank" rel="noopener noreferrer" class="al">↗ github.com/advisories</a></div>
         <div class="ac"><div class="an">NIST NVD</div><div class="ad">CVE detail pages linked from catalog results.</div><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" class="al">↗ nvd.nist.gov</a></div>
@@ -2173,7 +2181,7 @@ async function loadDashboardData(){
     document.getElementById('dashboardKevTotal').textContent=stats.total.toLocaleString();
     document.getElementById('dashboardRecent').textContent=stats.addedInLast30Days.toLocaleString();
     document.getElementById('dashboardRansomware').textContent=stats.ransomwareKnown.toLocaleString();
-    const releaseDate=document.getElementById('dashboardTrendDate');
+    const releaseDate=document.getElementById('aboutKevReleaseDate');
     releaseDate.dateTime=stats.catalogDate;
     releaseDate.textContent=new Date(stats.catalogDate).toLocaleDateString();
     const latest=filterKevVulnerabilities(catalog.vulnerabilities).slice(0,3);
@@ -2183,12 +2191,12 @@ async function loadDashboardData(){
         <div class="latest-meta"><span>Added ${e(item.dateAdded||'Date not provided')}</span><span>${e(item.vendorProject||'Vendor not provided')}</span></div>
       </article>`).join(''):'<div class="es">The catalog returned no vulnerability entries.</div>';
     status.classList.remove('error');
-    status.textContent=`CISA catalog released ${new Date(stats.catalogDate).toLocaleDateString()} · retrieved ${new Date().toLocaleTimeString()} · daily mirror`;
+    status.textContent=`Latest CISA KEV snapshot loaded · checked at ${new Date().toLocaleTimeString()}`;
   }catch(error){
     console.error('Unable to load the dashboard KEV data:',error);
     status.classList.add('error');
     status.textContent='CISA KEV data is unavailable. No sample values are shown; retry from Threat Intel or visit the official source.';
-    document.getElementById('dashboardTrendDate').textContent='Unavailable';
+    document.getElementById('aboutKevReleaseDate').textContent='Unavailable';
     document.getElementById('dashboardKevList').innerHTML='<div class="es">Live catalog unavailable. No sample entries are substituted.</div>';
   }
 }
