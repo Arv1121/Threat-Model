@@ -895,6 +895,26 @@ body[data-theme="light"] .ac,body[data-theme="light"] .fc,body[data-theme="light
   .page-intro .ps{font-size:.91rem}
   .ph{padding:16px 18px}.pb{padding:19px}
 }
+.mindmap-root{max-width:760px;margin:0 auto 28px;padding:24px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,rgba(20,31,46,.96),rgba(17,26,39,.88));text-align:center;box-shadow:0 18px 44px rgba(0,0,0,.1)}
+body[data-theme="light"] .mindmap-root{background:linear-gradient(145deg,#fff,#f4f8fc)}
+.mindmap-root-label,.mindmap-node-label{display:block;color:var(--cyan);font-size:.65rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+.mindmap-root strong{display:block;margin:7px 0;color:var(--tb);font-size:1.55rem;letter-spacing:-.04em}
+.mindmap-root p,.mindmap-node p{margin:0;color:var(--td);font-size:.78rem;line-height:1.65}
+.mindmap-branches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mindmap-branch{padding:19px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,rgba(20,31,46,.92),rgba(17,26,39,.96))}
+body[data-theme="light"] .mindmap-branch{background:#fff}
+.mindmap-node{padding:15px;border-radius:13px;background:rgba(7,13,22,.3);border:1px solid var(--border)}
+body[data-theme="light"] .mindmap-node{background:#f8fafc}
+.mindmap-node-source{border-left:3px solid var(--cyan)}
+.mindmap-node-feature{border-left:3px solid var(--purple)}
+.mindmap-node-label{margin-bottom:6px;color:var(--td);font-size:.58rem}
+.mindmap-node strong{display:block;margin-bottom:5px;color:var(--tb);font-size:.9rem}
+.mindmap-connector{height:31px;display:grid;place-items:center;color:var(--cyan);font-size:1.15rem}
+.mindmap-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.mindmap-link{padding:8px 11px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--cyan);font:600 .72rem var(--body);cursor:pointer}
+.mindmap-link:hover{border-color:var(--cyan);background:var(--cd)}
+.mindmap-limits{margin-top:18px;padding:17px 19px;border-left:3px solid var(--orange);border-radius:12px;background:var(--od);color:var(--tb);font-size:.78rem;line-height:1.7}
+@media(max-width:700px){.mindmap-branches{grid-template-columns:1fr}.mindmap-root{padding:20px}}
 </style>
 </head>
 <body data-theme="dark">
@@ -924,6 +944,7 @@ body[data-theme="light"] .ac,body[data-theme="light"] .fc,body[data-theme="light
       <button class="tab active" onclick="show('dashboard')" data-p="dashboard" aria-current="page"><div class="tdot"></div>Overview</button>
       <button class="tab" onclick="show('threats')" data-p="threats"><div class="tdot"></div>Threat Intel</button>
       <button class="tab" onclick="show('repositories')" data-p="repositories"><div class="tdot"></div>GitHub Search</button>
+      <button class="tab" onclick="show('map')" data-p="map"><div class="tdot"></div>Mind Map</button>
       <button class="tab" onclick="show('scanner')" data-p="scanner"><div class="tdot"></div>URL Tools</button>
       <button class="tab" onclick="show('health')" data-p="health"><div class="tdot"></div>Health</button>
       <button class="tab" onclick="show('ai')" data-p="ai"><div class="tdot"></div>Learn</button>
@@ -992,6 +1013,7 @@ body[data-theme="light"] .ac,body[data-theme="light"] .fc,body[data-theme="light
           <button class="home-tool-card" type="button" onclick="show('scanner')"><span class="home-tool-icon">02</span><span><strong>Authorized URL tools</strong><small>Check sites you’re permitted to assess</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
           <button class="home-tool-card" type="button" onclick="show('health')"><span class="home-tool-icon">03</span><span><strong>Source health</strong><small>Check public data availability</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
           <button class="home-tool-card" type="button" onclick="show('ai')"><span class="home-tool-icon">04</span><span><strong>Defensive learning</strong><small>Browse practical references</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
+          <button class="home-tool-card" type="button" onclick="show('map')"><span class="home-tool-icon">05</span><span><strong>ThreatScope mind map</strong><small>See how sources and tools connect</small></span><span class="home-tool-arrow" aria-hidden="true">↗</span></button>
         </nav>
       </aside>
     </section>
@@ -1043,6 +1065,55 @@ body[data-theme="light"] .ac,body[data-theme="light"] .fc,body[data-theme="light
         <div id="repositoryResult" hidden></div>
       </div>
     </section>
+  </div>
+</div>
+
+<!-- PAGE: THREATSCOPE MIND MAP -->
+<div id="page-map" class="page">
+  <div class="wrap">
+    <header class="page-intro">
+      <div class="pl2">A browseable overview · no search required</div>
+      <h1 class="pt">ThreatScope <span>Mind Map</span></h1>
+      <p class="ps">See how the dashboard’s current data sources connect to its features. Select a destination to open it; this map does not query repositories or add new monitoring.</p>
+    </header>
+    <section class="mindmap-root" aria-label="ThreatScope map center">
+      <span class="mindmap-root-label">Public sources · opt-in reports · user-requested checks</span>
+      <strong>ThreatScope</strong>
+      <p>A static dashboard that connects selected public intelligence to focused defensive tools. Each branch below identifies its source, destination, and coverage limits.</p>
+    </section>
+    <section class="mindmap-branches" aria-label="ThreatScope data and feature connections">
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">Public catalog</span><strong>CISA Known Exploited Vulnerabilities</strong><p>Delivered through the AboutCode mirror, which refreshes daily from CISA.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Dashboard features</span><strong>Threat Intel + overview</strong><p>Catalog counts, recent additions, charts, and links to NVD records. Catalog dates are not attack timestamps.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('threats')">Open Threat Intel →</button><button class="mindmap-link" type="button" onclick="show('dashboard')">Open Overview →</button></div></div>
+      </article>
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">Public API · on demand</span><strong>GitHub REST API</strong><p>Public repository search, selected repository metadata, push timestamps, and commit dates.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Browseable tools</span><strong>GitHub Search + lookup</strong><p>Search results are paginated; exact repository details are requested only after selection.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('repositories')">Open GitHub Search →</button></div></div>
+      </article>
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">Owner opt-in only</span><strong>OSV-Scanner + OSV</strong><p>Participating repository owners run dependency scans; package identifiers and versions are checked against OSV.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Privacy-limited output</span><strong>Community aggregate</strong><p>Only combined counts appear after at least 10 repositories have fresh reports. No participant list or per-repository findings are shown.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('threats')">View aggregate panel →</button></div></div>
+      </article>
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">User-requested · authorized targets</span><strong>Optional security providers</strong><p>VirusTotal, URLScan.io, Shodan, Have I Been Pwned, and public DNS. Provider terms and limits apply.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Browser-based checks</span><strong>URL Tools</strong><p>Requests go directly from the browser to selected providers. Some submissions may be public; API keys stay in page memory.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('scanner')">Open URL Tools →</button></div></div>
+      </article>
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">Curated content + availability checks</span><strong>Reference material and public endpoints</strong><p>Static learning content and on-demand checks of the site, CISA, GitHub REST API, and aggregate file.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Supporting pages</span><strong>Learn + Health</strong><p>Learning material is not a live incident feed. Health checks show connectivity at the time you run them.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('ai')">Open Learn →</button><button class="mindmap-link" type="button" onclick="show('health')">Open Health →</button></div></div>
+      </article>
+      <article class="mindmap-branch">
+        <div class="mindmap-node mindmap-node-source"><span class="mindmap-node-label">Project information + visitor feedback</span><strong>Maintainer and community input</strong><p>Project documentation explains the service; feedback is prepared as a GitHub issue draft and is never submitted automatically.</p></div>
+        <div class="mindmap-connector" aria-hidden="true">↓</div>
+        <div class="mindmap-node mindmap-node-feature"><span class="mindmap-node-label">Transparency and participation</span><strong>About + Terms + Feedback</strong><p>Learn how the dashboard works, review its policies, or prepare a feature request.</p><div class="mindmap-links"><button class="mindmap-link" type="button" onclick="show('about')">Open About →</button><button class="mindmap-link" type="button" onclick="show('terms')">Open Terms →</button><button class="mindmap-link" type="button" onclick="show('feedback')">Open Feedback →</button></div></div>
+      </article>
+    </section>
+    <aside class="mindmap-limits"><strong>Coverage limits:</strong> This is a map of ThreatScope’s included features, not a global GitHub repository graph or continuous incident monitor. GitHub does not provide an exhaustive public stream of all repository commits, and repository security alerts require account permissions. Missing or inaccessible data never means “no risk.”</aside>
   </div>
 </div>
 
@@ -1473,6 +1544,7 @@ function sendGuideMessage(event){
   const query=message.toLocaleLowerCase();
   const routes=[
     {pattern:/\b(health|status|source check|service check|api status)\b/,page:'health',name:'Site Health'},
+    {pattern:/\b(mind\s*maps?|source\s+map|global\s+(view|map)|how\s+(data|sources|tools)\s+(connect|flow|work\s+together))\b/,page:'map',name:'ThreatScope Mind Map'},
     {pattern:/\b(github|repositories|repository|repos|projects)\b/,page:'repositories',name:'GitHub Search'},
     {pattern:/\b(cisa|kev|cve|vulnerabilit|exploited|threat intel)\b/,page:'threats',name:'Threat Intel'},
     {pattern:/\b(scan|url|domain|dns|virustotal|shodan)\b/,page:'scanner',name:'URL Tools'},
@@ -1487,7 +1559,7 @@ function sendGuideMessage(event){
     show(route.page);
     appendGuideMessage('assistant',`Opening ${route.name}. I can also help you find another ThreatScope page.`);
   }else{
-    appendGuideMessage('assistant','I can open Overview, Threat Intel, GitHub Search, URL Tools, Site Health, Learn, About, Terms, or Feedback. Tell me which one you need.');
+    appendGuideMessage('assistant','I can open Overview, Threat Intel, GitHub Search, the ThreatScope Mind Map, URL Tools, Site Health, Learn, About, Terms, or Feedback. Tell me which one you need.');
   }
 }
 
